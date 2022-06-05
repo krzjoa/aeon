@@ -18,6 +18,7 @@ VSN <- Layer(
 
   },
 
+
   build = function(input_shape){
 
     #Linear transformation of inputs into dmodel vector
@@ -29,7 +30,7 @@ VSN <- Layer(
       self$fc <- layer_dense(units = self$dim_model, use_bias = FALSE)
 
     # entity embedings for discrete inputs
-    self$entiy_embed <- lsit()
+    self$entiy_embed <- list()
     for (i in self$n_var_disc)
       self$entiy_embed <-
         append(self$entiy_embed, layer_dense(units = self$dim_model, use_bias = FALSE))
@@ -39,7 +40,7 @@ VSN <- Layer(
       dropout_rate = dropout_rate
       )
 
-    self$output_grn <- layer_grn(
+    self$vs_grn    <- layer_grn(
       input_shape  = self$n_var_total * input_shape,
       output_size  = self$n_var_total,
       dropout_rate = dropout_rate
@@ -47,16 +48,40 @@ VSN <- Layer(
 
   },
 
-  call = function(x_cont, x_disc){
 
+
+  call = function(x_cont = NULL, x_disc = NULL){
+
+    # Linear transformation of the numeric nputs
     linearised <- list()
 
-    for (i in 1:length(self$linearise)) {
+    for (i in 1:length(x_cont)) {
       slice      <- layer_lambda(f = function(x)x[,,i])(x_cont)
       linearised <- append(linearised, self$fc(slice))
     }
 
-    for
+    # Enity embeddings for the discrete inputs
+    embedded <- list()
+
+    for (i in 1:length(x_disc)) {
+      fc <- self$entiy_embed[[i]]
+      embedded <- append(
+        embedded, fc(x_disc[[i]])
+      )
+    }
+
+    # Stacking variables
+    stacked <- layer_concatenate(axis = 3)(c(linearised, embedded))
+
+    #flatten everything except accross batch for variable selection weights
+    vs_weights <- self$vs_grn(
+      layer_reshape(target_shape = c())(stacked)
+    )
+
+
+
+
+
 
   }
 
@@ -70,5 +95,15 @@ layer_vsn <- function(object,
                       input_shape,
                       dropout_rate = NULL,
                       name = NULL, ...){
+
+  args <- list(
+    units         = as.integer(units),
+    input_shape   = keras:::normalize_shape(input_shape),
+    activation    = activation,
+    return_gate   = return_gate,
+    name          = name
+  )
+
+  create_layer(VSN, object, args)
 
 }

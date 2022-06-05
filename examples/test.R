@@ -1,11 +1,36 @@
 library(keras)
 library(tensorflow)
 
+#' Temporal Fusion Trannsformer
+#'
+#' Paper: https://arxiv.org/abs/1912.09363
+#' Original implementation: https://github.com/google-research/google-research/blob/master/tft/libs/tft_model.py
+#' Alternative: https://github.com/LiamMaclean216/Temporal-Fusion-Transformer
+
+input   <- layer_input(30)
+
+dense_1 <- layer_dense(units = 10)(input)
+dense_2 <- layer_dense(units = 10)(input)
+
+layer_concatenate(inputs = list(dense_1, dens))
+
+
+# ============================================================================
+#                         SIMPLE DENSE FOR COMPARISON
+# ============================================================================
+
+model <-
+  keras_model_sequential() %>%
+  layer_dense(10, input_shape = 30)
+
+model %>%
+  compile(optimizer = "adam", loss = "mse")
+
+model
+
 # ============================================================================
 #                                   GLU
 # ============================================================================
-
-library(keras)
 
 model <-
   keras_model_sequential() %>%

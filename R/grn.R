@@ -4,16 +4,17 @@ GRN <- Layer(
 
   initialize = function(hidden_units,
                         output_size,
-                        # dropout_rate = NULL,
+                        dropout_rate = NULL,
                         use_additional_context = FALSE,
                         return_gate = FALSE,
                         name = NULL, ...){
 
     super()$`__init__`(name = name, ...)
 
-    self$hidden_units       <- hidden_units
+    self$hidden_units           <- hidden_units
+    self$dropout_rate           <- dropout_rate
     self$use_additional_context <- use_additional_context
-    self$return_gate        <- return_gate
+    self$return_gate            <- return_gate
 
     # Setup skip connection
     if (is.null(output_size)) {
@@ -33,8 +34,8 @@ GRN <- Layer(
       self$pre_layer <- layer_dense(units = self$output_size,
                                     input_shape = input_shape)
 
-    self$hidden_layer <- layer_dense(units = self$hidden_units,
-                                     input_shape = input_shape)
+    self$layer_1 <- layer_dense(units = self$hidden_units,
+                                input_shape = input_shape)
 
     if (self$use_additional_context)
       self$context_layer <- layer_dense(
@@ -43,7 +44,8 @@ GRN <- Layer(
       )
 
     self$elu_layer    <- layer_activation(activation = 'elu')
-    self$final_layer  <- layer_dense(units = self$hidden_units)
+    self$layer_2      <- layer_dense(units = self$hidden_units)
+    self$dropout      <- layer_dropout(rate = self$dropout_rate)
     self$gating_layer <- layer_glu(units = self$output_size,
                                    return_gate = TRUE)
 
@@ -59,7 +61,7 @@ GRN <- Layer(
     }
 
     # Apply feedforward network
-    hidden <- self$hidden_layer(inputs)
+    hidden <- self$layer_1(inputs)
 
     if (self$use_additional_context) {
       ctx    <- self$context_layer(additional_context)
@@ -67,7 +69,7 @@ GRN <- Layer(
     }
 
     hidden <- self$elu_layer(hidden)
-    hidden <- self$final_layer(hidden)
+    hidden <- self$layer_2(hidden)
 
     c(gated_output, gate) %<-% self$gating_layer(hidden)
 
@@ -85,10 +87,12 @@ GRN <- Layer(
 
 
 #' Gated Residual Network block
+#'
+#' @export
 layer_grn <- function(object,
                       hidden_units,
                       output_size,
-                      #dropout_rate = NULL,
+                      dropout_rate = NULL,
                       use_additional_context = FALSE,
                       input_shape  = NULL,
                       return_gate = FALSE,
@@ -97,7 +101,7 @@ layer_grn <- function(object,
   args <- list(
     hidden_units  = as.integer(hidden_units),
     output_size   = output_size,
-    #droupout_rate = droupout_rate,
+    droupout_rate = droupout_rate,
     use_additional_context = use_additional_context,
     input_shape   = keras:::normalize_shape(input_shape),
     return_gate   = return_gate,
