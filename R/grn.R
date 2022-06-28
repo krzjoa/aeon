@@ -1,5 +1,8 @@
+#' Gated Residual Network block
+#'
+#' @export
+layer_grn <- keras::new_layer_class(
 
-GRN <- Layer(
   classname = "GRN",
 
   initialize = function(hidden_units,
@@ -19,10 +22,10 @@ GRN <- Layer(
     # Setup skip connection
     if (is.null(output_size)) {
       self$output_size <- hidden_units
-      self$flag_skip   <- TRUE
+      self$change_dim_for_skip   <- FALSE
     } else {
       self$output_size <- output_size
-      self$flag_skip   <- FALSE
+      self$change_dim_for_skip   <- TRUE
     }
 
 
@@ -30,8 +33,10 @@ GRN <- Layer(
 
   build = function(input_shape){
 
-    if (!self$flag_skip)
-      self$pre_layer <- layer_dense(units = self$output_size,
+    # If output_shape is determined, it can differ from the initial one
+    # we have to apply additional linear transformation to change dimensionality
+    if (self$change_dim_for_skip)
+      self$dim_layer <- layer_dense(units = self$output_size,
                                     input_shape = input_shape)
 
     self$layer_1 <- layer_dense(units = self$hidden_units,
@@ -51,20 +56,20 @@ GRN <- Layer(
 
   },
 
-  call = function(inputs, ...){
+  call = function(inputs, context = NULL, ...){
 
     # Skip connection
-    if (self$flag_skip) {
-      skip <- inputs
+    if (self$change_dim_for_skip) {
+      skip <- self$dim_layer(inputs)
     } else {
-      skip <- self$pre_layer(inputs)
+      skip <- inputs
     }
 
     # Apply feedforward network
     hidden <- self$layer_1(inputs)
 
     if (self$use_additional_context) {
-      ctx    <- self$context_layer(additional_context)
+      ctx    <- self$context_layer(context)
       hidden <- layer_add()(list(hidden, ctx))
     }
 
@@ -84,32 +89,6 @@ GRN <- Layer(
   }
 
 )
-
-
-#' Gated Residual Network block
-#'
-#' @export
-layer_grn <- function(object,
-                      hidden_units,
-                      output_size,
-                      dropout_rate = NULL,
-                      use_additional_context = FALSE,
-                      input_shape  = NULL,
-                      return_gate = FALSE,
-                      name = NULL){
-
-  args <- list(
-    hidden_units  = as.integer(hidden_units),
-    output_size   = output_size,
-    droupout_rate = droupout_rate,
-    use_additional_context = use_additional_context,
-    input_shape   = keras:::normalize_shape(input_shape),
-    return_gate   = return_gate,
-    name          = name
-  )
-
-  create_layer(GRN, object, args)
-}
 
 
 
