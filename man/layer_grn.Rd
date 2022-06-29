@@ -6,15 +6,34 @@
 \usage{
 layer_grn(
   object,
-  hidden_units,
-  output_size,
+  units,
+  output_size = units,
   dropout_rate = NULL,
-  use_additional_context = FALSE,
+  use_context = FALSE,
   return_gate = FALSE,
-  name = NULL,
   ...
 )
 }
+\arguments{
+\item{object}{What to compose the new \code{Layer} instance with. Typically a
+Sequential model or a Tensor (e.g., as returned by \code{layer_input()}).
+The return value depends on \code{object}. If \code{object} is:
+\itemize{
+\item missing or \code{NULL}, the \code{Layer} instance is returned.
+\item a \code{Sequential} model, the model with an additional layer is returned.
+\item a Tensor, the output tensor from \code{layer_instance(object)} is returned.
+}}
+
+\item{units}{Positive integer, dimensionality of the output space.}
+
+\item{use_context}{Use additional (static) context. If TRUE, an additional layer
+is created to handle context input.}
+
+\item{return_gate}{Logical - return gate values. Default: FALSE}
+}
 \description{
 Gated Residual Network block
+}
+\seealso{
+[https://keras.io/examples/structured_data/classification_with_grn_and_vsn/](Python)
 }

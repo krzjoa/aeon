@@ -2,16 +2,26 @@
 #'
 #' In such form introduced in [Language modeling with gated convolutional networks](https://arxiv.org/abs/1612.08083)
 #' by Dauphin et al., when it was used in sequence processing tasks and compared with
-#' gating mechanism used in LSTM layers.
+#' gating mechanism used in LSTM layers. In the context of time series processing explicitly proposed in [Temporal Fusion Transformer](https://arxiv.org/pdf/1912.09363.pdf).
 #'
-#' In the context of time series processing it was used in [Temporal Fusion Transformer](https://arxiv.org/pdf/1912.09363.pdf).
+#' Computed according to the equations:
+#'
+#' \eqn{projection = X \cdot W + b}
+#'
+#' \eqn{gate = \sigma(X \cdot V + c)}
+#'
+#' \eqn{output = projection \odot gate}
 #'
 #' @inheritParams keras::layer_dense
 #' @param return_gate Logical - return gate values. Default: FALSE
 #'
+#'
 #' @references
 #' Dauphin, Yann N., et al. (2017). [Language modeling with gated convolutional networks.](https://arxiv.org/abs/1612.08083)
 #' International conference on machine learning. PMLR
+#'
+#' [Implementation PyTorch](https://github.com/jdb78/pytorch-forecasting/blob/268121aa9aa732558beefb6d9f95feff955ad08b/pytorch_forecasting/models/temporal_fusion_transformer/sub_modules.py#L71)
+#' https://github.com/PlaytikaResearch/tft-torch/blob/9eee6db42b8ec6b6a586e8852e3af6e2d6b18035/tft_torch/tft.py#L11)
 #'
 #' @examples
 #' library(keras)
@@ -58,10 +68,13 @@
 #' @export
 layer_glu <- keras::new_layer_class(
 
+  # Notation according to the https://math.stackexchange.com/a/601545
+
   classname = "GLU",
 
   initialize = function(units,
                         activation = NULL,
+                        dropout_rate = NULL,
                         return_gate = FALSE,
                         ...){
 
@@ -70,6 +83,7 @@ layer_glu <- keras::new_layer_class(
     self$units         <- as.integer(units)
     self$activation    <- activation
     self$return_gate   <- return_gate
+    self$droput_rate   <- dropout_rate
 
   },
 

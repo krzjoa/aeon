@@ -4,7 +4,14 @@
 \alias{layer_glu}
 \title{Gated Linear Unit}
 \usage{
-layer_glu(object, units, activation = NULL, return_gate = FALSE, ...)
+layer_glu(
+  object,
+  units,
+  activation = NULL,
+  dropout_rate = NULL,
+  return_gate = FALSE,
+  ...
+)
 }
 \arguments{
 \item{object}{What to compose the new \code{Layer} instance with. Typically a
@@ -26,10 +33,16 @@ anything, no activation is applied (ie. "linear" activation: a(x) = x).}
 \description{
 In such form introduced in [Language modeling with gated convolutional networks](https://arxiv.org/abs/1612.08083)
 by Dauphin et al., when it was used in sequence processing tasks and compared with
-gating mechanism used in LSTM layers.
+gating mechanism used in LSTM layers. In the context of time series processing explicitly proposed in [Temporal Fusion Transformer](https://arxiv.org/pdf/1912.09363.pdf).
 }
 \details{
-In the context of time series processing it was used in [Temporal Fusion Transformer](https://arxiv.org/pdf/1912.09363.pdf).
+Computed according to the equations:
+
+\eqn{projection = X \cdot W + b}
+
+\eqn{gate = \sigma(X \cdot V + c)}
+
+\eqn{output = projection \odot gate}
 }
 \examples{
 library(keras)
@@ -77,4 +90,7 @@ gate[1,]
 \references{
 Dauphin, Yann N., et al. (2017). [Language modeling with gated convolutional networks.](https://arxiv.org/abs/1612.08083)
 International conference on machine learning. PMLR
+
+[Implementation PyTorch](https://github.com/jdb78/pytorch-forecasting/blob/268121aa9aa732558beefb6d9f95feff955ad08b/pytorch_forecasting/models/temporal_fusion_transformer/sub_modules.py#L71)
+https://github.com/PlaytikaResearch/tft-torch/blob/9eee6db42b8ec6b6a586e8852e3af6e2d6b18035/tft_torch/tft.py#L11)
 }

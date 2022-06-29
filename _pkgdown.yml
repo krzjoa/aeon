@@ -1,0 +1,13 @@
+destination: docs
+template:
+  params:
+    bootswatch: united
+authors:
+  Krzysztof Joachimiak:
+    href: https://krzjoa.github.io
+reference:
+- title: Layers
+  contents:
+  - layer_glu
+  - layer_grn
+  - layer_vsn
