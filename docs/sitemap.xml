@@ -25,10 +25,16 @@
     <loc>/reference/layer_grn.html</loc>
   </url>
   <url>
+    <loc>/reference/layer_lmu.html</loc>
+  </url>
+  <url>
     <loc>/reference/layer_multi_dense.html</loc>
   </url>
   <url>
     <loc>/reference/layer_multi_embedding.html</loc>
+  </url>
+  <url>
+    <loc>/reference/layer_tcn.html</loc>
   </url>
   <url>
     <loc>/reference/layer_vsn.html</loc>

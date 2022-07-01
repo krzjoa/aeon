@@ -1,4 +1,4 @@
-Package: keras.tft
+Package: aion
 Type: Package
 Title: What the Package Does (Title Case)
 Version: 0.1.0
@@ -17,6 +17,8 @@ Config/testthat/edition: 3
 Collate: 
     'layer-glu.R'
     'layer-grn.R'
+    'layer-lmu.R'
     'layer-multi-dense.R'
     'layer-multi-embedding.R'
+    'layer-tcn.R'
     'layer-vsn.R'

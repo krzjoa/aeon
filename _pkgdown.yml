@@ -10,6 +10,8 @@ reference:
   contents:
   - layer_glu
   - layer_grn
+  - layer_lmu
   - layer_multi_dense
   - layer_multi_embedding
+  - layer_tcn
   - layer_vsn

@@ -57,9 +57,6 @@ model <-
   keras_model_sequential() \%>\%
   layer_grn(10, input_shape = 30)
 
-model \%>\%
-   compile(optimizer = "adam", loss = "mse")
-
 model
 
 output <- model(matrix(1, 32, 30))
@@ -81,9 +78,6 @@ out  <- layer_grn(
 model <- keras_model(list(inp, ctx), out)
 
 model
-
-model \%>\%
-   compile(optimizer = "adam", loss = "mse")
 
 arr_1 <- array(1, dim = c(1, 28, 5))
 arr_2 <- array(1, dim = c(1, 10))

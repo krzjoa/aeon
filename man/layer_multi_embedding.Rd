@@ -46,7 +46,7 @@ dim(out)
 # ==========================================================================
 
 inp <- layer_input(c(28, 3))
-emb <- layer_multi_embedding(input_dims = c(4, 6, 8), output_dims = 5, new_dim = 5)(inp)
+emb <- layer_multi_embedding(input_dims = c(4, 6, 8), output_dims = 5, new_dim = TRUE)(inp)
 
 emb_model <- keras_model(inp, emb)
 

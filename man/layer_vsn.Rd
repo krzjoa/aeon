@@ -4,16 +4,10 @@
 \alias{layer_vsn}
 \title{Variable Selection Network block}
 \usage{
-layer_vsn(
-  object,
-  input_dim,
-  num_inputs,
-  hidden_dim,
-  dropout_rate = NULL,
-  use_context = FALSE,
-  name = NULL,
-  ...
-)
+layer_vsn(object, hidden_dim, state_size, dropout_rate = NULL, ...)
+}
+\arguments{
+\item{dropout_rate}{Droput rate}
 }
 \description{
 Variable Selection Network block

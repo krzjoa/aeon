@@ -2,9 +2,9 @@
 % Please edit documentation in R/layer-multi-dense.R
 \name{layer_multi_dense}
 \alias{layer_multi_dense}
-\title{Multiple embeddings in one layer}
+\title{Multiple mdeddings in one layer}
 \usage{
-layer_multi_dense(object, units, ...)
+layer_multi_dense(object, units, new_dim = FALSE, ...)
 }
 \arguments{
 \item{object}{What to compose the new \code{Layer} instance with. Typically a
@@ -19,5 +19,36 @@ The return value depends on \code{object}. If \code{object} is:
 \item{units}{Positive integer, dimensionality of the output space.}
 }
 \description{
-Multiple embeddings in one layer
+Multiple mdeddings in one layer
+}
+\examples{
+
+# ==========================================================================
+#                          SIMPLE CONCATENATION
+# ==========================================================================
+
+inp <- layer_input(c(28, 3))
+md <- layer_multi_dense(units = c(4, 6, 8))(inp)
+
+md_model <- keras_model(inp, md)
+
+dummy_input <- array(1, dim = c(1, 28, 3))
+
+out <- md_model(dummy_input)
+dim(out)
+
+# ==========================================================================
+#                          NEW DIMESNION
+# ==========================================================================
+
+inp <- layer_input(c(28, 3))
+md <- layer_multi_dense(units = 5, new_dim = TRUE)(inp)
+
+md_model <- keras_model(inp, md)
+
+dummy_input <- array(1, dim = c(1, 28, 3))
+
+out <- md_model(dummy_input)
+dim(out)
+
 }
