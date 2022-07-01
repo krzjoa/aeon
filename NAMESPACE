@@ -2,4 +2,6 @@
 
 export(layer_glu)
 export(layer_grn)
+export(layer_multi_dense)
+export(layer_multi_embedding)
 export(layer_vsn)

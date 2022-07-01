@@ -25,6 +25,12 @@
     <loc>/reference/layer_grn.html</loc>
   </url>
   <url>
+    <loc>/reference/layer_multi_dense.html</loc>
+  </url>
+  <url>
+    <loc>/reference/layer_multi_embedding.html</loc>
+  </url>
+  <url>
     <loc>/reference/layer_vsn.html</loc>
   </url>
 </urlset>
