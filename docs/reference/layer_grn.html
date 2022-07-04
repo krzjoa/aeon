@@ -112,23 +112,12 @@ $$\eta_2 = ELU(W_2a + W_3c + b_2)$$</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ________________________________________________________________________________</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="va">output</span> <span class="op">&lt;-</span> <span class="fu">model</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">32</span>, <span class="fl">30</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in py_call_impl(callable, dots$args, dots$keywords):</span> RuntimeError: Exception encountered when calling layer "grn" (type GRN).</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> Evaluation error: tensorflow.python.framework.errors_impl.InternalError: Exception encountered when calling layer "dense" (type Dense).</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> Attempting to perform BLAS operation using StreamExecutor without BLAS support [Op:MatMul]</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> Call arguments received:</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span>   • inputs=tf.Tensor(shape=(32, 30), dtype=float32)</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> .</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> Call arguments received:</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span>   • inputs=tf.Tensor(shape=(32, 30), dtype=float32)</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span>   • context=None</span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">output</span><span class="op">)</span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'output' not found</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 32 10</span>
 <span class="r-in"><span class="va">output</span><span class="op">[</span><span class="fl">1</span>,<span class="op">]</span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'output' not found</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> tf.Tensor(</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [-1.3119345  -1.3944792  -0.2391908   0.8236498  -0.278681    1.5406736</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   0.72044027 -0.5758049   1.3655502  -0.6502236 ], shape=(10,), dtype=float32)</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co">#'================================================================</span></span>
 <span class="r-in"><span class="co">#            WITH GATE VALUES AND ADDITIONAL CONTEXT</span></span>
@@ -163,28 +152,129 @@ $$\eta_2 = ELU(W_2a + W_3c + b_2)$$</p>
 <span class="r-in"><span class="va">arr_2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/array.html" class="external-link">array</a></span><span class="op">(</span><span class="fl">1</span>, dim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">values</span>, <span class="va">gate</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/pkg/keras/man/multi-assign.html" class="external-link">%&lt;-%</a></span> <span class="fu">model</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">arr_1</span>, <span class="va">arr_2</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in py_call_impl(callable, dots$args, dots$keywords):</span> RuntimeError: Exception encountered when calling layer "grn_1" (type GRN).</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> Evaluation error: tensorflow.python.framework.errors_impl.InternalError: Exception encountered when calling layer "dense" (type Dense).</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> Attempting to perform BLAS operation using StreamExecutor without BLAS support [Op:MatMul]</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> Call arguments received:</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span>   • inputs=tf.Tensor(shape=(1, 28, 5), dtype=float32)</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> .</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> Call arguments received:</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span>   • inputs=tf.Tensor(shape=(1, 28, 5), dtype=float32)</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span>   • context=tf.Tensor(shape=(1, 10), dtype=float32)</span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">values</span><span class="op">)</span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'values' not found</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1]  1 28 10</span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">gate</span><span class="op">)</span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'gate' not found</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1]  1 28 10</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="va">values</span><span class="op">[</span><span class="fl">1</span>,<span class="op">]</span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'values' not found</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Incorrect number of dimensions supplied. The number of supplied arguments, (not counting any NULL, tf$newaxis or np$newaxis) must match thenumber of dimensions in the tensor, unless an all_dims() was supplied (this will produce an error in the future)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> tf.Tensor(</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[ 0.42314446  0.17367305 -1.3477558   0.50705653 -0.32592618 -1.3945993</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   -0.2816342   1.4078245   1.6925495  -0.85433227]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [ 0.42314446  0.17367305 -1.3477558   0.50705653 -0.32592618 -1.3945993</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   -0.2816342   1.4078245   1.6925495  -0.85433227]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [ 0.42314446  0.17367305 -1.3477558   0.50705653 -0.32592618 -1.3945993</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   -0.2816342   1.4078245   1.6925495  -0.85433227]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [ 0.42314446  0.17367305 -1.3477558   0.50705653 -0.32592618 -1.3945993</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   -0.2816342   1.4078245   1.6925495  -0.85433227]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [ 0.42314446  0.17367305 -1.3477558   0.50705653 -0.32592618 -1.3945993</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   -0.2816342   1.4078245   1.6925495  -0.85433227]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [ 0.42314446  0.17367305 -1.3477558   0.50705653 -0.32592618 -1.3945993</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   -0.2816342   1.4078245   1.6925495  -0.85433227]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [ 0.42314446  0.17367305 -1.3477558   0.50705653 -0.32592618 -1.3945993</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   -0.2816342   1.4078245   1.6925495  -0.85433227]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [ 0.42314446  0.17367305 -1.3477558   0.50705653 -0.32592618 -1.3945993</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   -0.2816342   1.4078245   1.6925495  -0.85433227]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [ 0.42314446  0.17367305 -1.3477558   0.50705653 -0.32592618 -1.3945993</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   -0.2816342   1.4078245   1.6925495  -0.85433227]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [ 0.42314446  0.17367305 -1.3477558   0.50705653 -0.32592618 -1.3945993</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   -0.2816342   1.4078245   1.6925495  -0.85433227]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [ 0.42314446  0.17367305 -1.3477558   0.50705653 -0.32592618 -1.3945993</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   -0.2816342   1.4078245   1.6925495  -0.85433227]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [ 0.42314446  0.17367305 -1.3477558   0.50705653 -0.32592618 -1.3945993</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   -0.2816342   1.4078245   1.6925495  -0.85433227]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [ 0.42314446  0.17367305 -1.3477558   0.50705653 -0.32592618 -1.3945993</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   -0.2816342   1.4078245   1.6925495  -0.85433227]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [ 0.42314446  0.17367305 -1.3477558   0.50705653 -0.32592618 -1.3945993</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   -0.2816342   1.4078245   1.6925495  -0.85433227]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [ 0.42314446  0.17367305 -1.3477558   0.50705653 -0.32592618 -1.3945993</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   -0.2816342   1.4078245   1.6925495  -0.85433227]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [ 0.42314446  0.17367305 -1.3477558   0.50705653 -0.32592618 -1.3945993</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   -0.2816342   1.4078245   1.6925495  -0.85433227]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [ 0.42314446  0.17367305 -1.3477558   0.50705653 -0.32592618 -1.3945993</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   -0.2816342   1.4078245   1.6925495  -0.85433227]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [ 0.42314446  0.17367305 -1.3477558   0.50705653 -0.32592618 -1.3945993</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   -0.2816342   1.4078245   1.6925495  -0.85433227]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [ 0.42314446  0.17367305 -1.3477558   0.50705653 -0.32592618 -1.3945993</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   -0.2816342   1.4078245   1.6925495  -0.85433227]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [ 0.42314446  0.17367305 -1.3477558   0.50705653 -0.32592618 -1.3945993</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   -0.2816342   1.4078245   1.6925495  -0.85433227]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [ 0.42314446  0.17367305 -1.3477558   0.50705653 -0.32592618 -1.3945993</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   -0.2816342   1.4078245   1.6925495  -0.85433227]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [ 0.42314446  0.17367305 -1.3477558   0.50705653 -0.32592618 -1.3945993</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   -0.2816342   1.4078245   1.6925495  -0.85433227]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [ 0.42314446  0.17367305 -1.3477558   0.50705653 -0.32592618 -1.3945993</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   -0.2816342   1.4078245   1.6925495  -0.85433227]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [ 0.42314446  0.17367305 -1.3477558   0.50705653 -0.32592618 -1.3945993</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   -0.2816342   1.4078245   1.6925495  -0.85433227]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [ 0.42314446  0.17367305 -1.3477558   0.50705653 -0.32592618 -1.3945993</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   -0.2816342   1.4078245   1.6925495  -0.85433227]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [ 0.42314446  0.17367305 -1.3477558   0.50705653 -0.32592618 -1.3945993</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   -0.2816342   1.4078245   1.6925495  -0.85433227]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [ 0.42314446  0.17367305 -1.3477558   0.50705653 -0.32592618 -1.3945993</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   -0.2816342   1.4078245   1.6925495  -0.85433227]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [ 0.42314446  0.17367305 -1.3477558   0.50705653 -0.32592618 -1.3945993</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   -0.2816342   1.4078245   1.6925495  -0.85433227]], shape=(28, 10), dtype=float32)</span>
 <span class="r-in"><span class="va">gate</span><span class="op">[</span><span class="fl">1</span>,<span class="op">]</span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'gate' not found</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Incorrect number of dimensions supplied. The number of supplied arguments, (not counting any NULL, tf$newaxis or np$newaxis) must match thenumber of dimensions in the tensor, unless an all_dims() was supplied (this will produce an error in the future)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> tf.Tensor(</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[0.29578543 0.46866748 0.5833965  0.42105934 0.4466091  0.39282</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   0.5354596  0.8379872  0.39726245 0.94872785]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [0.29578543 0.46866748 0.5833965  0.42105934 0.4466091  0.39282</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   0.5354596  0.8379872  0.39726245 0.94872785]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [0.29578543 0.46866748 0.5833965  0.42105934 0.4466091  0.39282</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   0.5354596  0.8379872  0.39726245 0.94872785]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [0.29578543 0.46866748 0.5833965  0.42105934 0.4466091  0.39282</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   0.5354596  0.8379872  0.39726245 0.94872785]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [0.29578543 0.46866748 0.5833965  0.42105934 0.4466091  0.39282</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   0.5354596  0.8379872  0.39726245 0.94872785]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [0.29578543 0.46866748 0.5833965  0.42105934 0.4466091  0.39282</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   0.5354596  0.8379872  0.39726245 0.94872785]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [0.29578543 0.46866748 0.5833965  0.42105934 0.4466091  0.39282</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   0.5354596  0.8379872  0.39726245 0.94872785]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [0.29578543 0.46866748 0.5833965  0.42105934 0.4466091  0.39282</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   0.5354596  0.8379872  0.39726245 0.94872785]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [0.29578543 0.46866748 0.5833965  0.42105934 0.4466091  0.39282</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   0.5354596  0.8379872  0.39726245 0.94872785]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [0.29578543 0.46866748 0.5833965  0.42105934 0.4466091  0.39282</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   0.5354596  0.8379872  0.39726245 0.94872785]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [0.29578543 0.46866748 0.5833965  0.42105934 0.4466091  0.39282</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   0.5354596  0.8379872  0.39726245 0.94872785]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [0.29578543 0.46866748 0.5833965  0.42105934 0.4466091  0.39282</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   0.5354596  0.8379872  0.39726245 0.94872785]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [0.29578543 0.46866748 0.5833965  0.42105934 0.4466091  0.39282</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   0.5354596  0.8379872  0.39726245 0.94872785]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [0.29578543 0.46866748 0.5833965  0.42105934 0.4466091  0.39282</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   0.5354596  0.8379872  0.39726245 0.94872785]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [0.29578543 0.46866748 0.5833965  0.42105934 0.4466091  0.39282</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   0.5354596  0.8379872  0.39726245 0.94872785]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [0.29578543 0.46866748 0.5833965  0.42105934 0.4466091  0.39282</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   0.5354596  0.8379872  0.39726245 0.94872785]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [0.29578543 0.46866748 0.5833965  0.42105934 0.4466091  0.39282</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   0.5354596  0.8379872  0.39726245 0.94872785]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [0.29578543 0.46866748 0.5833965  0.42105934 0.4466091  0.39282</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   0.5354596  0.8379872  0.39726245 0.94872785]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [0.29578543 0.46866748 0.5833965  0.42105934 0.4466091  0.39282</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   0.5354596  0.8379872  0.39726245 0.94872785]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [0.29578543 0.46866748 0.5833965  0.42105934 0.4466091  0.39282</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   0.5354596  0.8379872  0.39726245 0.94872785]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [0.29578543 0.46866748 0.5833965  0.42105934 0.4466091  0.39282</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   0.5354596  0.8379872  0.39726245 0.94872785]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [0.29578543 0.46866748 0.5833965  0.42105934 0.4466091  0.39282</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   0.5354596  0.8379872  0.39726245 0.94872785]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [0.29578543 0.46866748 0.5833965  0.42105934 0.4466091  0.39282</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   0.5354596  0.8379872  0.39726245 0.94872785]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [0.29578543 0.46866748 0.5833965  0.42105934 0.4466091  0.39282</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   0.5354596  0.8379872  0.39726245 0.94872785]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [0.29578543 0.46866748 0.5833965  0.42105934 0.4466091  0.39282</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   0.5354596  0.8379872  0.39726245 0.94872785]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [0.29578543 0.46866748 0.5833965  0.42105934 0.4466091  0.39282</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   0.5354596  0.8379872  0.39726245 0.94872785]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [0.29578543 0.46866748 0.5833965  0.42105934 0.4466091  0.39282</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   0.5354596  0.8379872  0.39726245 0.94872785]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [0.29578543 0.46866748 0.5833965  0.42105934 0.4466091  0.39282</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   0.5354596  0.8379872  0.39726245 0.94872785]], shape=(28, 10), dtype=float32)</span>
 <span class="r-in"></span>
 </code></pre></div>
     </div>

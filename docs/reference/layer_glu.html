@@ -114,22 +114,12 @@ International conference on machine learning. PMLR</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ________________________________________________________________________________</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="va">output</span> <span class="op">&lt;-</span> <span class="fu">model</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">32</span>, <span class="fl">30</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in py_call_impl(callable, dots$args, dots$keywords):</span> RuntimeError: Exception encountered when calling layer "glu" (type GLU).</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> Evaluation error: tensorflow.python.framework.errors_impl.InternalError: Exception encountered when calling layer "dense" (type Dense).</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> Attempting to perform BLAS operation using StreamExecutor without BLAS support [Op:MatMul]</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> Call arguments received:</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span>   • inputs=tf.Tensor(shape=(32, 30), dtype=float32)</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> .</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> Call arguments received:</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span>   • inputs=tf.Tensor(shape=(32, 30), dtype=float32)</span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">output</span><span class="op">)</span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'output' not found</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 32 10</span>
 <span class="r-in"><span class="va">output</span><span class="op">[</span><span class="fl">1</span>,<span class="op">]</span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'output' not found</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> tf.Tensor(</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [ 0.9222392  -0.06211028  2.9895496  -0.09689866  0.00789902 -0.06905974</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  -0.12902254  1.1972551  -0.13699473  1.5005757 ], shape=(10,), dtype=float32)</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># ================================================================</span></span>
 <span class="r-in"><span class="co">#                     WITH GATE VALUES RETURNED</span></span>
@@ -155,27 +145,19 @@ International conference on machine learning. PMLR</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ________________________________________________________________________________</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">values</span>, <span class="va">gate</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/pkg/keras/man/multi-assign.html" class="external-link">%&lt;-%</a></span> <span class="fu">model</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">32</span>, <span class="fl">30</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in py_call_impl(callable, dots$args, dots$keywords):</span> RuntimeError: Exception encountered when calling layer "glu_1" (type GLU).</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> Evaluation error: tensorflow.python.framework.errors_impl.InternalError: Exception encountered when calling layer "dense" (type Dense).</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> Attempting to perform BLAS operation using StreamExecutor without BLAS support [Op:MatMul]</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> Call arguments received:</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span>   • inputs=tf.Tensor(shape=(32, 30), dtype=float32)</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> .</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> Call arguments received:</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span>   • inputs=tf.Tensor(shape=(32, 30), dtype=float32)</span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">values</span><span class="op">)</span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'values' not found</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 32 10</span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">gate</span><span class="op">)</span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'gate' not found</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 32 10</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="va">values</span><span class="op">[</span><span class="fl">1</span>,<span class="op">]</span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'values' not found</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> tf.Tensor(</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [-0.8671562  -0.9508597   1.1489202   3.4553308  -0.41003504 -0.22222537</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  -2.6770337   0.49892128 -0.54944575  1.1795927 ], shape=(10,), dtype=float32)</span>
 <span class="r-in"><span class="va">gate</span><span class="op">[</span><span class="fl">1</span>,<span class="op">]</span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'gate' not found</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> tf.Tensor(</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [0.63353664 0.7081961  0.57584417 0.9032471  0.6849558  0.27881786</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  0.7634624  0.3321907  0.86351335 0.8222335 ], shape=(10,), dtype=float32)</span>
 <span class="r-in"></span>
 <span class="r-in"></span>
 </code></pre></div>

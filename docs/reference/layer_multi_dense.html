@@ -93,20 +93,8 @@ The return value depends on <code>object</code>. If <code>object</code> is:</p><
 <span class="r-in"><span class="va">dummy_input</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/array.html" class="external-link">array</a></span><span class="op">(</span><span class="fl">1</span>, dim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">28</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="va">out</span> <span class="op">&lt;-</span> <span class="fu">md_model</span><span class="op">(</span><span class="va">dummy_input</span><span class="op">)</span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in py_call_impl(callable, dots$args, dots$keywords):</span> RuntimeError: Exception encountered when calling layer "multi_dense_1" (type MultiDense).</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> Evaluation error: tensorflow.python.framework.errors_impl.InternalError: Exception encountered when calling layer "dense" (type Dense).</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> Attempting to perform BLAS operation using StreamExecutor without BLAS support [Op:MatMul]</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> Call arguments received:</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span>   • inputs=tf.Tensor(shape=(1, 28, 1), dtype=float32)</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> .</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> Call arguments received:</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span>   • inputs=tf.Tensor(shape=(1, 28, 3), dtype=float32)</span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">out</span><span class="op">)</span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'out' not found</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1]  1 28  3  5</span>
 <span class="r-in"></span>
 </code></pre></div>
     </div>
