@@ -4,11 +4,54 @@
 \alias{layer_vsn}
 \title{Variable Selection Network block}
 \usage{
-layer_vsn(object, hidden_dim, state_size, dropout_rate = NULL, ...)
+layer_vsn(
+  object,
+  hidden_units,
+  state_size,
+  dropout_rate = NULL,
+  use_context = FALSE,
+  return_weights = FALSE,
+  ...
+)
 }
 \arguments{
-\item{dropout_rate}{Droput rate}
+\item{state_size}{Dimensionality of the feature space, common across the model.
+The name comes from \href{https://arxiv.org/pdf/1912.09363.pdf}{the original paper}
+where they also refer to as \deqn{d_model}}
+
+\item{return_weights}{Return weights of the selection.}
+}
+\value{
+A tensor of shapes:
+\itemize{
+\item dynamic data - (batch_size, timesteps, state_size)
+\item static data - (batch_size, state_size)
+}
 }
 \description{
-Variable Selection Network block
+It receives four-dimensional vector as an input in the case of dynamic data
+(batch_size, timesteps, n_features, feature_dim)
+}
+\examples{
+
+# =========================================================================
+#               THREE-DIMENSIONAL INPUT (STATIC FEATURES)
+# =========================================================================
+
+# input: (batch_size, n_features, state_size)
+
+inp <- layer_input(c(10, 5))
+out <- layer_vsn(hidden_units = 10, state_size = 5)(inp)
+dim(out)
+
+# =========================================================================
+#               FOUR-DIMENSIONAL INPUT (DYNAMIC FEATURES)
+# =========================================================================
+
+# input: (batch_size, timesteps, n_features, state_size)
+
+inp <- layer_input(c(28, 10, 5))
+out <- layer_vsn(hidden_units = 10, state_size = 5)(inp)
+dim(out)
+
 }

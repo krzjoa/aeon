@@ -15,3 +15,6 @@ reference:
   - layer_multi_embedding
   - layer_tcn
   - layer_vsn
+  - layer_scaled_dot_attention
+  - layer_interpretable_mh_attention
+  - layer_temporal_fusion_decoder

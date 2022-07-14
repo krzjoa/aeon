@@ -6,8 +6,8 @@
 \usage{
 layer_grn(
   object,
-  units,
-  output_size = units,
+  hidden_units,
+  output_size = hidden_units,
   dropout_rate = NULL,
   use_context = FALSE,
   return_gate = FALSE,
@@ -24,9 +24,9 @@ The return value depends on \code{object}. If \code{object} is:
 \item a Tensor, the output tensor from \code{layer_instance(object)} is returned.
 }}
 
-\item{units}{Positive integer, dimensionality of the output space.}
+\item{hidden_units}{Size of the hidden layer.}
 
-\item{output_size}{Output size.}
+\item{output_size}{Dimensionality of the output feature space.}
 
 \item{use_context}{Use additional (static) context. If TRUE, an additional layer
 is created to handle context input.}
@@ -70,7 +70,7 @@ output[1,]
 inp  <- layer_input(c(28, 5))
 ctx  <- layer_input(10)
 out  <- layer_grn(
-            units = 10,
+            hidden_units = 10,
             return_gate = TRUE,
             use_context = TRUE
          )(inp, context = ctx)
@@ -86,7 +86,7 @@ c(values, gate) \%<-\% model(list(arr_1, arr_2))
 dim(values)
 dim(gate)
 
-values[1,]
-gate[1,]
+values[1, all_dims()]
+gate[1, all_dims()]
 
 }

@@ -5,9 +5,9 @@ test_that("Test GRN with return_gate = TRUE and context", {
   inp  <- layer_input(c(28, 5))
   ctx  <- layer_input(10)
   out  <- layer_grn(
-              units = 10,
-              return_gate = TRUE,
-              use_context = TRUE
+              hidden_units = 10,
+              return_gate  = TRUE,
+              use_context  = TRUE
            )(inp, context = ctx)
 
   model <- keras_model(list(inp, ctx), out)
@@ -27,3 +27,4 @@ test_that("Test GRN with return_gate = TRUE and context", {
   expect_true(all(as.array(gate) >= 0))
 
 })
+

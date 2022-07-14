@@ -2,9 +2,12 @@
 
 export(layer_glu)
 export(layer_grn)
+export(layer_interpretable_mh_attention)
 export(layer_lmu)
 export(layer_multi_dense)
 export(layer_multi_embedding)
+export(layer_scaled_dot_attention)
 export(layer_tcn)
+export(layer_temporal_fusion_decoder)
 export(layer_vsn)
 export(ts_generator)

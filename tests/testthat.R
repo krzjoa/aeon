@@ -1,4 +1,5 @@
 library(testthat)
-library(keras.tft)
+library(aion)
+library(keras)
 
-test_check("keras.tft")
+test_check("aion")
