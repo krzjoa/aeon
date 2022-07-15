@@ -11,7 +11,7 @@ layer_interpretable_mh_attention <- keras::new_layer_class(
 
   classname = "InterpretableMHAttention",
 
-  initialize = function(state_size, num_heads, dropout_rate, name = NULL, ...){
+  initialize = function(state_size, num_heads, dropout_rate, ...){
 
     super()$`__init__`(...)
 
@@ -41,7 +41,7 @@ layer_interpretable_mh_attention <- keras::new_layer_class(
     self$w_o <- layer_dense(units = self$state_size, use_bias = FALSE)
   },
 
-  call = function(q, k, v, mask = NULL){
+  call = function(q, k, v, mask = NULL, return_attention_scores=FALSE){
 
     heads <- list()
     attentions <- list()
@@ -74,7 +74,11 @@ layer_interpretable_mh_attention <- keras::new_layer_class(
     outputs <- self$w_o(outputs)
     outputs <- self$dropout_2(outputs)
 
-    list(outputs, attention)
+    if (return_attention_scores)
+      return(list(outputs, attention))
+    else
+      return(outputs)
+
   }
 
 

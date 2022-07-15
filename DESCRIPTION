@@ -25,4 +25,6 @@ Collate:
     'layer-tcn.R'
     'layer-temporal-fusion-decoder.R'
     'layer-vsn.R'
+    'loss-quantile.R'
+    'loss-tweedie.R'
     'ts-generator.R'

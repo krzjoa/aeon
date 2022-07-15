@@ -7,9 +7,12 @@
 #'
 #' Originally, `dropout` hasn't been specified there. It was added inside the layer
 #' in the [Temporal Fusion Transformer](https://github.com/google-research/google-research/blob/4808a726f4b126ea38d49cdd152a6bb5d42efdf0/tft/libs/tft_model.py#L240) implementation by Google.
+#' It's a component of the Multi-Head Attention Layers (as well as its interpretable version, avalilable in the `aion` package).
+#'
+#' > Test
 #'
 #' @param dropout_rate Dropout rate
-#'
+#' @inheritSection keras::layer_multi_head_attention Call arguments
 #'
 #' @export
 layer_scaled_dot_attention <- keras::new_layer_class(
@@ -26,14 +29,14 @@ layer_scaled_dot_attention <- keras::new_layer_class(
     self$softmax <- layer_activation_softmax()
   },
 
-  call = function(q, k, v, mask = NULL){
+  call = function(query, key, value, mask = NULL, return_attention_scores=FALSE){
 
     # mask: Masking if required with shape=(?, T, T)
-    last_dim  <- tail(dim(k), 1)
+    last_dim  <- tail(dim(key), 1)
     temper    <- k_sqrt(k_cast(last_dim, dtype='float32'))
     attention <- layer_lambda(
       f = function(x) k_batch_dot(x[[1]], x[[2]], axes = c(3, 3)) / temper
-    )(list(q, k))
+    )(list(query, key))
 
     if (!is.null(mask)) {
       mask <- layer_lambda(
@@ -47,12 +50,12 @@ layer_scaled_dot_attention <- keras::new_layer_class(
 
     output <- layer_lambda(
       f = function(x) k_batch_dot(x[[1]], x[[2]], axes = NULL)
-    )(list(attention, v))
+    )(list(attention, value))
 
-    list(output, attention)
+    if (return_attention_scores)
+      return(list(output, attention))
+    else
+      return(output)
   }
 
 )
-
-
-# layer_interpretable_mh_attention

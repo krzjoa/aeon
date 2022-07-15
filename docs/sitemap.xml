@@ -48,4 +48,10 @@
   <url>
     <loc>/reference/layer_vsn.html</loc>
   </url>
+  <url>
+    <loc>/reference/loss_quantile.html</loc>
+  </url>
+  <url>
+    <loc>/reference/loss_tweedie.html</loc>
+  </url>
 </urlset>

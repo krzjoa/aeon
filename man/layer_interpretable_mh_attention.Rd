@@ -9,7 +9,6 @@ layer_interpretable_mh_attention(
   state_size,
   num_heads,
   dropout_rate,
-  name = NULL,
   ...
 )
 }

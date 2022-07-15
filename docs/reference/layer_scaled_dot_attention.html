@@ -58,8 +58,28 @@ Defined as:</p>
     <h2>Details</h2>
     <p>$$Attention(Q, K, V) = softmax(\frac{QK^T}{\sqrt{d_k}})V$$</p>
 <p>Originally, <code>dropout</code> hasn't been specified there. It was added inside the layer
-in the <a href="https://github.com/google-research/google-research/blob/4808a726f4b126ea38d49cdd152a6bb5d42efdf0/tft/libs/tft_model.py#L240" class="external-link">Temporal Fusion Transformer</a> implementation by Google.</p>
+in the <a href="https://github.com/google-research/google-research/blob/4808a726f4b126ea38d49cdd152a6bb5d42efdf0/tft/libs/tft_model.py#L240" class="external-link">Temporal Fusion Transformer</a> implementation by Google.
+It's a component of the Multi-Head Attention Layers (as well as its interpretable version, avalilable in the <code>aion</code> package).Test</p>
     </div>
+    <div id="call-arguments">
+    <h2>Call arguments</h2>
+    
+
+
+<ul><li><p>query: Query Tensor of shape <code>[B, T, dim]</code>.</p></li>
+<li><p>value: Value Tensor of shape <code>[B, S, dim]</code>.</p></li>
+<li><p>key: Optional key Tensor of shape <code>[B, S, dim]</code>. If not given, will use value
+for both key and value, which is the most common case.</p></li>
+<li><p>attention_mask: a boolean mask of shape <code>[B, T, S]</code>, that prevents attention
+to certain positions.</p></li>
+<li><p>return_attention_scores: A boolean to indicate whether the output should be
+attention output if TRUE, or (attention_output, attention_scores) if FALSE.
+Defaults to FALSE.</p></li>
+<li><p>training: Python boolean indicating whether the layer should behave in
+training mode (adding dropout) or in inference mode (no dropout). Defaults
+to either using the training mode of the parent layer/model, or FALSE
+(inference) if there is no parent layer.</p></li>
+</ul></div>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

@@ -18,3 +18,7 @@ reference:
   - layer_scaled_dot_attention
   - layer_interpretable_mh_attention
   - layer_temporal_fusion_decoder
+- title: Losses
+  contents:
+  - loss_quantile
+  - loss_tweedie
