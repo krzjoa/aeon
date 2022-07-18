@@ -49,9 +49,18 @@
     <loc>/reference/layer_vsn.html</loc>
   </url>
   <url>
+    <loc>/reference/loss_negative_log_likelihood.html</loc>
+  </url>
+  <url>
     <loc>/reference/loss_quantile.html</loc>
   </url>
   <url>
     <loc>/reference/loss_tweedie.html</loc>
+  </url>
+  <url>
+    <loc>/reference/model_tft.html</loc>
+  </url>
+  <url>
+    <loc>/reference/ts_generator.html</loc>
   </url>
 </urlset>

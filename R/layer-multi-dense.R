@@ -1,4 +1,4 @@
-#' Multiple mdeddings in one layer
+#' Multiple dense layers in one layer
 #'
 #' @inheritParams keras::layer_dense
 #'
@@ -57,7 +57,7 @@ layer_multi_dense <- keras::new_layer_class(
       self$len  <- length(.units)
     }
 
-    if (self$new_dim & (var(.units) != 0))
+    if (self$new_dim & (var(self$units) != 0))
       stop("You canot add a new dimension since output spaces differ!")
 
     for (i in seq(self$len)) {

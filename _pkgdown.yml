@@ -22,3 +22,11 @@ reference:
   contents:
   - loss_quantile
   - loss_tweedie
+  - loss_negative_log_likelihood
+- title: Models
+  contents:
+  - model_tft
+- title: Data utils
+  contents:
+  - ts_array
+  - ts_generator

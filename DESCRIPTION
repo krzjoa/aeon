@@ -1,6 +1,6 @@
 Package: aion
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Time Series with keras
 Version: 0.1.0
 Author: Who wrote it
 Maintainer: The package maintainer <yourself@somewhere.net>
@@ -25,6 +25,9 @@ Collate:
     'layer-tcn.R'
     'layer-temporal-fusion-decoder.R'
     'layer-vsn.R'
+    'loss-negative-log-likelihood.R'
     'loss-quantile.R'
     'loss-tweedie.R'
+    'model-tft.R'
+    'ts-array.R'
     'ts-generator.R'

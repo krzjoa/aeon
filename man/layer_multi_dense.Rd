@@ -2,7 +2,7 @@
 % Please edit documentation in R/layer-multi-dense.R
 \name{layer_multi_dense}
 \alias{layer_multi_dense}
-\title{Multiple mdeddings in one layer}
+\title{Multiple dense layers in one layer}
 \usage{
 layer_multi_dense(object, units, new_dim = FALSE, ...)
 }
@@ -19,7 +19,7 @@ The return value depends on \code{object}. If \code{object} is:
 \item{units}{Positive integer, dimensionality of the output space.}
 }
 \description{
-Multiple mdeddings in one layer
+Multiple dense layers in one layer
 }
 \examples{
 
