@@ -19,6 +19,8 @@
 #'
 #' @include layer-glu.R
 #'
+#' @inheritSection keras::layer_dense Input and Output Shapes
+#'
 #' @examples
 #' library(keras)
 #'

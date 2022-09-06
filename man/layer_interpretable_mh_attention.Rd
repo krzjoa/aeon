@@ -8,17 +8,35 @@ layer_interpretable_mh_attention(
   object,
   state_size,
   num_heads,
-  dropout_rate,
+  dropout_rate = 0,
   ...
 )
 }
 \arguments{
 \item{num_heads}{Number of attention heads.}
 
-\item{dropout_rate}{Dropout rate
-
-\href{https://github.com/google-research/google-research/blob/4808a726f4b126ea38d49cdd152a6bb5d42efdf0/tft/libs/tft_model.py#L278}{TFT}}
+\item{dropout_rate}{Dropout rate}
 }
 \description{
 Interpretable multi-head attention layer
+}
+\examples{
+
+lookback   <- 28
+horizon    <- 14
+all_steps  <- lookback + horizon
+state_size <- 5
+
+queries <- layer_input(c(horizon, state_size))
+keys    <- layer_input(c(all_steps, state_size))
+values  <- layer_input(c(all_steps, state_size))
+
+imh_attention <-
+   layer_interpretable_mh_attention(
+      state_size = state_size, num_heads = 10
+   )(queries, keys, values)
+
+}
+\references{
+\href{https://github.com/google-research/google-research/blob/4808a726f4b126ea38d49cdd152a6bb5d42efdf0/tft/libs/tft_model.py#L278}{TFT original implementation by Google}
 }

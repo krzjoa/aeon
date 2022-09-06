@@ -20,7 +20,4 @@ y_true <- array(runif(20), c(2, 10, 1))
 loss_negative_log_likelihood(reduction = 'auto')(y_true, y_pred)
 loss_negative_log_likelihood(reduction = 'sum')(y_true, y_pred)
 
-# As a function
-loss_negative_log_likelihood(y_true, y_pred)
-
 }

@@ -12,6 +12,11 @@ loss_tweedie(...)
 \description{
 Tweedie Loss (negative log likelihood)
 }
+\note{
+For the moment, you can only use \code{loss_quantile} to instantiate a class
+and not call directly like other loss in \code{keras}. Please see:
+\href{https://github.com/rstudio/keras/issues/1342}{#1342 issue}
+}
 \examples{
 y_pred <- array(runif(60), c(2, 10, 1))
 y_true <- array(runif(20), c(2, 10, 1))
@@ -19,9 +24,6 @@ y_true <- array(runif(20), c(2, 10, 1))
 # As a callable object
 loss_tweedie(p = 1.5, reduction = 'auto')(y_true, y_pred)
 loss_tweedie(p = 1.5, reduction = 'sum')(y_true, y_pred)
-
-# As a function
-loss_tweedie(y_true, y_pred)
 
 }
 \references{

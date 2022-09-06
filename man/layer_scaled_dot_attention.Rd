@@ -18,7 +18,7 @@ Defined as:
 
 Originally, \code{dropout} hasn't been specified there. It was added inside the layer
 in the \href{https://github.com/google-research/google-research/blob/4808a726f4b126ea38d49cdd152a6bb5d42efdf0/tft/libs/tft_model.py#L240}{Temporal Fusion Transformer} implementation by Google.
-It's a component of the Multi-Head Attention Layers (as well as its interpretable version, avalilable in the \code{aion} package).Test
+It's a component of the Multi-Head Attention Layers (as well as its interpretable version, available in the \code{aion} package).
 }
 \section{Call arguments}{
 
@@ -41,3 +41,20 @@ to either using the training mode of the parent layer/model, or FALSE
 
 }
 
+\examples{
+
+lookback   <- 28
+horizon    <- 14
+all_steps  <- lookback + horizon
+state_size <- 5
+
+queries <- layer_input(c(horizon, state_size))
+keys    <- layer_input(c(all_steps, state_size))
+values  <- layer_input(c(all_steps, state_size))
+
+sdp_attention <- layer_scaled_dot_attention()(queries, keys, values)
+
+}
+\references{
+\href{https://arxiv.org/pdf/1706.03762v5.pdf}{Attention Is All You Need}.
+}

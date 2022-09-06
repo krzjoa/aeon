@@ -21,6 +21,25 @@ The return value depends on \code{object}. If \code{object} is:
 \description{
 Multiple dense layers in one layer
 }
+\section{Input and Output Shapes}{
+
+
+Input shape: nD tensor with shape: \verb{(batch_size, ..., input_dim)}. The most
+common situation would be a 2D input with shape \verb{(batch_size, input_dim)}.
+
+Output shape:
+\itemize{
+\item If length of \code{units} equals 1
+nD tensor with shape: \verb{(batch_size, ..., units)}. For
+instance, for a 2D input with shape \verb{(batch_size, input_dim)}, the output
+would have shape \verb{(batch_size, unit)}.
+\item If length of \code{units} is greater than 1
+nD tensor with shape: \verb{(batch_size, ..., units)}. For
+instance, for a 2D input with shape \verb{(batch_size, input_dim)}, the output
+would have shape \verb{(batch_size, unit)}.
+}
+}
+
 \examples{
 
 # ==========================================================================

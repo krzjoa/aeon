@@ -10,16 +10,18 @@
 #' @inheritParams keras::layer_dense
 #' @param return_gate Logical - return gate values. Default: FALSE
 #'
+#' @inheritSection keras::layer_dense Input and Output Shapes
+#'
 #' @returns
-#' Tensor of shape [batch_size, ..., units]. Optionally, it can also return a weights tensor
+#' Tensor of shape (batch_size, ..., units). Optionally, it can also return a weights tensor
 #' with identical shape.
 #'
 #' @references
 #' 1. Dauphin, Yann N., et al. (2017). [Language modeling with gated convolutional networks.](https://arxiv.org/abs/1612.08083).
 #' International conference on machine learning. PMLR
 #' 2. Lim, Bryan et al. (2019). [Temporal Fusion Transformers for Interpretable Multi-horizon Time Series Forecasting](https://arxiv.org/abs/1612.08083). arXiv
-#' 3. [Implementation PyTorch](https://github.com/jdb78/pytorch-forecasting/blob/268121aa9aa732558beefb6d9f95feff955ad08b/pytorch_forecasting/models/temporal_fusion_transformer/sub_modules.py#L71)
-#' 4. [Implementation PyTorch](https://github.com/PlaytikaResearch/tft-torch/blob/9eee6db42b8ec6b6a586e8852e3af6e2d6b18035/tft_torch/tft.py#L11)
+#' 3. [Implementation PyTorch by Jan Beitner](https://github.com/jdb78/pytorch-forecasting/blob/268121aa9aa732558beefb6d9f95feff955ad08b/pytorch_forecasting/models/temporal_fusion_transformer/sub_modules.py#L71)
+#' 4. [Implementation PyTorch by Playtika Research](https://github.com/PlaytikaResearch/tft-torch/blob/9eee6db42b8ec6b6a586e8852e3af6e2d6b18035/tft_torch/tft.py#L11)
 #'
 #' @examples
 #' library(keras)
@@ -71,9 +73,9 @@ layer_glu <- keras::new_layer_class(
 
     super()$`__init__`(...)
 
-    self$units         <- as.integer(units)
-    self$activation    <- activation
-    self$return_gate   <- return_gate
+    self$units       <- as.integer(units)
+    self$activation  <- activation
+    self$return_gate <- return_gate
 
   },
 

@@ -7,6 +7,9 @@
     <loc>/LICENSE-text.html</loc>
   </url>
   <url>
+    <loc>/LICENSE.html</loc>
+  </url>
+  <url>
     <loc>/authors.html</loc>
   </url>
   <url>
@@ -14,6 +17,9 @@
   </url>
   <url>
     <loc>/reference/VSN.html</loc>
+  </url>
+  <url>
+    <loc>/reference/as_3d_array.html</loc>
   </url>
   <url>
     <loc>/reference/index.html</loc>
@@ -56,6 +62,9 @@
   </url>
   <url>
     <loc>/reference/loss_tweedie.html</loc>
+  </url>
+  <url>
+    <loc>/reference/metric_q_risk.html</loc>
   </url>
   <url>
     <loc>/reference/model_tft.html</loc>

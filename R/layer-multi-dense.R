@@ -2,6 +2,24 @@
 #'
 #' @inheritParams keras::layer_dense
 #'
+#' @section Input and Output Shapes:
+#'
+#' Input shape: nD tensor with shape: `(batch_size, ..., input_dim)`. The most
+#' common situation would be a 2D input with shape `(batch_size, input_dim)`.
+#'
+#' Output shape:
+#'
+#' * If length of `units` equals 1
+#'   nD tensor with shape: `(batch_size, ..., units)`. For
+#'   instance, for a 2D input with shape `(batch_size, input_dim)`, the output
+#'   would have shape `(batch_size, unit)`.
+#' *  If length of `units` is greater than 1
+#'   nD tensor with shape: `(batch_size, ..., units)`. For
+#'   instance, for a 2D input with shape `(batch_size, input_dim)`, the output
+#'   would have shape `(batch_size, unit)`.
+#'
+#'
+#'
 #' @examples
 #'
 #' # ==========================================================================
@@ -52,12 +70,12 @@ layer_multi_dense <- keras::new_layer_class(
     last_dim <- as.integer(tail(input_shape, 1))
 
     if (last_dim > 0 & (last_dim != self$len)) {
-      .units <<- as.integer(rep(self$units[[1]], last_dim))
+      .units     <- as.integer(rep(self$units[[1]], last_dim))
       self$units <- .units
-      self$len  <- length(.units)
+      self$len   <- length(.units)
     }
 
-    if (self$new_dim & (var(self$units) != 0))
+    if (self$new_dim & (var(.units) != 0))
       stop("You canot add a new dimension since output spaces differ!")
 
     for (i in seq(self$len)) {

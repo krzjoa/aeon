@@ -46,6 +46,19 @@ Its output is computed as:
 
 \figure{img/grn.png}
 }
+\section{Input and Output Shapes}{
+
+
+
+Input shape: nD tensor with shape: \verb{(batch_size, ..., input_dim)}. The most
+common situation would be a 2D input with shape \verb{(batch_size, input_dim)}.
+
+Output shape: nD tensor with shape: \verb{(batch_size, ..., units)}. For
+instance, for a 2D input with shape \verb{(batch_size, input_dim)}, the output
+would have shape \verb{(batch_size, unit)}.
+
+}
+
 \examples{
 library(keras)
 

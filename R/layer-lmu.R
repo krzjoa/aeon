@@ -24,7 +24,7 @@ keras.lmu <- reticulate::import("keras_lmu")
 #' step. If this value is smaller than the size of the input sequence, only that
 #' number of steps will be represented at the time of prediction, however the
 #' entire sequence will still be processed in order for information to be
-#' projected to and from the hidden layer. If ``trainable_theta`` is enabled, then
+#' projected to and from the hidden layer. If `trainable_theta` is enabled, then
 #' theta will be updated during the course of training.
 #' @param hidden_cell Keras Layer/RNNCell implementing the hidden component.
 #' @param trainable_theta If TRUE, theta is learnt over the course of training. Otherwise, it is kept

@@ -2,7 +2,6 @@
 #'
 #' @param distribution A probability distribution function from `tfprobability` package.
 #'
-#'
 #' @examples
 #' y_pred <- array(runif(60), c(2, 10, 2))
 #' y_true <- array(runif(20), c(2, 10, 1))
@@ -10,9 +9,6 @@
 #' # As a callable object
 #' loss_negative_log_likelihood(reduction = 'auto')(y_true, y_pred)
 #' loss_negative_log_likelihood(reduction = 'sum')(y_true, y_pred)
-#'
-#' # As a function
-#' loss_negative_log_likelihood(y_true, y_pred)
 #'
 #' @export
 loss_negative_log_likelihood <- keras::new_loss_class(
@@ -40,3 +36,4 @@ loss_negative_log_likelihood <- keras::new_loss_class(
 )
 
 # colour cdad75 c7bd65
+# 0054AD

@@ -24,7 +24,7 @@ anything, no activation is applied (ie. "linear" activation: a(x) = x).}
 \item{return_gate}{Logical - return gate values. Default: FALSE}
 }
 \value{
-Tensor of shape \link{batch_size, ..., units}. Optionally, it can also return a weights tensor
+Tensor of shape (batch_size, ..., units). Optionally, it can also return a weights tensor
 with identical shape.
 }
 \description{
@@ -36,6 +36,19 @@ gating mechanism used in LSTM layers. In the context of time series processing e
 Computed according to the equation:
 \deqn{GLU(\gamma) = \sigma(W\gamma + b) \odot (V\gamma + c)}
 }
+\section{Input and Output Shapes}{
+
+
+
+Input shape: nD tensor with shape: \verb{(batch_size, ..., input_dim)}. The most
+common situation would be a 2D input with shape \verb{(batch_size, input_dim)}.
+
+Output shape: nD tensor with shape: \verb{(batch_size, ..., units)}. For
+instance, for a 2D input with shape \verb{(batch_size, input_dim)}, the output
+would have shape \verb{(batch_size, unit)}.
+
+}
+
 \examples{
 library(keras)
 
@@ -78,7 +91,7 @@ gate[1,]
 \item Dauphin, Yann N., et al. (2017). \href{https://arxiv.org/abs/1612.08083}{Language modeling with gated convolutional networks.}.
 International conference on machine learning. PMLR
 \item Lim, Bryan et al. (2019). \href{https://arxiv.org/abs/1612.08083}{Temporal Fusion Transformers for Interpretable Multi-horizon Time Series Forecasting}. arXiv
-\item \href{https://github.com/jdb78/pytorch-forecasting/blob/268121aa9aa732558beefb6d9f95feff955ad08b/pytorch_forecasting/models/temporal_fusion_transformer/sub_modules.py#L71}{Implementation PyTorch}
-\item \href{https://github.com/PlaytikaResearch/tft-torch/blob/9eee6db42b8ec6b6a586e8852e3af6e2d6b18035/tft_torch/tft.py#L11}{Implementation PyTorch}
+\item \href{https://github.com/jdb78/pytorch-forecasting/blob/268121aa9aa732558beefb6d9f95feff955ad08b/pytorch_forecasting/models/temporal_fusion_transformer/sub_modules.py#L71}{Implementation PyTorch by Jan Beitner}
+\item \href{https://github.com/PlaytikaResearch/tft-torch/blob/9eee6db42b8ec6b6a586e8852e3af6e2d6b18035/tft_torch/tft.py#L11}{Implementation PyTorch by Playtika Research}
 }
 }
