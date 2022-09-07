@@ -10,7 +10,7 @@ gating mechanism used in LSTM layers. In the context of time series processing e
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
     
 
-    <nav class="navbar fixed-top navbar-dark navbar-expand-lg bg-secondary"><div class="container">
+    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light"><div class="container">
     
     <a class="navbar-brand me-2" href="../index.html">aion</a>
 
@@ -24,6 +24,12 @@ gating mechanism used in LSTM layers. In the context of time series processing e
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto"><li class="active nav-item">
   <a class="nav-link" href="../reference/index.html">Reference</a>
+</li>
+<li class="nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <a class="dropdown-item" href="../articles/m5_forecasting.html">M5 Forecasting challenges</a>
+  </div>
 </li>
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
@@ -105,8 +111,8 @@ would have shape <code>(batch_size, unit)</code>.</p>
 <ol><li><p>Dauphin, Yann N., et al. (2017). <a href="https://arxiv.org/abs/1612.08083" class="external-link">Language modeling with gated convolutional networks.</a>.
 International conference on machine learning. PMLR</p></li>
 <li><p>Lim, Bryan et al. (2019). <a href="https://arxiv.org/abs/1612.08083" class="external-link">Temporal Fusion Transformers for Interpretable Multi-horizon Time Series Forecasting</a>. arXiv</p></li>
-<li><p><a href="https://github.com/jdb78/pytorch-forecasting/blob/268121aa9aa732558beefb6d9f95feff955ad08b/pytorch_forecasting/models/temporal_fusion_transformer/sub_modules.py#L71" class="external-link">Implementation PyTorch</a></p></li>
-<li><p><a href="https://github.com/PlaytikaResearch/tft-torch/blob/9eee6db42b8ec6b6a586e8852e3af6e2d6b18035/tft_torch/tft.py#L11" class="external-link">Implementation PyTorch</a></p></li>
+<li><p><a href="https://github.com/jdb78/pytorch-forecasting/blob/268121aa9aa732558beefb6d9f95feff955ad08b/pytorch_forecasting/models/temporal_fusion_transformer/sub_modules.py#L71" class="external-link">Implementation PyTorch by Jan Beitner</a></p></li>
+<li><p><a href="https://github.com/PlaytikaResearch/tft-torch/blob/9eee6db42b8ec6b6a586e8852e3af6e2d6b18035/tft_torch/tft.py#L11" class="external-link">Implementation PyTorch by Playtika Research</a></p></li>
 </ol></div>
 
     <div class="section level2">
@@ -139,8 +145,8 @@ International conference on machine learning. PMLR</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 32 10</span>
 <span class="r-in"><span class="va">output</span><span class="op">[</span><span class="fl">1</span>,<span class="op">]</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> tf.Tensor(</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [ 0.6405736   0.23882481 -0.01545329  0.64549947 -0.59216964  0.694118</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   0.792321   -0.6168756  -0.45180202  0.05729672], shape=(10,), dtype=float32)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [ 0.94915634 -0.8341388  -0.5819986  -0.11771909 -0.05401173 -0.5836786</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  -0.1255717   0.15330873  0.5109574   1.2039927 ], shape=(10,), dtype=float32)</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># ================================================================</span></span>
 <span class="r-in"><span class="co">#                     WITH GATE VALUES RETURNED</span></span>
@@ -173,12 +179,12 @@ International conference on machine learning. PMLR</p></li>
 <span class="r-in"></span>
 <span class="r-in"><span class="va">values</span><span class="op">[</span><span class="fl">1</span>,<span class="op">]</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> tf.Tensor(</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [ 1.3827566   1.295771    0.03686381 -0.4063932  -0.4778667  -0.70327306</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  -0.06461819 -0.1759624   0.52172124  0.305224  ], shape=(10,), dtype=float32)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [-0.46539044 -0.48927456 -0.22954868 -0.43084416  0.55501723  0.18934621</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  -0.7245728   0.1265519   0.2939192  -0.32936743], shape=(10,), dtype=float32)</span>
 <span class="r-in"><span class="va">gate</span><span class="op">[</span><span class="fl">1</span>,<span class="op">]</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> tf.Tensor(</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [0.7556578  0.68797565 0.27880853 0.44764426 0.8252933  0.44684076</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  0.1817034  0.8671632  0.74535483 0.589757  ], shape=(10,), dtype=float32)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [0.55341357 0.6830228  0.13582468 0.8568422  0.32849157 0.2516095</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  0.4454018  0.20950854 0.42199287 0.43707   ], shape=(10,), dtype=float32)</span>
 <span class="r-in"></span>
 <span class="r-in"></span>
 </code></pre></div>

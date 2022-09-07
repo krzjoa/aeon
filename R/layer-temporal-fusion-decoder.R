@@ -7,6 +7,8 @@
 #' The LSTM output is enriched with the static context features and additionally
 #' processed ath the end.
 #'
+#' @include layer-interpretable-mh-attention.R layer-grn.R
+#'
 #' @examples
 #'
 #' lookback   <- 28

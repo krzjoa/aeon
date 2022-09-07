@@ -1,0 +1,20 @@
+---
+title: "M5 Forecasting challenges"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{m5_forecasting}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(aion)
+```
+WORK IN PROGRESS

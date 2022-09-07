@@ -8,7 +8,7 @@ Defined as:"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
     
 
-    <nav class="navbar fixed-top navbar-dark navbar-expand-lg bg-secondary"><div class="container">
+    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light"><div class="container">
     
     <a class="navbar-brand me-2" href="../index.html">aion</a>
 
@@ -22,6 +22,12 @@ Defined as:"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto"><li class="active nav-item">
   <a class="nav-link" href="../reference/index.html">Reference</a>
+</li>
+<li class="nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <a class="dropdown-item" href="../articles/m5_forecasting.html">M5 Forecasting challenges</a>
+  </div>
 </li>
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
@@ -59,7 +65,7 @@ Defined as:</p>
     <p>$$Attention(Q, K, V) = softmax(\frac{QK^T}{\sqrt{d_k}})V$$</p>
 <p>Originally, <code>dropout</code> hasn't been specified there. It was added inside the layer
 in the <a href="https://github.com/google-research/google-research/blob/4808a726f4b126ea38d49cdd152a6bb5d42efdf0/tft/libs/tft_model.py#L240" class="external-link">Temporal Fusion Transformer</a> implementation by Google.
-It's a component of the Multi-Head Attention Layers (as well as its interpretable version, avalilable in the <code>aion</code> package).Test</p>
+It's a component of the Multi-Head Attention Layers (as well as its interpretable version, available in the <code>aion</code> package).</p>
     </div>
     <div class="section level2">
     <h2 id="call-arguments">Call arguments<a class="anchor" aria-label="anchor" href="#call-arguments"></a></h2>
@@ -80,7 +86,27 @@ training mode (adding dropout) or in inference mode (no dropout). Defaults
 to either using the training mode of the parent layer/model, or FALSE
 (inference) if there is no parent layer.</p></li>
 </ul></div>
+    <div class="section level2">
+    <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
+    <p><a href="https://arxiv.org/pdf/1706.03762v5.pdf" class="external-link">Attention Is All You Need</a>.</p>
+    </div>
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
+<span class="r-in"><span class="va">lookback</span>   <span class="op">&lt;-</span> <span class="fl">28</span></span>
+<span class="r-in"><span class="va">horizon</span>    <span class="op">&lt;-</span> <span class="fl">14</span></span>
+<span class="r-in"><span class="va">all_steps</span>  <span class="op">&lt;-</span> <span class="va">lookback</span> <span class="op">+</span> <span class="va">horizon</span></span>
+<span class="r-in"><span class="va">state_size</span> <span class="op">&lt;-</span> <span class="fl">5</span></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="va">queries</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/keras/man/layer_input.html" class="external-link">layer_input</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">horizon</span>, <span class="va">state_size</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">keys</span>    <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/keras/man/layer_input.html" class="external-link">layer_input</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">all_steps</span>, <span class="va">state_size</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">values</span>  <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/keras/man/layer_input.html" class="external-link">layer_input</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">all_steps</span>, <span class="va">state_size</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="va">sdp_attention</span> <span class="op">&lt;-</span> <span class="fu">layer_scaled_dot_attention</span><span class="op">(</span><span class="op">)</span><span class="op">(</span><span class="va">queries</span>, <span class="va">keys</span>, <span class="va">values</span><span class="op">)</span></span>
+<span class="r-in"></span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>
 

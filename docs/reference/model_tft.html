@@ -6,7 +6,7 @@
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
     
 
-    <nav class="navbar fixed-top navbar-dark navbar-expand-lg bg-secondary"><div class="container">
+    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light"><div class="container">
     
     <a class="navbar-brand me-2" href="../index.html">aion</a>
 
@@ -20,6 +20,12 @@
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto"><li class="active nav-item">
   <a class="nav-link" href="../reference/index.html">Reference</a>
+</li>
+<li class="nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <a class="dropdown-item" href="../articles/m5_forecasting.html">M5 Forecasting challenges</a>
+  </div>
 </li>
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
@@ -45,8 +51,55 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">model_tft</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></code></pre></div>
     </div>
 
+    <div class="section level2">
+    <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
+    <dl><dt>lookback</dt>
+<dd><p>Number of timesteps from the past</p></dd>
 
-  </main></div>
+
+<dt>horizon</dt>
+<dd><p>Forecast length (number of timesteps)</p></dd>
+
+
+<dt>past_numeric_size</dt>
+<dd><p>Number of numeric features from the past</p></dd>
+
+
+<dt>past_categorical_size</dt>
+<dd><p>Number of categorical features from the past</p></dd>
+
+
+<dt>future_numeric_size</dt>
+<dd><p>Number of numeric features from the future</p></dd>
+
+</dl></div>
+
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">tft</span> <span class="op">&lt;-</span> <span class="fu">model_tft</span><span class="op">(</span></span>
+<span class="r-in">   lookback                <span class="op">=</span> <span class="fl">28</span>,</span>
+<span class="r-in">   horizon                 <span class="op">=</span> <span class="fl">14</span>,</span>
+<span class="r-in">   past_numeric_size       <span class="op">=</span> <span class="fl">5</span>,</span>
+<span class="r-in">   past_categorical_size   <span class="op">=</span> <span class="fl">2</span>,</span>
+<span class="r-in">   future_numeric_size     <span class="op">=</span> <span class="fl">4</span>,</span>
+<span class="r-in">   future_categorical_size <span class="op">=</span> <span class="fl">2</span>,</span>
+<span class="r-in">   vocab_static_size       <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">4</span><span class="op">)</span>,</span>
+<span class="r-in">   vocab_dynamic_size      <span class="op">=</span> <span class="fl">6</span>,</span>
+<span class="r-in">   optimizer               <span class="op">=</span> <span class="st">'adam'</span>,</span>
+<span class="r-in">   hidden_dim              <span class="op">=</span> <span class="fl">12</span>,</span>
+<span class="r-in">   state_size              <span class="op">=</span> <span class="fl">7</span>,</span>
+<span class="r-in">   n_heads                 <span class="op">=</span> <span class="fl">10</span>,</span>
+<span class="r-in">   dropout_rate            <span class="op">=</span> <span class="fl">0.1</span>,</span>
+<span class="r-in">   output_size             <span class="op">=</span> <span class="fl">3</span></span>
+<span class="r-in">   <span class="co">#quantiles               = 0.5</span></span>
+<span class="r-in"><span class="op">)</span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in py_call_impl(x, dots$args, dots$keywords):</span> RuntimeError: Evaluation error: object 'True' not found.</span>
+<span class="r-in"></span>
+<span class="r-in"></span>
+</code></pre></div>
+    </div>
+  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+    </nav></aside></div>
 
 
     <footer><div class="pkgdown-footer-left">

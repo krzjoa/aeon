@@ -6,6 +6,38 @@
 \usage{
 model_tft(...)
 }
+\arguments{
+\item{lookback}{Number of timesteps from the past}
+
+\item{horizon}{Forecast length (number of timesteps)}
+
+\item{past_numeric_size}{Number of numeric features from the past}
+
+\item{past_categorical_size}{Number of categorical features from the past}
+
+\item{future_numeric_size}{Number of numeric features from the future}
+}
 \description{
 Temporal Fusion Transformer model
+}
+\examples{
+tft <- model_tft(
+   lookback                = 28,
+   horizon                 = 14,
+   past_numeric_size       = 5,
+   past_categorical_size   = 2,
+   future_numeric_size     = 4,
+   future_categorical_size = 2,
+   vocab_static_size       = c(3, 4),
+   vocab_dynamic_size      = 6,
+   optimizer               = 'adam',
+   hidden_dim              = 12,
+   state_size              = 7,
+   n_heads                 = 10,
+   dropout_rate            = 0.1,
+   output_size             = 3
+   #quantiles               = 0.5
+)
+
+
 }

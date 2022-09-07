@@ -6,7 +6,7 @@
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
     
 
-    <nav class="navbar fixed-top navbar-dark navbar-expand-lg bg-secondary"><div class="container">
+    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light"><div class="container">
     
     <a class="navbar-brand me-2" href="../index.html">aion</a>
 
@@ -20,6 +20,12 @@
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto"><li class="active nav-item">
   <a class="nav-link" href="../reference/index.html">Reference</a>
+</li>
+<li class="nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <a class="dropdown-item" href="../articles/m5_forecasting.html">M5 Forecasting challenges</a>
+  </div>
 </li>
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
@@ -67,31 +73,6 @@
 <span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in py_call_impl(x, dots$args, dots$keywords):</span> RuntimeError: Evaluation error: .onLoad failed in loadNamespace() for 'tfprobability', details:</span>
 <span class="r-err co"><span class="r-pr">#&gt;</span>   call: py_module_import(module, convert = convert)</span>
 <span class="r-err co"><span class="r-pr">#&gt;</span>   error: ImportError: This version of TensorFlow Probability requires TensorFlow version &gt;= 2.8; Detected an installation of version 2.7.0. Please upgrade TensorFlow to proceed.</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> .</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># As a function</span></span>
-<span class="r-in"><span class="fu">loss_negative_log_likelihood</span><span class="op">(</span><span class="va">y_true</span>, <span class="va">y_pred</span><span class="op">)</span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in py_call_impl(x, dots$args, dots$keywords):</span> RuntimeError: Evaluation error: ValueError: Invalid Reduction Key: [[[0.19596143 0.91207332]</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span>   [0.8123809  0.94221733]</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span>   [0.57985362 0.86553735]</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span>   [0.54100224 0.8828719 ]</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span>   [0.4658218  0.27458506]</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span>   [0.74667875 0.66797631]</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span>   [0.14092676 0.11518092]</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span>   [0.01869465 0.99377872]</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span>   [0.46437217 0.40658313]</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span>   [0.97585001 0.23504256]]</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-err co"><span class="r-pr">#&gt;</span>  [[0.6386689  0.35688432]</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span>   [0.26111247 0.78980665]</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span>   [0.04308608 0.2053778 ]</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span>   [0.88605773 0.92929186]</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span>   [0.63781368 0.74092134]</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span>   [0.51336757 0.75250226]</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span>   [0.12127201 0.97828367]</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span>   [0.10149813 0.60210991]</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span>   [0.81057537 0.39435197]</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span>   [0.22634074 0.04603634]]]. Expected keys are "('auto', 'none', 'sum', 'sum_over_batch_size')"</span>
 <span class="r-err co"><span class="r-pr">#&gt;</span> .</span>
 <span class="r-in"></span>
 </code></pre></div>

@@ -18,8 +18,6 @@
 #'   instance, for a 2D input with shape `(batch_size, input_dim)`, the output
 #'   would have shape `(batch_size, unit)`.
 #'
-#'
-#'
 #' @examples
 #'
 #' # ==========================================================================

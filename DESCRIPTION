@@ -17,16 +17,18 @@ LazyData: true
 RoxygenNote: 7.1.2
 Roxygen: list(markdown = TRUE)
 Suggests: 
+    knitr,
+    rmarkdown,
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
 Collate: 
     'layer-glu.R'
     'layer-grn.R'
+    'layer-scaled-dot-attention.R'
     'layer-interpretable-mh-attention.R'
     'layer-lmu.R'
     'layer-multi-dense.R'
     'layer-multi-embedding.R'
-    'layer-scaled-dot-attention.R'
     'layer-tcn.R'
     'layer-temporal-fusion-decoder.R'
     'layer-vsn.R'
@@ -40,3 +42,4 @@ Collate:
 Imports: 
     reticulate,
     keras
+VignetteBuilder: knitr

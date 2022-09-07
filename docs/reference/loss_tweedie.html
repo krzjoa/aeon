@@ -6,7 +6,7 @@
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
     
 
-    <nav class="navbar fixed-top navbar-dark navbar-expand-lg bg-secondary"><div class="container">
+    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light"><div class="container">
     
     <a class="navbar-brand me-2" href="../index.html">aion</a>
 
@@ -20,6 +20,12 @@
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto"><li class="active nav-item">
   <a class="nav-link" href="../reference/index.html">Reference</a>
+</li>
+<li class="nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <a class="dropdown-item" href="../articles/m5_forecasting.html">M5 Forecasting challenges</a>
+  </div>
 </li>
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
@@ -52,6 +58,12 @@
 
 </dl></div>
     <div class="section level2">
+    <h2 id="note">Note<a class="anchor" aria-label="anchor" href="#note"></a></h2>
+    <p>For the moment, you can only use <code>loss_quantile</code> to instantiate a class
+and not call directly like other loss in <code>keras</code>. Please see:
+<a href="https://github.com/rstudio/keras/issues/1342" class="external-link">#1342 issue</a></p>
+    </div>
+    <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
     
 <ul><li><p><a href="https://towardsdatascience.com/tweedie-loss-function-for-right-skewed-data-2c5ca470678f" class="external-link">Tweedie Loss Function</a></p></li>
@@ -65,34 +77,9 @@
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># As a callable object</span></span>
 <span class="r-in"><span class="fu">loss_tweedie</span><span class="op">(</span>p <span class="op">=</span> <span class="fl">1.5</span>, reduction <span class="op">=</span> <span class="st">'auto'</span><span class="op">)</span><span class="op">(</span><span class="va">y_true</span>, <span class="va">y_pred</span><span class="op">)</span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in py_call_impl(callable, dots$args, dots$keywords):</span> RuntimeError: Evaluation error: non-numeric argument to binary operator.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> tf.Tensor(3.395822048187256, shape=(), dtype=float64)</span>
 <span class="r-in"><span class="fu">loss_tweedie</span><span class="op">(</span>p <span class="op">=</span> <span class="fl">1.5</span>, reduction <span class="op">=</span> <span class="st">'sum'</span><span class="op">)</span><span class="op">(</span><span class="va">y_true</span>, <span class="va">y_pred</span><span class="op">)</span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in py_call_impl(callable, dots$args, dots$keywords):</span> RuntimeError: Evaluation error: non-numeric argument to binary operator.</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># As a function</span></span>
-<span class="r-in"><span class="fu">loss_tweedie</span><span class="op">(</span><span class="va">y_true</span>, <span class="va">y_pred</span><span class="op">)</span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in py_call_impl(x, dots$args, dots$keywords):</span> RuntimeError: Evaluation error: ValueError: Invalid Reduction Key: [[[0.01129804]</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span>   [0.77258374]</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span>   [0.65311591]</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span>   [0.17440893]</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span>   [0.24138744]</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span>   [0.21409184]</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span>   [0.62260538]</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span>   [0.7515409 ]</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span>   [0.86874977]</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span>   [0.4662527 ]]</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-err co"><span class="r-pr">#&gt;</span>  [[0.96890501]</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span>   [0.55519932]</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span>   [0.81750201]</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span>   [0.17366894]</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span>   [0.79898212]</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span>   [0.8512063 ]</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span>   [0.90272644]</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span>   [0.77240387]</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span>   [0.78161054]</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span>   [0.9279758 ]]]. Expected keys are "('auto', 'none', 'sum', 'sum_over_batch_size')"</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> .</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> tf.Tensor(67.91644287109375, shape=(), dtype=float64)</span>
 <span class="r-in"></span>
 </code></pre></div>
     </div>
