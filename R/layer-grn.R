@@ -63,7 +63,6 @@
 #'
 #' values[1, all_dims()]
 #' gate[1, all_dims()]
-#'
 #' @export
 layer_grn <- keras::new_layer_class(
 

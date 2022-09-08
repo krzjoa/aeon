@@ -57,8 +57,6 @@
 #'
 #' values[1,]
 #' gate[1,]
-#'
-#'
 #' @export
 layer_glu <- keras::new_layer_class(
 

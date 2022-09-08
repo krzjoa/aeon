@@ -39,7 +39,6 @@
 #'
 #' out <- emb_model(dummy_input)
 #' dim(out)
-#'
 #' @export
 layer_multi_embedding <- keras::new_layer_class(
 

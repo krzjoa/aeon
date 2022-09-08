@@ -101,5 +101,4 @@ dim(gate)
 
 values[1, all_dims()]
 gate[1, all_dims()]
-
 }

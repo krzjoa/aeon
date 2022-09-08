@@ -69,5 +69,4 @@ dummy_input <- array(1, dim = c(1, 28, 3))
 
 out <- md_model(dummy_input)
 dim(out)
-
 }

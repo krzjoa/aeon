@@ -27,7 +27,6 @@
 #' values  <- layer_input(c(all_steps, state_size))
 #'
 #' sdp_attention <- layer_scaled_dot_attention()(queries, keys, values)
-#'
 #' @export
 layer_scaled_dot_attention <- keras::new_layer_class(
 

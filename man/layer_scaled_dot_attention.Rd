@@ -53,7 +53,6 @@ keys    <- layer_input(c(all_steps, state_size))
 values  <- layer_input(c(all_steps, state_size))
 
 sdp_attention <- layer_scaled_dot_attention()(queries, keys, values)
-
 }
 \references{
 \href{https://arxiv.org/pdf/1706.03762v5.pdf}{Attention Is All You Need}.

@@ -47,7 +47,6 @@
 #'
 #' out <- md_model(dummy_input)
 #' dim(out)
-#'
 #' @export
 layer_multi_dense <- keras::new_layer_class(
 

@@ -22,6 +22,7 @@ Suggests:
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
 Collate: 
+    'as-3d-array.R'
     'layer-glu.R'
     'layer-grn.R'
     'layer-scaled-dot-attention.R'
@@ -37,7 +38,6 @@ Collate:
     'loss-tweedie.R'
     'metric-q-risk.R'
     'model-tft.R'
-    'ts-array.R'
     'ts-generator.R'
 Imports: 
     reticulate,

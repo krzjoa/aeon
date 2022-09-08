@@ -35,7 +35,6 @@
 #'       use_context = TRUE,
 #'       num_heads = 10
 #'    )(lstm_output, context, return_attention_scores=TRUE)
-#'
 #' @export
 layer_temporal_fusion_decoder <- keras::new_layer_class(
 

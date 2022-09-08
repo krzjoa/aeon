@@ -57,5 +57,4 @@ dummy_input[,,3] <- sample(8,size = 28, replace = TRUE)
 
 out <- emb_model(dummy_input)
 dim(out)
-
 }

@@ -53,5 +53,4 @@ dim(out)
 inp <- layer_input(c(28, 10, 5))
 out <- layer_vsn(hidden_units = 10, state_size = 5)(inp)
 dim(out)
-
 }

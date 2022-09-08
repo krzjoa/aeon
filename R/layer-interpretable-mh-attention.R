@@ -24,7 +24,6 @@
 #'    layer_interpretable_mh_attention(
 #'       state_size = state_size, num_heads = 10
 #'    )(queries, keys, values)
-#'
 #' @export
 layer_interpretable_mh_attention <- keras::new_layer_class(
 

@@ -83,8 +83,6 @@ dim(gate)
 
 values[1,]
 gate[1,]
-
-
 }
 \references{
 \enumerate{

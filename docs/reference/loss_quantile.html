@@ -27,6 +27,7 @@ quantiles at once."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/aj
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
     <a class="dropdown-item" href="../articles/m5_forecasting.html">M5 Forecasting challenges</a>
+    <a class="dropdown-item" href="../articles/preparing_input.html">Preparing input</a>
   </div>
 </li>
       </ul><form class="form-inline my-2 my-lg-0" role="search">
@@ -94,9 +95,9 @@ and not call directly like other loss in <code>keras</code>. Please see:
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># As a callable object</span></span>
 <span class="r-in"><span class="fu">loss_quantile</span><span class="op">(</span>quantiles <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.1</span>, <span class="fl">0.5</span>, <span class="fl">0.9</span><span class="op">)</span>, reduction <span class="op">=</span> <span class="st">'auto'</span><span class="op">)</span><span class="op">(</span><span class="va">y_true</span>, <span class="va">y_pred</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> tf.Tensor(0.1699584, shape=(), dtype=float32)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> tf.Tensor(0.13060658, shape=(), dtype=float32)</span>
 <span class="r-in"><span class="fu">loss_quantile</span><span class="op">(</span>quantiles <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.1</span>, <span class="fl">0.5</span>, <span class="fl">0.9</span><span class="op">)</span>, reduction <span class="op">=</span> <span class="st">'sum'</span><span class="op">)</span><span class="op">(</span><span class="va">y_true</span>, <span class="va">y_pred</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> tf.Tensor(10.197504, shape=(), dtype=float32)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> tf.Tensor(7.836395, shape=(), dtype=float32)</span>
 <span class="r-in"></span>
 </code></pre></div>
     </div>

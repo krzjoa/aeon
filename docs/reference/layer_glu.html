@@ -29,6 +29,7 @@ gating mechanism used in LSTM layers. In the context of time series processing e
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
     <a class="dropdown-item" href="../articles/m5_forecasting.html">M5 Forecasting challenges</a>
+    <a class="dropdown-item" href="../articles/preparing_input.html">Preparing input</a>
   </div>
 </li>
       </ul><form class="form-inline my-2 my-lg-0" role="search">
@@ -145,8 +146,8 @@ International conference on machine learning. PMLR</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 32 10</span>
 <span class="r-in"><span class="va">output</span><span class="op">[</span><span class="fl">1</span>,<span class="op">]</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> tf.Tensor(</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [ 0.94915634 -0.8341388  -0.5819986  -0.11771909 -0.05401173 -0.5836786</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  -0.1255717   0.15330873  0.5109574   1.2039927 ], shape=(10,), dtype=float32)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [-0.32823068  0.57166135 -1.3759998  -0.07255321 -0.03024853  0.26517752</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  -0.48975673  0.0527108  -0.64082354 -0.05811425], shape=(10,), dtype=float32)</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># ================================================================</span></span>
 <span class="r-in"><span class="co">#                     WITH GATE VALUES RETURNED</span></span>
@@ -179,14 +180,12 @@ International conference on machine learning. PMLR</p></li>
 <span class="r-in"></span>
 <span class="r-in"><span class="va">values</span><span class="op">[</span><span class="fl">1</span>,<span class="op">]</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> tf.Tensor(</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [-0.46539044 -0.48927456 -0.22954868 -0.43084416  0.55501723  0.18934621</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  -0.7245728   0.1265519   0.2939192  -0.32936743], shape=(10,), dtype=float32)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [-0.5953723   0.3965341   0.23046578 -0.55228496  0.68592614 -0.4394964</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  -1.2485248  -0.11152739  1.1534413   0.1565038 ], shape=(10,), dtype=float32)</span>
 <span class="r-in"><span class="va">gate</span><span class="op">[</span><span class="fl">1</span>,<span class="op">]</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> tf.Tensor(</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [0.55341357 0.6830228  0.13582468 0.8568422  0.32849157 0.2516095</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  0.4454018  0.20950854 0.42199287 0.43707   ], shape=(10,), dtype=float32)</span>
-<span class="r-in"></span>
-<span class="r-in"></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [0.7372852  0.19409326 0.13919811 0.42502362 0.72536474 0.445471</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  0.7009207  0.23174635 0.81949216 0.17483   ], shape=(10,), dtype=float32)</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

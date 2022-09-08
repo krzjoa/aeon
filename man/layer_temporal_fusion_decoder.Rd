@@ -50,5 +50,4 @@ c(tfd, attention_scores) \%<-\%
       use_context = TRUE,
       num_heads = 10
    )(lstm_output, context, return_attention_scores=TRUE)
-
 }

@@ -1,0 +1,99 @@
+---
+title: "Preparing input"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{preparing_input}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+In this vignette we'll see, how to prepare an input to the time series deep learning models.
+To do so quickly, we'll use functions from `{aion}` package.
+
+```{r setup}
+library(data.table)
+library(dplyr)
+library(m5)
+library(aion)
+library(keras)
+```
+
+
+## Panel data (M5)
+
+`{m5}` package contains functions to download and preprocess the data from the
+[M5 Forecasting](https://www.kaggle.com/c/m5-forecasting-accuracy) challenges.
+We don't need to fetch the whole dataset, we'll settle for its subset named `tiny_m5`.
+
+```{r }
+head(tiny_m5)
+```
+```{r dates}
+summary(tiny_m5$date)
+```
+
+`tiny_m5` is a n example of **panel dataset**. It simply means that in contains multiple
+time series, distinguished with **item_id** and **store_id**. What we'd like to do, after optional preprocessing such as scaling, imputation etc. is to create a set of arrays (tensors) or a generator, which serves respective batch-level tensors on fly.
+
+Typically, in the time series forecasting field, we can distiguish the following types of variables:
+
+* **past values of the target variable** 
+* **future values of the target variable** 
+* **past dynamic features** (numeric and categorical)
+* **future dynamic features** (numeric and categorical)
+* **static features** 
+
+Past target values can be simply treated as a part of the tensor of the past dynamic features.
+
+The simpliest possible scenario is to split the dataset using certain date.
+```{r}
+PAST_FUTURE_SPLIT_DATE <- as.Date('2016-01-01')
+
+past <- tiny_m5[date < PAST_FUTURE_SPLIT_DATE]
+future <- tiny_m5[date >= PAST_FUTURE_SPLIT_DATE]
+
+ID          <- c('item_id', 'store_id')
+DATE        <- 'date'
+TARGET      <- 'value'
+NUMERIC     <- c('sell_price')
+CATEGORICAL <- c('wday', 'month', 'snap')
+
+X_past_numeric <-
+  past %>% 
+  select(!!c(TARGET, NUMERIC, DATE, ID)) %>% 
+  as_3d_array(key = ID, index = DATE)
+
+print(dim(X_past_numeric))
+print(X_past_numeric[1, 1:10, 1:2])
+
+X_past_categorical <-
+  past %>% 
+  select(!!c(CATEGORICAL, DATE, ID)) %>% 
+  as_3d_array(key = ID, index = DATE)
+
+print(dim(X_past_categorical))
+print(X_past_categorical[1, 1:10, 1:2])
+
+X_future_numeric <-
+  past %>% 
+  select(!!c(NUMERIC, DATE, ID)) %>% 
+  as_3d_array(key = ID, index = DATE)
+
+print(dim(X_past_categorical))
+print(X_past_categorical[1, 1:10, 1:2])
+
+y <-
+  future %>% 
+  select(!!c(TARGET, DATE, ID)) %>% 
+  as_3d_array(key = ID, index = DATE)
+
+print(y)
+```
+
