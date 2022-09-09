@@ -32,3 +32,8 @@ You can install the development version of aion from [GitHub](https://github.com
 devtools::install_github("krzjoa/keras.tft")
 ```
 
+## Usage
+
+```{r}
+library(aion)
+```

@@ -19,7 +19,7 @@ To do so quickly, we'll use functions from `{aion}` package.
 
 ```{r setup}
 library(data.table)
-library(dplyr)
+library(dplyr, warn.conflicts = FALSE)
 library(m5)
 library(aion)
 library(keras)
@@ -68,10 +68,11 @@ CATEGORICAL <- c('wday', 'month', 'snap')
 X_past_numeric <-
   past %>% 
   select(!!c(TARGET, NUMERIC, DATE, ID)) %>% 
+  as.data.table() %>% 
   as_3d_array(key = ID, index = DATE)
 
 print(dim(X_past_numeric))
-print(X_past_numeric[1, 1:10, 1:2])
+# print(X_past_numeric[1, 1:10, 1:2])
 
 X_past_categorical <-
   past %>% 
@@ -79,7 +80,7 @@ X_past_categorical <-
   as_3d_array(key = ID, index = DATE)
 
 print(dim(X_past_categorical))
-print(X_past_categorical[1, 1:10, 1:2])
+#print(X_past_categorical[1, 1:10, 1:2])
 
 X_future_numeric <-
   past %>% 
@@ -87,7 +88,7 @@ X_future_numeric <-
   as_3d_array(key = ID, index = DATE)
 
 print(dim(X_past_categorical))
-print(X_past_categorical[1, 1:10, 1:2])
+#print(X_past_categorical[1, 1:10, 1:2])
 
 y <-
   future %>% 

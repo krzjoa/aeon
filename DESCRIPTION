@@ -22,6 +22,7 @@ Suggests:
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
 Collate: 
+    'aion-package.R'
     'as-3d-array.R'
     'layer-glu.R'
     'layer-grn.R'
@@ -36,10 +37,12 @@ Collate:
     'loss-negative-log-likelihood.R'
     'loss-quantile.R'
     'loss-tweedie.R'
+    'make-arrays.R'
     'metric-q-risk.R'
     'model-tft.R'
     'ts-generator.R'
 Imports: 
     reticulate,
-    keras
+    keras,
+    data.table
 VignetteBuilder: knitr

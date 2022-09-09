@@ -28,6 +28,9 @@
     <loc>/reference/VSN.html</loc>
   </url>
   <url>
+    <loc>/reference/aion-package.html</loc>
+  </url>
+  <url>
     <loc>/reference/as_3d_array.html</loc>
   </url>
   <url>
@@ -71,6 +74,9 @@
   </url>
   <url>
     <loc>/reference/loss_tweedie.html</loc>
+  </url>
+  <url>
+    <loc>/reference/make_arrays.html</loc>
   </url>
   <url>
     <loc>/reference/metric_q_risk.html</loc>
