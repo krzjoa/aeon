@@ -27,25 +27,30 @@ make_arrays <- function(data, key, index, lookback,
                         horizon, stride=1, shuffle=TRUE,
                         sample_frac = 1.,
                         target, numeric=NULL, categorical=NULL, static=NULL,
-                        past=NULL, future=NULL, by_key=TRUE){
+                        past=NULL, future=NULL, keep_all_ids=TRUE, ...){
 
   # Start of each time series we can identify with unique key
   total_window_length <- lookback + horizon
 
   ts_starts <-
     data[, .(start_time = min(get(index)),
-             end_time = max(get(index))),
+             end_time = max(get(index)) - total_window_length),
          by = eval(key)]
 
-  #ts_starts[, window_starts := ]
+  ts_starts[, window_starts := Map(\(x, y) seq(x, y, stride),
+                                   ts_starts$start_time,
+                                   ts_starts$end_time)]
+
+  if (sample_frac < 1.)
+    ts_starts <-
+      ts_starts[,.SD[sample(.N,as.integer(floor(.N * sample_frac)))],by = a]
+
+  # Consider using Rcpp here to speed it up
+  # One loop instead of separate ones
+  fo
 
 
-#  min_time <- min(data$date)
-#  max_ <- max(data$date) - timesteps - horizon + 1
-#  starts <- seq(max_date, min_date, -jump)
-#  starts <- sample(starts, size = ceiling(length(starts) * sample_frac))
-#  starts <- sort(starts)
-
+  # TODO: check, if all the items has at least length of the full window
 
   ts_starts
 }
