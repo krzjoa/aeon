@@ -19,7 +19,8 @@ make_arrays(
   static = NULL,
   past = NULL,
   future = NULL,
-  by_key = TRUE
+  keep_all_ids = TRUE,
+  ...
 )
 }
 \arguments{
@@ -50,13 +51,40 @@ Prepare arrays (tensors), which can be used a
 }
 \examples{
 library(m5)
+library(recipes)
+library(zeallot)
 
-make_arrays(
-  data = tiny_m5,
-  key = c('item_id', 'store_id'),
-  index = 'date',
-  lookback = 28,
-  horizon = 28
-)
+train <- tiny_m5[date < '2016-01-01']
+test  <- tiny_m5[date >= '2016-01-01']
+
+m5_recipe <-
+   recipe(value ~ ., data=train) \%>\%
+   step_mutate(item_id_idx=item_id, store_id_idx=store_id) \%>\%
+   step_integer(item_id_idx, store_id_idx,
+                wday, month,
+                event_name_1, event_type_1,
+                event_name_2, event_type_2,
+                zero_based=TRUE) \%>\%
+   prep()
+
+train <- bake(m5_recipe, train)
+test  <- bake(m5_recipe, test)
+
+STATIC      <- c('item_id_idx', 'store_id_idx')
+CATEGORICAL <- c('item_id_idx', 'store_id_idx')
+NUMERIC     <- c('')
+
+setDT(train)
+
+c(data, index_table) \%<-\%
+   make_arrays(
+       data = train,
+       key = c('item_id', 'store_id'),
+       index = 'date',
+       lookback = 28,
+       horizon = 28,
+       static=STATIC,
+       categorical=CATEGORICAL
+   )
 
 }

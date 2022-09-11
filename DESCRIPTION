@@ -8,7 +8,6 @@ Authors@R:
            role    = c("aut", "cre"),
            email   = "joachimiak.krzysztof@gmail.com",
            comment = c(ORCID = "0000-0003-4780-7947"))
-Maintainer: The package maintainer <yourself@somewhere.net>
 Description: More about what it does (maybe more than one line)
     Use four spaces when indenting paragraphs within the Description.
 License: MIT + file LICENSE
@@ -18,10 +17,12 @@ RoxygenNote: 7.1.2
 Roxygen: list(markdown = TRUE)
 Suggests: 
     knitr,
+    recipes,
     rmarkdown,
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
 Collate: 
+    'RcppExports.R'
     'aion-package.R'
     'as-3d-array.R'
     'layer-glu.R'
@@ -44,5 +45,9 @@ Collate:
 Imports: 
     reticulate,
     keras,
-    data.table
+    data.table,
+    abind,
+    Rcpp
 VignetteBuilder: knitr
+LinkingTo: 
+    Rcpp
