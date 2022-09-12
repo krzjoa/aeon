@@ -78,6 +78,7 @@ make_arrays <- function(data, key, index, lookback,
 
   # Start of each time series we can identify with unique key
   total_window_length <- lookback + horizon
+  key_index <- c(key, index)
 
   ts_starts <-
     data[, .(start_time = min(get(index)),
@@ -125,13 +126,16 @@ make_arrays <- function(data, key, index, lookback,
     , aux_id := do.call(paste, c(.SD, sep = "-")),
     .SDcols=batch_id_cols
   ]
+  setnames(ts_starts, 'window_start', index)
 
   # Sort & create indices
   setorderv(data, c(key, index))
+  data[, row_idx := 1:.N]
+  ts_starts[data, row_idx := row_idx, on=(eval(key_index))]
 
-  index_table <-
-    data[, .(n = .N), by = eval(key)] %>%
-    .[, start_idx := cumsum(lag(n, default = 1))]
+  # index_table <-
+  #   data[, .(n = .N), by = eval(key)] %>%
+  #   .[, start_idx := cumsum(lag(n, default = 1))]
 
 
   # past_dates <- copy(ts_starts)
