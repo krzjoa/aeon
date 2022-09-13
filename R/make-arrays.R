@@ -130,6 +130,8 @@ make_arrays <- function(data, key, index, lookback,
 
   # Sort & create indices
   setorderv(data, c(key, index))
+  setorderv(ts_starts, c(key, index))
+
   data[, row_idx := 1:.N]
   ts_starts[data, row_idx := row_idx, on=(eval(key_index))]
 
