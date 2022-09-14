@@ -53,6 +53,8 @@ Prepare arrays (tensors), which can be used a
 library(m5)
 library(recipes)
 library(zeallot)
+library(dplyr, warn.conflicts=FALSE)
+library(data.table)
 
 train <- tiny_m5[date < '2016-01-01']
 test  <- tiny_m5[date >= '2016-01-01']
@@ -70,21 +72,28 @@ m5_recipe <-
 train <- bake(m5_recipe, train)
 test  <- bake(m5_recipe, test)
 
+TARGET      <- 'value'
 STATIC      <- c('item_id_idx', 'store_id_idx')
-CATEGORICAL <- c('item_id_idx', 'store_id_idx')
-NUMERIC     <- c('')
+CATEGORICAL <- c('event_name_1', 'event_type_1')
+NUMERIC     <- c('sell_price')
+LOOKBACK    <- 28
+HORIZON     <- 28
+STRIDE      <- LOOKBACK
 
 setDT(train)
 
-c(data, index_table) \%<-\%
+output <-
    make_arrays(
        data = train,
        key = c('item_id', 'store_id'),
        index = 'date',
-       lookback = 28,
-       horizon = 28,
+       lookback = LOOKBACK,
+       horizon = HORIZON,
+       stride = STRIDE,
+       target=TARGET,
        static=STATIC,
-       categorical=CATEGORICAL
+       categorical=CATEGORICAL,
+       numeric=NUMERIC
    )
 
 }

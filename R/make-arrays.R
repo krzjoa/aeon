@@ -4,20 +4,6 @@ resolve_variables <- function(period_set, type_set){
   base::intersect(period_set, type_set)
 }
 
-.get_slice <- function(data, slice){
-
-}
-
-
-
-.get_arrays <- function(data, lookback,
-                        horizon=NULL, col_list){
-
-  # tensors <- Map(\(x))
-
-  abind::abind(tensors, along = 1)
-}
-
 
 #' Prepare arrays (tensors), which can be used a
 #'
@@ -36,6 +22,8 @@ resolve_variables <- function(period_set, type_set){
 #' library(m5)
 #' library(recipes)
 #' library(zeallot)
+#' library(dplyr, warn.conflicts=FALSE)
+#' library(data.table)
 #'
 #' train <- tiny_m5[date < '2016-01-01']
 #' test  <- tiny_m5[date >= '2016-01-01']
@@ -53,21 +41,28 @@ resolve_variables <- function(period_set, type_set){
 #' train <- bake(m5_recipe, train)
 #' test  <- bake(m5_recipe, test)
 #'
+#' TARGET      <- 'value'
 #' STATIC      <- c('item_id_idx', 'store_id_idx')
-#' CATEGORICAL <- c('item_id_idx', 'store_id_idx')
-#' NUMERIC     <- c('')
+#' CATEGORICAL <- c('event_name_1', 'event_type_1')
+#' NUMERIC     <- c('sell_price')
+#' LOOKBACK    <- 28
+#' HORIZON     <- 28
+#' STRIDE      <- LOOKBACK
 #'
 #' setDT(train)
 #'
-#' c(data, index_table) %<-%
+#' output <-
 #'    make_arrays(
 #'        data = train,
 #'        key = c('item_id', 'store_id'),
 #'        index = 'date',
-#'        lookback = 28,
-#'        horizon = 28,
+#'        lookback = LOOKBACK,
+#'        horizon = HORIZON,
+#'        stride = STRIDE,
+#'        target=TARGET,
 #'        static=STATIC,
-#'        categorical=CATEGORICAL
+#'        categorical=CATEGORICAL,
+#'        numeric=NUMERIC
 #'    )
 #'
 #' @export
@@ -120,12 +115,6 @@ make_arrays <- function(data, key, index, lookback,
       X_static_num <-
         as.matrix(static_features[, ..static_numeric])
 
-  # Auxiliary IDs
-  batch_id_cols <- c(key, 'window_start')
-  ts_starts[
-    , aux_id := do.call(paste, c(.SD, sep = "-")),
-    .SDcols=batch_id_cols
-  ]
   setnames(ts_starts, 'window_start', index)
 
   # Sort & create indices
@@ -135,53 +124,43 @@ make_arrays <- function(data, key, index, lookback,
   data[, row_idx := 1:.N]
   ts_starts[data, row_idx := row_idx, on=(eval(key_index))]
 
-  # index_table <-
-  #   data[, .(n = .N), by = eval(key)] %>%
-  #   .[, start_idx := cumsum(lag(n, default = 1))]
+  # Dynamic variables
+  past_var <-
+    list(
+      y_past     = target#,
+      #X_past_cat = categorical
+      #X_past_num = numeric
+    )
 
+  past_var_types <-
+    c(
+      y_past     = 'numeric',
+      X_past_cat = 'categorical',
+      X_past_num = 'numeric'
+    )
 
-  # past_dates <- copy(ts_starts)
-  # past_dates[, date := Map(\(x, y) seq(x, y, 1),
-  #                                   ts_starts$window_start,
-  #                                   ts_starts$window_start + lookback)]
+  fut_var <-
+    list(
+      y_fut      = target#,
+      #X_fut_cat  = categorical
+      #X_fut_num  = numeric
+    )
 
-  # browser()
+  fut_var_types <- c('numeric')
 
-  # past_dates <- past_dates[
-  #   , .(date = do.call('c', date)), by = .I
-  # ]
+  #browser()
 
+  dynamic <-
+    aion:::get_arrays(
+      data           = data,
+      ts_starts      = ts_starts,
+      lookback       = lookback,
+      horizon        = horizon,
+      past_var       = past_var,
+      past_var_types = past_var_types,
+      fut_var        = fut_var,
+      fut_var_types  = fut_var_types
+    )
 
-
-
-
-  # PAST
-  # past_categorical <- resolve_variables(past, categorical)
-  # past_numeric     <- resolve_variables(past, numeric)
-  #
-  # past_cols <-
-  #   list(y_past       = target,
-  #        X_past_cat   = past_categorical,
-  #        X_past_num   = past_numeric)
-  #
-  # past_values <-
-  #   .get_arrays(data, ts_starts, past_cols)
-  #
-  #
-  # # FUTURE
-  # future_categorical <- resolve_variables(future, categorical)
-  # future_numeric     <- resolve_variables(future, numeric)
-  #
-  # fut_values <-
-  #   .get_arrays(data, lookback, ts_starts, fut_cols)
-  #
-  # # TODO: check, if all the items has at least length of the full window
-  # output <-
-  #   c(
-  #     static_values,
-  #     past_values,
-  #     fut_values
-  #   )
-
-  list(data, index_table)
+  dynamic
 }

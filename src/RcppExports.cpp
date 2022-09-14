@@ -11,8 +11,8 @@ Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
 // get_arrays
-List get_arrays(DataFrame data, DataFrame ts_starts, int lookback, int horizon, List past_var, List fut_var);
-RcppExport SEXP _aion_get_arrays(SEXP dataSEXP, SEXP ts_startsSEXP, SEXP lookbackSEXP, SEXP horizonSEXP, SEXP past_varSEXP, SEXP fut_varSEXP) {
+List get_arrays(DataFrame data, DataFrame ts_starts, int lookback, int horizon, List past_var, List fut_var, LogicalVector past_var_types, LogicalVector fut_var_types);
+RcppExport SEXP _aion_get_arrays(SEXP dataSEXP, SEXP ts_startsSEXP, SEXP lookbackSEXP, SEXP horizonSEXP, SEXP past_varSEXP, SEXP fut_varSEXP, SEXP past_var_typesSEXP, SEXP fut_var_typesSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -22,13 +22,15 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< int >::type horizon(horizonSEXP);
     Rcpp::traits::input_parameter< List >::type past_var(past_varSEXP);
     Rcpp::traits::input_parameter< List >::type fut_var(fut_varSEXP);
-    rcpp_result_gen = Rcpp::wrap(get_arrays(data, ts_starts, lookback, horizon, past_var, fut_var));
+    Rcpp::traits::input_parameter< LogicalVector >::type past_var_types(past_var_typesSEXP);
+    Rcpp::traits::input_parameter< LogicalVector >::type fut_var_types(fut_var_typesSEXP);
+    rcpp_result_gen = Rcpp::wrap(get_arrays(data, ts_starts, lookback, horizon, past_var, fut_var, past_var_types, fut_var_types));
     return rcpp_result_gen;
 END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_aion_get_arrays", (DL_FUNC) &_aion_get_arrays, 6},
+    {"_aion_get_arrays", (DL_FUNC) &_aion_get_arrays, 8},
     {NULL, NULL, 0}
 };
 
