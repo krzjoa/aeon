@@ -2,7 +2,7 @@
 % Please edit documentation in R/make-arrays.R
 \name{make_arrays}
 \alias{make_arrays}
-\title{Prepare arrays (tensors), which can be used a}
+\title{Prepare input/taget arrays for time series models}
 \usage{
 make_arrays(
   data,
@@ -19,7 +19,6 @@ make_arrays(
   static = NULL,
   past = NULL,
   future = NULL,
-  keep_all_ids = TRUE,
   ...
 )
 }
@@ -47,7 +46,7 @@ make_arrays(
 \item{static}{Static variables}
 }
 \description{
-Prepare arrays (tensors), which can be used a
+Prepare input/taget arrays for time series models
 }
 \examples{
 library(m5)
@@ -74,19 +73,22 @@ test  <- bake(m5_recipe, test)
 
 TARGET      <- 'value'
 STATIC      <- c('item_id_idx', 'store_id_idx')
-CATEGORICAL <- c('event_name_1', 'event_type_1')
-NUMERIC     <- c('sell_price')
+CATEGORICAL <- c('event_name_1', 'event_type_1', STATIC)
+NUMERIC     <- c('sell_price', 'sell_price')
+KEY         <- c('item_id', 'store_id')
+INDEX       <- 'date'
 LOOKBACK    <- 28
-HORIZON     <- 28
+HORIZON     <- 14
 STRIDE      <- LOOKBACK
 
 setDT(train)
+setDT(test)
 
-output <-
+train_arrays <-
    make_arrays(
        data = train,
-       key = c('item_id', 'store_id'),
-       index = 'date',
+       key = KEY,
+       index = INDEX,
        lookback = LOOKBACK,
        horizon = HORIZON,
        stride = STRIDE,
@@ -96,4 +98,21 @@ output <-
        numeric=NUMERIC
    )
 
+print(names(train_arrays))
+
+test_arrays <-
+   make_arrays(
+       data = test,
+       key = KEY,
+       index = INDEX,
+       lookback = LOOKBACK,
+       horizon = HORIZON,
+       stride = STRIDE,
+       target=TARGET,
+       static=STATIC,
+       categorical=CATEGORICAL,
+       numeric=NUMERIC
+   )
+
+print(names(test_arrays))
 }
