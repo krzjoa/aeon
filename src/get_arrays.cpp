@@ -26,6 +26,7 @@ void alloc_arrays(List& list, DataFrame& ts_starts,
 void fill_arrays(DataFrame& data, List& list,
                  DataFrame& ts_starts, List& vars,
                  int& timesteps, int list_start_idx){
+
   for (int i = 0; i < ts_starts.nrow(); i++) {
     int row_start_idx = as<NumericVector>(ts_starts["row_idx"])[i] - 1;
 
@@ -65,6 +66,9 @@ List get_arrays(DataFrame data, DataFrame ts_starts,
   // ===========================================================================
   //                            INSERTING DATA
   // ===========================================================================
+
+  // TODO: get first loop out of the fill_arrays
+  // Test, if it can speed up the function execution
 
   // PAST
   fill_arrays(data, list, ts_starts, past_var, lookback, 0);

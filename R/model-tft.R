@@ -69,7 +69,7 @@ model_tft <- keras::new_model_class(
     self$static_embedding <- layer_multi_embedding(
       input_dims= vocab_static_size,
       output_dims = state_size,
-      new_dim = True
+      new_dim = TRUE
     )
 
     self$past_embedding <- layer_multi_embedding(
@@ -101,7 +101,15 @@ model_tft <- keras::new_model_class(
 
   },
 
-  call = function(){
+  call = function(X_past_num, X_past_cat,
+                  X_fut_num, X_fut_cat,
+                  X_static_cat, X_static_num){
+
+    # ==========================================================================
+    #                       EMBEDDINGS & PROJECTIONS
+    # ==========================================================================
+
+    #static_embedding <-
 
   }
 

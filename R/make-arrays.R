@@ -1,10 +1,3 @@
-#' @keywords internal
-resolve_variables <- function(period_set, type_set){
-  if (is.null(period_set))
-    return(type_set)
-  base::intersect(period_set, type_set)
-}
-
 #' Prepare input/taget arrays for time series models
 #'
 #' @inheritParams as_3d_array
@@ -17,6 +10,8 @@ resolve_variables <- function(period_set, type_set){
 #' @param numeric Numeric variables
 #' @param categorical Categorical variables
 #' @param static Static variables
+#'
+#' @include utils.R
 #'
 #' @returns
 #' A list of arrays. The maximal possible content embraces eight arrays:
@@ -36,6 +31,10 @@ resolve_variables <- function(period_set, type_set){
 #' library(dplyr, warn.conflicts=FALSE)
 #' library(data.table, warn.conflicts=FALSE)
 #'
+#' # ==========================================================================
+#' #                          PREPARING THE DATA
+#' # ==========================================================================
+#'
 #' train <- tiny_m5[date < '2016-01-01']
 #' test  <- tiny_m5[date >= '2016-01-01']
 #'
@@ -47,6 +46,7 @@ resolve_variables <- function(period_set, type_set){
 #'                 event_name_1, event_type_1,
 #'                 event_name_2, event_type_2,
 #'                 zero_based=TRUE) %>%
+#'    step_naomit(all_predictors()) %>%
 #'    prep()
 #'
 #' train <- bake(m5_recipe, train)
@@ -65,18 +65,22 @@ resolve_variables <- function(period_set, type_set){
 #' setDT(train)
 #' setDT(test)
 #'
+#' # ==========================================================================
+#' #                           CREATING ARRAYS
+#' # ==========================================================================
+#'
 #' train_arrays <-
 #'    make_arrays(
-#'        data = train,
-#'        key = KEY,
-#'        index = INDEX,
-#'        lookback = LOOKBACK,
-#'        horizon = HORIZON,
-#'        stride = STRIDE,
-#'        target=TARGET,
-#'        static=STATIC,
-#'        categorical=CATEGORICAL,
-#'        numeric=NUMERIC
+#'        data        = train,
+#'        key         = KEY,
+#'        index       = INDEX,
+#'        lookback    = LOOKBACK,
+#'        horizon     = HORIZON,
+#'        stride      = STRIDE,
+#'        target      = TARGET,
+#'        static      = STATIC,
+#'        categorical = CATEGORICAL,
+#'        numeric     = NUMERIC
 #'    )
 #'
 #' print(names(train_arrays))
@@ -84,16 +88,16 @@ resolve_variables <- function(period_set, type_set){
 #'
 #' test_arrays <-
 #'    make_arrays(
-#'        data = test,
-#'        key = KEY,
-#'        index = INDEX,
-#'        lookback = LOOKBACK,
-#'        horizon = HORIZON,
-#'        stride = STRIDE,
-#'        target=TARGET,
-#'        static=STATIC,
-#'        categorical=CATEGORICAL,
-#'        numeric=NUMERIC
+#'        data        = train,
+#'        key         = KEY,
+#'        index       = INDEX,
+#'        lookback    = LOOKBACK,
+#'        horizon     = HORIZON,
+#'        stride      = STRIDE,
+#'        target      = TARGET,
+#'        static      = STATIC,
+#'        categorical = CATEGORICAL,
+#'        numeric     = NUMERIC
 #'    )
 #'
 #' print(names(test_arrays))
@@ -128,6 +132,7 @@ make_arrays <- function(data, key, index, lookback,
                 ,by = eval(key)]
 
   # Static
+  # TODO: move into Rcpp
   if (!is.null(static))
     static_categorical <- resolve_variables(static, categorical)
     static_numeric     <- resolve_variables(static, numeric)
@@ -138,17 +143,15 @@ make_arrays <- function(data, key, index, lookback,
             by.x = c(key, 'window_start'),
             by.y = c(key, index))
 
-    if (!is.null(static_categorical))
-      X_static_cat <-
+    static_arrays <- list()
+
+    if (length(static_categorical) > 0)
+      static_arrays$X_static_cat <-
         as.matrix(static_features[, ..static_categorical])
 
-    if (!is.null(static_numeric))
-      X_static_num <-
+    if (length(static_numeric) > 0)
+      static_arrays$X_static_num <-
         as.matrix(static_features[, ..static_numeric])
-
-  static_arrays <-
-    list(X_static_cat=X_static_cat,
-         X_static_num=X_static_num)
 
   setnames(ts_starts, 'window_start', index)
 

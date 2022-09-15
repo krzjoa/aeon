@@ -36,10 +36,8 @@ and not call directly like other loss in \code{keras}. Please see:
 y_pred <- array(runif(60), c(2, 10, 3))
 y_true <- array(runif(20), c(2, 10, 1))
 
-# As a callable object
 loss_quantile(quantiles = c(0.1, 0.5, 0.9), reduction = 'auto')(y_true, y_pred)
 loss_quantile(quantiles = c(0.1, 0.5, 0.9), reduction = 'sum')(y_true, y_pred)
-
 }
 \references{
 \itemize{

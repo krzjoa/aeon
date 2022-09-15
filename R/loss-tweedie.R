@@ -16,10 +16,8 @@
 #' y_pred <- array(runif(60), c(2, 10, 1))
 #' y_true <- array(runif(20), c(2, 10, 1))
 #'
-#' # As a callable object
 #' loss_tweedie(p = 1.5, reduction = 'auto')(y_true, y_pred)
 #' loss_tweedie(p = 1.5, reduction = 'sum')(y_true, y_pred)
-#'
 #' @export
 loss_tweedie <- keras::new_loss_class(
 

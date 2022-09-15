@@ -16,8 +16,6 @@ General negative log likelihood loss function
 y_pred <- array(runif(60), c(2, 10, 2))
 y_true <- array(runif(20), c(2, 10, 1))
 
-# As a callable object
 loss_negative_log_likelihood(reduction = 'auto')(y_true, y_pred)
 loss_negative_log_likelihood(reduction = 'sum')(y_true, y_pred)
-
 }

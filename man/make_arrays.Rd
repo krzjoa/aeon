@@ -45,15 +45,32 @@ make_arrays(
 
 \item{static}{Static variables}
 }
+\value{
+A list of arrays. The maximal possible content embraces eight arrays:
+\itemize{
+\item \strong{y_past}
+\item \strong{X_past_cat}
+\item \strong{X_past_num}
+\item \strong{y_fut}
+\item \strong{X_fut_cat}
+\item \strong{X_fut_num}
+\item \strong{X_static_cat}
+\item \strong{X_static_num}
+}
+}
 \description{
 Prepare input/taget arrays for time series models
 }
 \examples{
 library(m5)
-library(recipes)
+library(recipes, warn.conflicts=FALSE)
 library(zeallot)
 library(dplyr, warn.conflicts=FALSE)
-library(data.table)
+library(data.table, warn.conflicts=FALSE)
+
+# ==========================================================================
+#                          PREPARING THE DATA
+# ==========================================================================
 
 train <- tiny_m5[date < '2016-01-01']
 test  <- tiny_m5[date >= '2016-01-01']
@@ -66,6 +83,7 @@ m5_recipe <-
                 event_name_1, event_type_1,
                 event_name_2, event_type_2,
                 zero_based=TRUE) \%>\%
+   step_naomit(all_predictors()) \%>\%
    prep()
 
 train <- bake(m5_recipe, train)
@@ -84,35 +102,41 @@ STRIDE      <- LOOKBACK
 setDT(train)
 setDT(test)
 
+# ==========================================================================
+#                           CREATING ARRAYS
+# ==========================================================================
+
 train_arrays <-
    make_arrays(
-       data = train,
-       key = KEY,
-       index = INDEX,
-       lookback = LOOKBACK,
-       horizon = HORIZON,
-       stride = STRIDE,
-       target=TARGET,
-       static=STATIC,
-       categorical=CATEGORICAL,
-       numeric=NUMERIC
+       data        = train,
+       key         = KEY,
+       index       = INDEX,
+       lookback    = LOOKBACK,
+       horizon     = HORIZON,
+       stride      = STRIDE,
+       target      = TARGET,
+       static      = STATIC,
+       categorical = CATEGORICAL,
+       numeric     = NUMERIC
    )
 
 print(names(train_arrays))
+print(dim(train_arrays$X_past_num))
 
 test_arrays <-
    make_arrays(
-       data = test,
-       key = KEY,
-       index = INDEX,
-       lookback = LOOKBACK,
-       horizon = HORIZON,
-       stride = STRIDE,
-       target=TARGET,
-       static=STATIC,
-       categorical=CATEGORICAL,
-       numeric=NUMERIC
+       data        = train,
+       key         = KEY,
+       index       = INDEX,
+       lookback    = LOOKBACK,
+       horizon     = HORIZON,
+       stride      = STRIDE,
+       target      = TARGET,
+       static      = STATIC,
+       categorical = CATEGORICAL,
+       numeric     = NUMERIC
    )
 
 print(names(test_arrays))
+print(dim(test_arrays$X_past_num))
 }

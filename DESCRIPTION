@@ -38,6 +38,7 @@ Collate:
     'loss-negative-log-likelihood.R'
     'loss-quantile.R'
     'loss-tweedie.R'
+    'utils.R'
     'make-arrays.R'
     'metric-q-risk.R'
     'model-tft.R'
