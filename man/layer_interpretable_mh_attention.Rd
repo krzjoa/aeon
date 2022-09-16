@@ -21,7 +21,6 @@ layer_interpretable_mh_attention(
 Interpretable multi-head attention layer
 }
 \examples{
-
 lookback   <- 28
 horizon    <- 14
 all_steps  <- lookback + horizon

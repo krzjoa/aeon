@@ -13,3 +13,11 @@ safe_var <- function(x){
   else
     return(var(x))
 }
+
+#' @keywords internal
+try_import <- function(name, site){
+  if (!reticulate::py_module_available(name))
+    stop(glue::glue("Module {name} is not available and must be installed first. ",
+                    "See: {site}"))
+  reticulate::import(name)
+}

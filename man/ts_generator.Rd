@@ -24,12 +24,6 @@ ts_generator(
 )
 }
 \arguments{
-\item{data}{A data.frame object}
-
-\item{key}{Columns, which creates unique time series IDs}
-
-\item{index}{A time-related column}
-
 \item{lookback}{The length of the context from the past}
 
 \item{horizon}{The forecast length}

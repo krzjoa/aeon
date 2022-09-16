@@ -1,8 +1,7 @@
-
-tcn <- reticulate::import("tcn")
-
-
 #' Residual block for the WaveNet TCN
+#'
+#' This is a block composed i.a. from causal convolutional layers.
+#' It may be considered as a replacement for the recurrent layers.
 #'
 #' @param dilation_rate The dilation power of 2 we are using for this residual block
 #' @param nb_filters The number of convolutional filters to use in this block
@@ -15,6 +14,19 @@ tcn <- reticulate::import("tcn")
 #' @param use_layer_norm Whether to use layer normalization in the residual layers or not.
 #' @param use_weight_norm Whether to use weight normalization in the residual layers or not.
 #'
+#' @include utils.R
+#'
+#' @references
+#' 1. [Keras TCN library by Philippe Rémy](https://github.com/philipperemy/keras-tcn)
+#' 2. [Bai Sh., Kolter J.Z., Koltun V., An Empirical Evaluation of Generic Convolutional and Recurrent Networks for Sequence Modeling, 2018](https://arxiv.org/abs/1803.01271)
+#'
+#' @examples
+#' \donttest{
+#' inp <- layer_input(c(28, 3))
+#' tcn <- layer_tcn()(inp)
+#' model <- keras_model(inp, tcn)
+#' model(array(1, c(32, 28, 3)))
+#' }
 #' @export
 layer_tcn <- function(object,
                      nb_filters=64,
@@ -47,12 +59,15 @@ layer_tcn <- function(object,
     kernel_initializer   = kernel_initializer,
     use_batch_norm       = use_batch_norm,
     use_layer_norm       = use_layer_norm,
-    use_weight_norm      = use_weight_norm,
-    name                 = name
+    use_weight_norm      = use_weight_norm
   )
 
   args <- append(args, list(...))
 
-  create_layer(tcn$TCN, object, args)
+  tcn <- try_import(
+    name = 'tcn',
+    site = 'https://github.com/philipperemy/keras-tcn'
+  )
 
+  create_layer(tcn$TCN, object, args)
 }

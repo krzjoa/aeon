@@ -21,6 +21,9 @@ model_tft(...)
 Temporal Fusion Transformer model
 }
 \examples{
+library(keras)
+library(aion)
+
 tft <- model_tft(
    lookback                = 28,
    horizon                 = 14,
@@ -28,8 +31,8 @@ tft <- model_tft(
    past_categorical_size   = 2,
    future_numeric_size     = 4,
    future_categorical_size = 2,
-   vocab_static_size       = c(3, 4),
-   vocab_dynamic_size      = 6,
+   vocab_static_size       = c(5, 5),
+   vocab_dynamic_size      = c(4, 4),
    optimizer               = 'adam',
    hidden_dim              = 12,
    state_size              = 7,
@@ -39,5 +42,22 @@ tft <- model_tft(
    #quantiles               = 0.5
 )
 
+X_static_cat <- array(sample(5, 32 * 2, replace=TRUE), c(32, 2)) - 1
+X_static_num <- array(runif(32 * 1), c(32, 1))
 
+X_past_num <- array(runif(32 * 28 * 2), c(32, 28, 2))
+X_past_cat <- array(sample(4, 32 * 28 * 2, replace=TRUE), c(32, 28, 5))
+
+X_fut_num <- array(runif(32 * 14 * 5), c(32, 28, 1))
+X_fut_cat <- array(sample(4, 32 * 14 * 2, replace=TRUE), c(32, 28, 5))
+
+tft(X_past_num, X_past_cat, X_fut_num, X_fut_cat, X_static_num, X_static_cat)
+
+}
+\references{
+\enumerate{
+\item \href{https://arxiv.org/abs/1912.09363}{Paper}
+\item \href{https://github.com/google-research/google-research/blob/master/tft/libs/tft_model.py}{Original TFT implementation in TensorFlow}
+\item \href{https://github.com/PlaytikaResearch/tft-torch/blob/main/tft_torch/tft.py}{A very clear implementation in PyTorch}
+}
 }

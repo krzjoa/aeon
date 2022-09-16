@@ -96,12 +96,21 @@ derivative, energy, median value, etc (\link{1}\emph{, \link{2}}).
 Note that these decoder matrices can span across
 all of the units of an input sequence.
 }
+\examples{
+\donttest{
+library(keras)
+inp <- layer_input(c(28, 3))
+hidden_cell <- layer_lstm_cell(10)
+lmu <- layer_lmu(memory_d=10, order=3, theta=28, hidden_cell=hidden_cell)(inp)
+model <- keras_model(inp, lmu)
+model(array(1, c(32, 28, 3)))
+}
+}
 \references{
 \enumerate{
-\item Voelker and Eliasmith (2018). Improving spiking dynamical
-networks: Accurate delays, higher-order synapses, and time cells.
-Neural Computation, 30(3): 569-609.
-2.Voelker and Eliasmith. "Methods and systems for implementing
-dynamic neural networks." U.S. Patent Application No. 15/243,223.
+\item \href{http://compneuro.uwaterloo.ca/files/publications/voelker.2019.lmu.pdf}{Voelker, Kajic I. and Eliasmith, Legendre Memory Units: Continuous-Time Representation in Recurrent Neural Networks}
+\item \href{http://compneuro.uwaterloo.ca/files/publications/voelker.2018.pdf}{Voelker and Eliasmith (2018). Improving spiking dynamical networks: Accurate delays, higher-order synapses, and time cells. Neural Computation, 30(3): 569-609.}
+\item \href{https://patents.google.com/patent/US20180053090A1/en}{Voelker and Eliasmith. "Methods and systems for implementing dynamic neural networks." U.S. Patent Application No. 15/243,223.}
+\item \href{https://stats.stackexchange.com/questions/472822/is-lstm-long-short-term-memory-dead}{Is LSTM (Long Short-Term Memory) dead?, CrossValidated}
 }
 }
