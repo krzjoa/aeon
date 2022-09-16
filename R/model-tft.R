@@ -68,8 +68,9 @@ model_tft <- keras::new_model_class(
 
     super()$`__init__`(...)
 
-    self$lookback <- lookback
-    self$horizon  <- horizon
+    self$lookback     <- lookback
+    self$horizon      <- horizon
+    self$dropout_rate <- dropout_rate
 
     # Inputs
     self$input_numeric_past <-
@@ -173,12 +174,32 @@ model_tft <- keras::new_model_class(
                  return_sequences = TRUE,
                  return_state = TRUE)
 
-    self$lstm_fut <-
+    self$lstm_future <-
         layer_lstm(units = state_size,
                    return_sequences = TRUE)
 
     # After LSTMs
+    self$post_lstm_dropout    <- layer_dropout(rate = dropout_rate)
+    self$post_lstm_glu        <- layer_glu(units = state_size)
+    self$post_lstm_layer_norm <- layer_layer_normalization()
 
+    # Temporal fusion decoder
+    self$tfd <- layer_temporal_fusion_decoder(
+      hidden_units = hidden_dim,
+      state_size   = state_size,
+      dropout_rate = dropout_rate,
+      use_context  = TRUE,
+      num_heads    = n_heads
+    )
+
+    # Last gate
+    self$last_glu        <- layer_glu(units = state_size)
+    self$last_layer_norm <- layer_layer_normalization()
+
+    # Output
+    self$output_dense <- layer_dense(units = output_size)
+    future_idx        <- (self$lookback + 1):(self$lookback + self$horizon)
+    self$output_cut   <- layer_lambda(f = function(x) x[,future_idx,])
 
   },
 
@@ -238,7 +259,7 @@ model_tft <- keras::new_model_class(
 
     fut_features <- layer_concatenate(axis = 2)(list(fut_emb, fut_proj))
 
-    c(selected_fut, fut_selection_weights) %<-%
+    c(selected_future, fut_selection_weights) %<-%
       self$vsn_future(fut_features, c_selection)
 
     # ==========================================================================
@@ -259,36 +280,56 @@ model_tft <- keras::new_model_class(
     initial_state <- list(c_seq_hidden, c_seq_cell)
 
     processed_future <-
-      self$lstm_future(selected_fut, initial_state = hidden_state_past)
+      self$lstm_future(selected_future, initial_state = hidden_state_past)
 
     # ==========================================================================
     #                         GATE AFTER LSTM LAYERS
     # ==========================================================================
 
     # It let us skip the LSTM layers if needed
+    lstms_input_features <-
+      layer_concatenate(axis = 1)(list(selected_past, selected_future))
 
-    # lstms_input_features <-
-    #   layer_concatenate(axis = 1)(list(selected_past, selected_future))
-    #
-    # lstms_output_features <-
-    #   layer_concatenate(axis = 1)(list(processed_past, processed_future))
-    #
-    # if (!is.null(self$dropout_rate))
-    #   lstms_input_features <- layer_dropout(rate = dropout_rate)(lstms_input_features)
-    #
-    # lstms_input_features <- layer_glu(units = state_size)(lstms_input_features)
-    #
-    # combined_lstm_output <- layer_add(
-    #   list(lstms_input_features, lstms_output_features)
-    # )
-    #
-    # combined_lstm_output <- layer_layer_normalization()(combined_lstm_output)
+    lstms_output_features <-
+      layer_concatenate(axis = 1)(list(processed_past, processed_future))
 
+    if (!is.null(self$dropout_rate))
+      lstms_input_features <- self$post_lstm_dropout(lstms_input_features)
 
+    lstms_input_features <- self$post_lstm_glu(lstms_input_features)
 
-    processed_future
+    combined_lstm_output <- layer_add(
+       list(lstms_input_features, lstms_output_features)
+    )
+
+    combined_lstm_output <- self$post_lstm_layer_norm(combined_lstm_output)
+
+    # ==========================================================================
+    #                   TEMPORAL FUSION TRANSFORMER BLOCK
+    # ==========================================================================
+
+    tfd_output <- self$tfd(combined_lstm_output, c_enrichment)
+
+    # ==========================================================================
+    #                             LAST GATE
+    # ==========================================================================
+    # Bramka ta pozwala zminmalizować wpływ całego bloku Temporal Fusion Decoder
+    tfd_output <- self$last_glu(tfd_output)
+
+    gated_output <- layer_add(
+      list(tfd_output, combined_lstm_output)
+    )
+
+    gated_output <- self$last_layer_norm(gated_output)
+
+    # ==========================================================================
+    #                               OUTPUT
+    # ==========================================================================
+    final_output <- self$output_dense(gated_output)
+    final_output <- self$output_cut(final_output)
+
+    final_output
   }
-
 
 
 )
