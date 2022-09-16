@@ -94,8 +94,30 @@ where they also refer to as $$d_model$$</p></dd>
 <span class="r-in"></span>
 <span class="r-in"><span class="va">inp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/keras/man/layer_input.html" class="external-link">layer_input</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">out</span> <span class="op">&lt;-</span> <span class="fu">layer_vsn</span><span class="op">(</span>hidden_units <span class="op">=</span> <span class="fl">10</span>, state_size <span class="op">=</span> <span class="fl">5</span><span class="op">)</span><span class="op">(</span><span class="va">inp</span><span class="op">)</span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in py_call_impl(callable, dots$args, dots$keywords):</span> RuntimeError: in user code:</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-err co"><span class="r-pr">#&gt;</span>     File "/home/krzysztof/R/x86_64-pc-linux-gnu-library/4.1/reticulate/python/rpytools/call.py", line 21, in python_function  *</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span>         raise RuntimeError(res[kErrorKey])</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-err co"><span class="r-pr">#&gt;</span>     RuntimeError: Evaluation error: RuntimeError: Exception encountered when calling layer "grn" (type GRN).</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span>     </span>
+<span class="r-err co"><span class="r-pr">#&gt;</span>     in user code:</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span>     </span>
+<span class="r-err co"><span class="r-pr">#&gt;</span>         File "/home/krzysztof/R/x86_64-pc-linux-gnu-library/4.1/reticulate/python/rpytools/call.py", line 21, in python_function  *</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span>             raise RuntimeError(res[kErrorKey])</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span>     </span>
+<span class="r-err co"><span class="r-pr">#&gt;</span>         RuntimeError: Evaluation error: tensorflow.python.framework.errors_impl.InternalError: Failed copying input tensor from /job:localhost/replica:0/task:0/device:CPU:0 to /job:localhost/replica:0/task:0/device:GPU:0 in order to run _EagerConst: Dst tensor is not initialized.</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span>         .</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span>     </span>
+<span class="r-err co"><span class="r-pr">#&gt;</span>     </span>
+<span class="r-err co"><span class="r-pr">#&gt;</span>     Call arguments received:</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span>       • self=tf.Tensor(shape=(None, 50), dtype=float32)</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span>       • inputs=None</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span>       • context=None</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span>     .</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">out</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] NA  5</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'out' not found</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># =========================================================================</span></span>
 <span class="r-in"><span class="co">#               FOUR-DIMENSIONAL INPUT (DYNAMIC FEATURES)</span></span>
@@ -105,8 +127,30 @@ where they also refer to as $$d_model$$</p></dd>
 <span class="r-in"></span>
 <span class="r-in"><span class="va">inp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/keras/man/layer_input.html" class="external-link">layer_input</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">28</span>, <span class="fl">10</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">out</span> <span class="op">&lt;-</span> <span class="fu">layer_vsn</span><span class="op">(</span>hidden_units <span class="op">=</span> <span class="fl">10</span>, state_size <span class="op">=</span> <span class="fl">5</span><span class="op">)</span><span class="op">(</span><span class="va">inp</span><span class="op">)</span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in py_call_impl(callable, dots$args, dots$keywords):</span> RuntimeError: in user code:</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-err co"><span class="r-pr">#&gt;</span>     File "/home/krzysztof/R/x86_64-pc-linux-gnu-library/4.1/reticulate/python/rpytools/call.py", line 21, in python_function  *</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span>         raise RuntimeError(res[kErrorKey])</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-err co"><span class="r-pr">#&gt;</span>     RuntimeError: Evaluation error: RuntimeError: Exception encountered when calling layer "grn" (type GRN).</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span>     </span>
+<span class="r-err co"><span class="r-pr">#&gt;</span>     in user code:</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span>     </span>
+<span class="r-err co"><span class="r-pr">#&gt;</span>         File "/home/krzysztof/R/x86_64-pc-linux-gnu-library/4.1/reticulate/python/rpytools/call.py", line 21, in python_function  *</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span>             raise RuntimeError(res[kErrorKey])</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span>     </span>
+<span class="r-err co"><span class="r-pr">#&gt;</span>         RuntimeError: Evaluation error: tensorflow.python.framework.errors_impl.InternalError: Failed copying input tensor from /job:localhost/replica:0/task:0/device:CPU:0 to /job:localhost/replica:0/task:0/device:GPU:0 in order to run _EagerConst: Dst tensor is not initialized.</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span>         .</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span>     </span>
+<span class="r-err co"><span class="r-pr">#&gt;</span>     </span>
+<span class="r-err co"><span class="r-pr">#&gt;</span>     Call arguments received:</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span>       • self=tf.Tensor(shape=(None, 28, 50), dtype=float32)</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span>       • inputs=None</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span>       • context=None</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span>     .</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">out</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] NA 28  5</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'out' not found</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

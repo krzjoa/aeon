@@ -65,36 +65,36 @@ TARGET      <- 'value'
 NUMERIC     <- c('sell_price')
 CATEGORICAL <- c('wday', 'month', 'snap')
 
-X_past_numeric <-
-  past %>% 
-  select(!!c(TARGET, NUMERIC, DATE, ID)) %>% 
-  as.data.table() %>% 
-  as_3d_array(key = ID, index = DATE)
-
-print(dim(X_past_numeric))
-# print(X_past_numeric[1, 1:10, 1:2])
-
-X_past_categorical <-
-  past %>% 
-  select(!!c(CATEGORICAL, DATE, ID)) %>% 
-  as_3d_array(key = ID, index = DATE)
-
-print(dim(X_past_categorical))
-#print(X_past_categorical[1, 1:10, 1:2])
-
-X_future_numeric <-
-  past %>% 
-  select(!!c(NUMERIC, DATE, ID)) %>% 
-  as_3d_array(key = ID, index = DATE)
-
-print(dim(X_past_categorical))
-#print(X_past_categorical[1, 1:10, 1:2])
-
-y <-
-  future %>% 
-  select(!!c(TARGET, DATE, ID)) %>% 
-  as_3d_array(key = ID, index = DATE)
-
-print(y)
+# X_past_numeric <-
+#   past %>% 
+#   select(!!c(TARGET, NUMERIC, DATE, ID)) %>% 
+#   as.data.table() %>% 
+#   as_3d_array(key = ID, index = DATE)
+# 
+# print(dim(X_past_numeric))
+# # print(X_past_numeric[1, 1:10, 1:2])
+# 
+# X_past_categorical <-
+#   past %>% 
+#   select(!!c(CATEGORICAL, DATE, ID)) %>% 
+#   as_3d_array(key = ID, index = DATE)
+# 
+# print(dim(X_past_categorical))
+# #print(X_past_categorical[1, 1:10, 1:2])
+# 
+# X_future_numeric <-
+#   past %>% 
+#   select(!!c(NUMERIC, DATE, ID)) %>% 
+#   as_3d_array(key = ID, index = DATE)
+# 
+# print(dim(X_past_categorical))
+# #print(X_past_categorical[1, 1:10, 1:2])
+# 
+# y <-
+#   future %>% 
+#   select(!!c(TARGET, DATE, ID)) %>% 
+#   as_3d_array(key = ID, index = DATE)
+# 
+# print(y)
 ```
 
