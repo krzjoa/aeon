@@ -18,8 +18,9 @@
 #'   instance, for a 2D input with shape `(batch_size, input_dim)`, the output
 #'   would have shape `(batch_size, unit)`.
 #'
-#' @examples
+#' @include utils.R
 #'
+#' @examples
 #' # ==========================================================================
 #' #                          SIMPLE CONCATENATION
 #' # ==========================================================================
@@ -70,15 +71,24 @@ layer_multi_dense <- keras::new_layer_class(
       .units     <- as.integer(rep(self$units[[1]], last_dim))
       self$units <- .units
       self$len   <- length(.units)
+    } else {
+      .units <- as.integer(as.array(self$units))
     }
 
-    if (self$new_dim & (var(.units) != 0))
+    if (self$new_dim & (safe_var(.units) != 0))
       stop("You canot add a new dimension since output spaces differ!")
 
     for (i in seq(self$len)) {
+
+      # See: comment in layer_multi_embedding
+      if (self$len > 1)
+        minus <- 1
+      else
+        minus <- 0
+
       self[[as.character(i)]] <-
         layer_dense(
-          units  = self$units[[i-1]]
+          units  = self$units[[i-minus]]
         )
     }
 

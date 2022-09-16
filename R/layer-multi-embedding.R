@@ -4,8 +4,9 @@
 #' @param new_dim If TRUE, new dimension is created instead of stacking outputs
 #' in the same dimension
 #'
-#' @examples
+#' @include utils.R
 #'
+#' @examples
 #' # ==========================================================================
 #' #                          SIMPLE CONCATENATION
 #' # ==========================================================================
@@ -22,9 +23,15 @@
 #'
 #' out <- emb_model(dummy_input)
 #' dim(out)
+#' # ==========================================================================
+#' #                              ONE VARIABLE
+#' # ==========================================================================
+#'
+#' inp <- layer_input(c(32, 1))
+#' emb <- layer_multi_embedding(input_dims = 10, output_dims = 2)(inp)
 #'
 #' # ==========================================================================
-#' #                          NEW DIMESNION
+#' #                              NEW DIMESNION
 #' # ==========================================================================
 #'
 #' inp <- layer_input(c(28, 3))
@@ -49,7 +56,7 @@ layer_multi_embedding <- keras::new_layer_class(
     if (length(output_dims) == 1)
       output_dims <- rep(output_dims, length(input_dims))
 
-    if (new_dim & (var(output_dims) != 0))
+    if (new_dim & (safe_var(output_dims) != 0))
       stop("You canot add a new dimension since output spaces differ!")
 
     super()$`__init__`(...)
@@ -63,12 +70,19 @@ layer_multi_embedding <- keras::new_layer_class(
   build = function(input_shape){
 
     # Unexpected behaviour of seq(length(self$input_dims))
-
     for (i in seq(self$len)) {
+
+      # It looks clunky, because it's a workaround
+      # Simple i <- i - 1 doesn't work for some reasons
+      if (self$len > 1)
+        minus <- 1
+      else
+        minus <- 0
+
       self[[as.character(i)]] <-
         layer_embedding(
-          input_dim  = self$input_dims[[i-1]],
-          output_dim = self$output_dims[[i-1]]
+          input_dim  = self$input_dims[[i-minus]],
+          output_dim = self$output_dims[[i-minus]]
         )
     }
 
@@ -80,7 +94,6 @@ layer_multi_embedding <- keras::new_layer_class(
     orig_dims <- dim(inputs)
 
    for (i in seq(self$len)) {
-
       outputs[[i]] <-
         self[[as.character(i)]](inputs[tensorflow::all_dims(), i])
     }

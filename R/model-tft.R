@@ -8,7 +8,15 @@
 #'
 #' @include layer-interpretable-mh-attention.R layer-grn.R
 #'
+#' @references
+#' 1. [Paper](https://arxiv.org/abs/1912.09363)
+#' 2. [Original TFT implementation in TensorFlow](https://github.com/google-research/google-research/blob/master/tft/libs/tft_model.py)
+#' 3. [A very clear implementation in PyTorch](https://github.com/PlaytikaResearch/tft-torch/blob/main/tft_torch/tft.py)
+#'
 #' @examples
+#' library(keras)
+#' library(aion)
+#'
 #' tft <- model_tft(
 #'    lookback                = 28,
 #'    horizon                 = 14,
@@ -16,8 +24,8 @@
 #'    past_categorical_size   = 2,
 #'    future_numeric_size     = 4,
 #'    future_categorical_size = 2,
-#'    vocab_static_size       = c(3, 4),
-#'    vocab_dynamic_size      = 6,
+#'    vocab_static_size       = c(5, 5),
+#'    vocab_dynamic_size      = c(4, 4),
 #'    optimizer               = 'adam',
 #'    hidden_dim              = 12,
 #'    state_size              = 7,
@@ -27,6 +35,16 @@
 #'    #quantiles               = 0.5
 #' )
 #'
+#' X_static_cat <- array(sample(5, 32 * 2, replace=TRUE), c(32, 2)) - 1
+#' X_static_num <- array(runif(32 * 1), c(32, 1))
+#'
+#' X_past_num <- array(runif(32 * 28 * 2), c(32, 28, 2))
+#' X_past_cat <- array(sample(4, 32 * 28 * 2, replace=TRUE), c(32, 28, 5))
+#'
+#' X_fut_num <- array(runif(32 * 14 * 5), c(32, 28, 1))
+#' X_fut_cat <- array(sample(4, 32 * 14 * 2, replace=TRUE), c(32, 28, 5))
+#'
+#' tft(X_past_num, X_past_cat, X_fut_num, X_fut_cat, X_static_num, X_static_cat)
 #'
 #' @export
 model_tft <- keras::new_model_class(
@@ -84,33 +102,193 @@ model_tft <- keras::new_model_class(
       new_dim = TRUE
     )
 
-    self$static_numeric <- layer_multi_dense(
+    self$static_projection <- layer_multi_dense(
       units = state_size,
       new_dim = TRUE
     )
 
-    self$past_numeric <- layer_multi_dense(
+    self$past_projection <- layer_multi_dense(
       units = state_size,
       new_dim = TRUE
     )
 
-    self$future_numeric <- layer_multi_dense(
+    self$future_projection <- layer_multi_dense(
       units = state_size,
       new_dim = TRUE
     )
+
+    # Variable selection layers
+    self$vsn_static <- layer_vsn(
+      hidden_units   = hidden_dim,
+      state_size     = state_size,
+      dropout_rate   = dropout_rate,
+      use_context    = FALSE,
+      return_weights = TRUE
+    )
+
+    self$vsn_past <- layer_vsn(
+      hidden_units   = hidden_dim,
+      state_size     = state_size,
+      dropout_rate   = dropout_rate,
+      use_context    = TRUE,
+      return_weights = TRUE
+    )
+
+    self$vsn_future <- layer_vsn(
+      hidden_units   = hidden_dim,
+      state_size     = state_size,
+      dropout_rate   = dropout_rate,
+      use_context    = TRUE,
+      return_weights = TRUE
+    )
+
+    # Static context layers
+    self$grn_enrichment <- layer_grn(
+      hidden_units = state_size,
+      output_size  = state_size,
+      dropout_rate = dropout_rate
+    )
+
+    self$grn_selection <- layer_grn(
+      hidden_units = state_size,
+      output_size  = state_size,
+      dropout_rate = dropout_rate
+    )
+
+    self$grn_seq_cell <- layer_grn(
+      hidden_units = state_size,
+      output_size  = state_size,
+      dropout_rate = dropout_rate
+    )
+
+    self$grn_hidden <- layer_grn(
+      hidden_units = state_size,
+      output_size  = state_size,
+      dropout_rate = dropout_rate
+    )
+
+    # LSTM layers
+    self$lstm_past <-
+      layer_lstm(units = state_size,
+                 return_sequences = TRUE,
+                 return_state = TRUE)
+
+    self$lstm_fut <-
+        layer_lstm(units = state_size,
+                   return_sequences = TRUE)
+
+    # After LSTMs
+
 
   },
 
   call = function(X_past_num, X_past_cat,
                   X_fut_num, X_fut_cat,
-                  X_static_cat, X_static_num){
+                  X_static_num, X_static_cat){
 
     # ==========================================================================
     #                       EMBEDDINGS & PROJECTIONS
     # ==========================================================================
 
-    #static_embedding <-
+    # All the inputs are projected to the common-size space
+    static_emb <- self$static_embedding(X_static_cat)
+    past_emb   <- self$past_embedding(X_past_cat)
+    fut_emb    <- self$future_embedding(X_fut_cat)
 
+    static_proj <- self$static_projection(X_static_num)
+    past_proj   <- self$past_projection(X_past_num)
+    fut_proj    <- self$future_projection(X_fut_num)
+
+    # ==========================================================================
+    #                       STATIC VARIABLE SELECTION
+    # ==========================================================================
+
+    # selected_static: [num_samples x state_size]
+    # static_weights: [num_samples x num_static_inputs x 1]
+
+    static_features <- layer_concatenate(axis = 1)(list(static_emb, static_proj))
+
+    c(static_selected, static_selection_weights) %<-%
+      self$vsn_static(static_features)
+
+    # ============================================================================
+    #                     STATIC CONTEXT VECTORS
+    # ============================================================================
+
+    # We create four separate static context vectors which are
+    # then send to different parts of the network
+
+    c_enrichment <- self$grn_enrichment(static_selected)
+    c_selection  <- self$grn_selection(static_selected)
+    c_seq_cell   <- self$grn_seq_cell(static_selected)
+    c_seq_hidden <- self$grn_hidden(static_selected)
+
+    # ==========================================================================
+    #                       PAST VARIABLE SELECTION
+    # ==========================================================================
+
+    past_features <- layer_concatenate(axis = 2)(list(past_emb, past_proj))
+
+    c(selected_past, past_selection_weights) %<-%
+        self$vsn_past(past_features, c_selection)
+
+    # ==========================================================================
+    #                     FUTURE VARIABLE SELECTION
+    # ==========================================================================
+
+    fut_features <- layer_concatenate(axis = 2)(list(fut_emb, fut_proj))
+
+    c(selected_fut, fut_selection_weights) %<-%
+      self$vsn_future(fut_features, c_selection)
+
+    # ==========================================================================
+    #                         LSTM FOR PAST FEATURES
+    # ==========================================================================
+
+    initial_state <- list(c_seq_hidden, c_seq_cell)
+
+    c(processed_past, h1_past, h2_past) %<-%
+      self$lstm_past(selected_past, initial_state = initial_state)
+
+    hidden_state_past <- list(h1_past, h2_past)
+
+    # ==========================================================================
+    #                       LSTM FOR FUTURE FEATURES
+    # ==========================================================================
+
+    initial_state <- list(c_seq_hidden, c_seq_cell)
+
+    processed_future <-
+      self$lstm_future(selected_fut, initial_state = hidden_state_past)
+
+    # ==========================================================================
+    #                         GATE AFTER LSTM LAYERS
+    # ==========================================================================
+
+    # It let us skip the LSTM layers if needed
+
+    # lstms_input_features <-
+    #   layer_concatenate(axis = 1)(list(selected_past, selected_future))
+    #
+    # lstms_output_features <-
+    #   layer_concatenate(axis = 1)(list(processed_past, processed_future))
+    #
+    # if (!is.null(self$dropout_rate))
+    #   lstms_input_features <- layer_dropout(rate = dropout_rate)(lstms_input_features)
+    #
+    # lstms_input_features <- layer_glu(units = state_size)(lstms_input_features)
+    #
+    # combined_lstm_output <- layer_add(
+    #   list(lstms_input_features, lstms_output_features)
+    # )
+    #
+    # combined_lstm_output <- layer_layer_normalization()(combined_lstm_output)
+
+
+
+    processed_future
   }
+
+
 
 )

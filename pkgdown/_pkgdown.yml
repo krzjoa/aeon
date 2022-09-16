@@ -40,6 +40,5 @@ reference:
   - model_tft
 - title: Data utils
   contents:
-  - as_3d_array
   - make_arrays
   - ts_generator
