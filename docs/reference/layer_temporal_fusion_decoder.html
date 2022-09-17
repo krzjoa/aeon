@@ -81,73 +81,31 @@ processed ath the end.</p></li>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
-<span class="r-in"><span class="va">lookback</span>   <span class="op">&lt;-</span> <span class="fl">28</span></span>
-<span class="r-in"><span class="va">horizon</span>    <span class="op">&lt;-</span> <span class="fl">14</span></span>
-<span class="r-in"><span class="va">all_steps</span>  <span class="op">&lt;-</span> <span class="va">lookback</span> <span class="op">+</span> <span class="va">horizon</span></span>
-<span class="r-in"><span class="va">state_size</span> <span class="op">&lt;-</span> <span class="fl">5</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">lstm_output</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/keras/man/layer_input.html" class="external-link">layer_input</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">all_steps</span>, <span class="va">state_size</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">context</span>     <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/keras/man/layer_input.html" class="external-link">layer_input</a></span><span class="op">(</span><span class="va">state_size</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># No attentiion scores returned</span></span>
-<span class="r-in"><span class="va">tdf</span> <span class="op">&lt;-</span> <span class="fu">layer_temporal_fusion_decoder</span><span class="op">(</span></span>
-<span class="r-in">   hidden_units <span class="op">=</span> <span class="fl">30</span>,</span>
-<span class="r-in">   state_size <span class="op">=</span> <span class="va">state_size</span>,</span>
-<span class="r-in">   use_context <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span class="r-in">   num_heads <span class="op">=</span> <span class="fl">10</span></span>
-<span class="r-in"><span class="op">)</span><span class="op">(</span><span class="va">lstm_output</span>, <span class="va">context</span><span class="op">)</span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in py_call_impl(callable, dots$args, dots$keywords):</span> RuntimeError: Exception encountered when calling layer "temporal_fusion_decoder" (type TemporalFusionDecoder).</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> &lt;... omitted ...&gt;u-library/4.1/reticulate/python/rpytools/call.py", line 21, in python_function  *</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span>             raise RuntimeError(res[kErrorKey])</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span>     </span>
-<span class="r-err co"><span class="r-pr">#&gt;</span>         RuntimeError: Evaluation error: tensorflow.python.framework.errors_impl.InternalError: Failed copying input tensor from /job:localhost/replica:0/task:0/device:CPU:0 to /job:localhost/replica:0/task:0/device:GPU:0 in order to run _EagerConst: Dst tensor is not initialized.</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span>         .</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span>     </span>
-<span class="r-err co"><span class="r-pr">#&gt;</span>     </span>
-<span class="r-err co"><span class="r-pr">#&gt;</span>     Call arguments received:</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span>       • self=tf.Tensor(shape=(None, 42, 5), dtype=float32)</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span>       • inputs=tf.Tensor(shape=(None, 5), dtype=float32)</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span>       • context=None</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span>     .</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> Call arguments received:</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span>   • self=tf.Tensor(shape=(None, 42, 5), dtype=float32)</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span>   • inputs=tf.Tensor(shape=(None, 5), dtype=float32)</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span>   • context=None</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span>   • return_attention_scores=False</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> See `reticulate::py_last_error()` for details</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># With attention scores</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">tfd</span>, <span class="va">attention_scores</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/pkg/keras/man/multi-assign.html" class="external-link">%&lt;-%</a></span></span>
-<span class="r-in">   <span class="fu">layer_temporal_fusion_decoder</span><span class="op">(</span></span>
-<span class="r-in">      hidden_units <span class="op">=</span> <span class="fl">30</span>,</span>
-<span class="r-in">      state_size <span class="op">=</span> <span class="va">state_size</span>,</span>
-<span class="r-in">      use_context <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span class="r-in">      num_heads <span class="op">=</span> <span class="fl">10</span></span>
-<span class="r-in">   <span class="op">)</span><span class="op">(</span><span class="va">lstm_output</span>, <span class="va">context</span>, return_attention_scores<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in py_call_impl(callable, dots$args, dots$keywords):</span> RuntimeError: Exception encountered when calling layer "temporal_fusion_decoder_1" (type TemporalFusionDecoder).</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> &lt;... omitted ...&gt;-library/4.1/reticulate/python/rpytools/call.py", line 21, in python_function  *</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span>             raise RuntimeError(res[kErrorKey])</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span>     </span>
-<span class="r-err co"><span class="r-pr">#&gt;</span>         RuntimeError: Evaluation error: tensorflow.python.framework.errors_impl.InternalError: Failed copying input tensor from /job:localhost/replica:0/task:0/device:CPU:0 to /job:localhost/replica:0/task:0/device:GPU:0 in order to run _EagerConst: Dst tensor is not initialized.</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span>         .</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span>     </span>
-<span class="r-err co"><span class="r-pr">#&gt;</span>     </span>
-<span class="r-err co"><span class="r-pr">#&gt;</span>     Call arguments received:</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span>       • self=tf.Tensor(shape=(None, 42, 5), dtype=float32)</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span>       • inputs=tf.Tensor(shape=(None, 5), dtype=float32)</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span>       • context=None</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span>     .</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> Call arguments received:</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span>   • self=tf.Tensor(shape=(None, 42, 5), dtype=float32)</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span>   • inputs=tf.Tensor(shape=(None, 5), dtype=float32)</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span>   • context=None</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span>   • return_attention_scores=True</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> See `reticulate::py_last_error()` for details</span>
+    <div class="sourceCode"><pre class="sourceCode r"><code>
+<span class="va">lookback</span>   <span class="op">&lt;-</span> <span class="fl">28</span>
+<span class="va">horizon</span>    <span class="op">&lt;-</span> <span class="fl">14</span>
+<span class="va">all_steps</span>  <span class="op">&lt;-</span> <span class="va">lookback</span> <span class="op">+</span> <span class="va">horizon</span>
+<span class="va">state_size</span> <span class="op">&lt;-</span> <span class="fl">5</span>
+
+<span class="va">lstm_output</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/keras/man/layer_input.html" class="external-link">layer_input</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">all_steps</span>, <span class="va">state_size</span><span class="op">)</span><span class="op">)</span>
+<span class="va">context</span>     <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/keras/man/layer_input.html" class="external-link">layer_input</a></span><span class="op">(</span><span class="va">state_size</span><span class="op">)</span>
+
+<span class="co"># No attentiion scores returned</span>
+<span class="va">tdf</span> <span class="op">&lt;-</span> <span class="fu">layer_temporal_fusion_decoder</span><span class="op">(</span>
+   hidden_units <span class="op">=</span> <span class="fl">30</span>,
+   state_size <span class="op">=</span> <span class="va">state_size</span>,
+   use_context <span class="op">=</span> <span class="cn">TRUE</span>,
+   num_heads <span class="op">=</span> <span class="fl">10</span>
+<span class="op">)</span><span class="op">(</span><span class="va">lstm_output</span>, <span class="va">context</span><span class="op">)</span>
+
+<span class="co"># With attention scores</span>
+<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">tfd</span>, <span class="va">attention_scores</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/pkg/keras/man/multi-assign.html" class="external-link">%&lt;-%</a></span>
+   <span class="fu">layer_temporal_fusion_decoder</span><span class="op">(</span>
+      hidden_units <span class="op">=</span> <span class="fl">30</span>,
+      state_size <span class="op">=</span> <span class="va">state_size</span>,
+      use_context <span class="op">=</span> <span class="cn">TRUE</span>,
+      num_heads <span class="op">=</span> <span class="fl">10</span>
+   <span class="op">)</span><span class="op">(</span><span class="va">lstm_output</span>, <span class="va">context</span>, return_attention_scores<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
@@ -155,7 +113,7 @@ processed ath the end.</p></li>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p></p><p>Developed by <a href="https://krzjoa.github.io" class="external-link">Krzysztof Joachimiak</a>.</p>
+  <p></p><p>Developed by <a href="https://krzjoa.github.io/aion" class="external-link">Krzysztof Joachimiak</a>.</p>
 </div>
 
 <div class="pkgdown-footer-right">

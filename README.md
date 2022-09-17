@@ -18,8 +18,16 @@ You can install the development version of aion from
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("krzjoa/keras.tft")
+devtools::install_github("krzjoa/aion")
 ```
+
+## Key features
+
+-   Temporal Fusion Transformer model
+-   Additional layers: Temporal Convolutional Network block & Legendre
+    Memory Unit
+-   `make_array` and `ts_generator` functions to quickly prepare
+    input/output for `{keras}` time series models
 
 ## Usage
 
@@ -32,18 +40,9 @@ library(aion)
 library(keras)
 
 # Data wrangling
-library(recipes, warn.conflicts=FALSE)
-#> Ładowanie wymaganego pakietu: dplyr
-#> 
-#> Dołączanie pakietu: 'dplyr'
-#> Następujące obiekty zostały zakryte z 'package:stats':
-#> 
-#>     filter, lag
-#> Następujące obiekty zostały zakryte z 'package:base':
-#> 
-#>     intersect, setdiff, setequal, union
 library(dplyr, warn.conflicts=FALSE)
 library(data.table, warn.conflicts=FALSE)
+library(recipes, warn.conflicts=FALSE)
 
 # ==========================================================================
 #                          PREPARING THE DATA

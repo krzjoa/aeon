@@ -7,15 +7,36 @@
 loss_negative_log_likelihood(...)
 }
 \arguments{
-\item{distribution}{A probability distribution function from \code{tfprobability} package.}
+\item{distribution}{A probability distribution function from \code{tfprobability} package.
+Default: \code{\link[tfprobability:tfd_normal]{tfprobability::tfd_normal()}}}
 }
 \description{
-General negative log likelihood loss function
+Bear in mind, that the number of the model outputs must reflect the number
+of distribution parameters. For example, if you use normal distribution (\code{\link[tfprobability:tfd_normal]{tfprobability::tfd_normal()}}),
+which is described with two parameters (mean and standard deviation), the model
+should return two values per each timestep. In othr words, it produces a distribution
+as a forecast rather than a point estimate. When the model is trained, we have two options
+to generate the final forecast:
+\itemize{
+\item use the expected value of the distribution (e.g. mean for normal distribution)
+\item sample a value from the distribution
+Additionally, having the distribution we can compute prediction intervals.
+Remeber also about the constraints imposed on the parameter values, e.g. standard deviation must be positive.
+}
 }
 \examples{
 y_pred <- array(runif(60), c(2, 10, 2))
 y_true <- array(runif(20), c(2, 10, 1))
 
-loss_negative_log_likelihood(reduction = 'auto')(y_true, y_pred)
+loss_negative_log_likelihood(
+    distribution = tfprobability::tfd_normal,
+    reduction = 'auto'
+ )(y_true, y_pred)
 loss_negative_log_likelihood(reduction = 'sum')(y_true, y_pred)
+}
+\references{
+\enumerate{
+\item \href{https://towardsdatascience.com/cross-entropy-negative-log-likelihood-and-all-that-jazz-47a95bd2e81}{Cross-Entropy, Negative Log-Likelihood, and All That Jazz}
+\item D. Salinas, V. Flunkert, J. Gasthaus, T. Januschowski, \href{https://arxiv.org/abs/1704.04110}{DeepAR: Probabilistic forecasting with autoregressive recurrent networks, International Journal of Forecasting}(2019)
+}
 }

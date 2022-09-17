@@ -1,6 +1,8 @@
 #' Prepare input/taget arrays for time series models
 #'
-#' @inheritParams as_3d_array
+#' @param data A `[data.table::data.table()]` instance
+#' @param key
+#' @param index
 #' @param lookback The length of the context from the past
 #' @param horizon The forecast length
 #' @param stride Stride of the moving window
@@ -114,8 +116,16 @@ make_arrays <- function(data, key, index, lookback,
 
   ts_starts <-
     data[, .(start_time = min(get(index)),
-             end_time = max(get(index)) - total_window_length),
+             end_time = max(get(index))),
          by = eval(key)]
+
+  if (any(ts_starts$end_time - ts_starts$start_time < total_window_length))
+    warning("In couple of examples start_time - edn_time < total_window_length")
+
+  ts_starts <-
+    ts_starts[ts_starts$start_time - ts_starts$end_time >= total_window_length]
+
+  ts_starts[, end_time := end_time - total_window_length]
 
   # Types
   ts_starts[, window_start := Map(\(x, y) seq(x, y, stride),

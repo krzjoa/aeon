@@ -6,6 +6,39 @@
 \usage{
 metric_q_risk(...)
 }
+\arguments{
+\item{quantile}{A desired quantile expressed as a numeric in range \link{0, 1}.}
+}
 \description{
-q-Risk metric
+Also referred to as:
+\itemize{
+\item \eqn{\pi-risk} (2)
+\item \eqn{p*-loss} (3)
+\item \eqn{ρ-quantile loss R_{ρ}} (4).
+It's a metric based on the quantile loss.
+Loss value for a single sample-timestep-quantile is computed as:
+\deqn{QL(y_t, \hat{y}_t, q) = max(q(y_t - \hat{y}_t), (q - 1)(y_t - \hat{y}_t))}
+or equivalently as :
+\deqn{QL(y_t, \hat{y}_t, q) = max(q(y_t - \hat{y}_t), 0) +  max((1 - q)(\hat{y}_t - y_t), 0)}
+The final form of the metric looks as follows:
+\deqn{q-Risk = \frac{2\Sigma_{y_t \in \Omega}\Sigma^{\tau_{max}}_{\tau=1}QL(y_t, \hat{y}(q, t - \tau, \tau), q)}{\Sigma_{y_t \in \Omega}\Sigma^{\tau_{max}}_{\tau=1}{|y_t|}}}
+}
+}
+\examples{
+y_pred <- array(runif(60), c(2, 10, 1))
+y_true <- array(runif(20), c(2, 10, 1))
+
+metric_q_risk(quantile=0.5)(y_pred, y_true)
+metric_q_risk(quantile=0.9)(y_pred, y_true)
+}
+\references{
+\enumerate{
+\item B. Lim, S.O. Arik, N. Loeff, T. Pfiste, \href{https://arxiv.org/abs/1912.09363}{Temporal Fusion Transformers for Interpretable Multi-horizon Time Series Forecasting}(2020)
+\item D. Salinas, V. Flunkert, J. Gasthaus, T. Januschowski, \href{https://arxiv.org/abs/1704.04110}{DeepAR: Probabilistic forecasting with autoregressive recurrent networks, International Journal of Forecasting}(2019)
+\item S. S. Rangapuram, et al., \href{https://papers.nips.cc/paper/2018/hash/5cf68969fb67aa6082363a6d4e6468e2-Abstract.html}{Deep state space models for time series forecasting, in: NIPS}(2018)
+\item S. Li, et al., \href{https://arxiv.org/abs/1907.00235}{Enhancing the locality and breaking the memory bottleneck of transformer on time series forecasting, in: NeurIPS}(2019)
+}
+}
+\seealso{
+\code{\link[=loss_quantile]{loss_quantile()}}
 }

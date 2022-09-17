@@ -123,15 +123,12 @@ It may be considered as a replacement for the recurrent layers.</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># \donttest{</span></span>
-<span class="r-in"><span class="va">inp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/keras/man/layer_input.html" class="external-link">layer_input</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">28</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">tcn</span> <span class="op">&lt;-</span> <span class="fu">layer_tcn</span><span class="op">(</span><span class="op">)</span><span class="op">(</span><span class="va">inp</span><span class="op">)</span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in py_call_impl(callable, dots$args, dots$keywords):</span> tensorflow.python.framework.errors_impl.InternalError: Failed copying input tensor from /job:localhost/replica:0/task:0/device:CPU:0 to /job:localhost/replica:0/task:0/device:GPU:0 in order to run _EagerConst: Dst tensor is not initialized.</span>
-<span class="r-in"><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/keras/man/keras_model.html" class="external-link">keras_model</a></span><span class="op">(</span><span class="va">inp</span>, <span class="va">tcn</span><span class="op">)</span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in py_resolve_dots(list(...)):</span> object 'tcn' not found</span>
-<span class="r-in"><span class="fu">model</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/array.html" class="external-link">array</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">32</span>, <span class="fl">28</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in model(array(1, c(32, 28, 3))):</span> could not find function "model"</span>
-<span class="r-in"><span class="co"># }</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="co"># \donttest{</span>
+<span class="va">inp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/keras/man/layer_input.html" class="external-link">layer_input</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">28</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span>
+<span class="va">tcn</span> <span class="op">&lt;-</span> <span class="fu">layer_tcn</span><span class="op">(</span><span class="op">)</span><span class="op">(</span><span class="va">inp</span><span class="op">)</span>
+<span class="va">model</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/keras/man/keras_model.html" class="external-link">keras_model</a></span><span class="op">(</span><span class="va">inp</span>, <span class="va">tcn</span><span class="op">)</span>
+<span class="fu">model</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/array.html" class="external-link">array</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">32</span>, <span class="fl">28</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
+<span class="co"># }</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
@@ -139,7 +136,7 @@ It may be considered as a replacement for the recurrent layers.</p>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p></p><p>Developed by <a href="https://krzjoa.github.io" class="external-link">Krzysztof Joachimiak</a>.</p>
+  <p></p><p>Developed by <a href="https://krzjoa.github.io/aion" class="external-link">Krzysztof Joachimiak</a>.</p>
 </div>
 
 <div class="pkgdown-footer-right">

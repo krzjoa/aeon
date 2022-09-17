@@ -20,27 +20,72 @@ To do so quickly, we'll use functions from `{aion}` package.
 ```{r setup}
 library(data.table)
 library(dplyr, warn.conflicts = FALSE)
-library(m5)
 library(aion)
 library(keras)
+library(tsibbledata)
+library(recipes, warn.conflicts = FALSE)
+library(ggplot2)
+
+set.seed(7)
 ```
 
+We feed a `{keras}` models in two ways, using:
+* arrays
+* generators
+ 
+Below I present, how to prepare both types of inputs/outputs using `{aion}`.
 
-## Panel data (M5)
+## Data analysis
 
-`{m5}` package contains functions to download and preprocess the data from the
-[M5 Forecasting](https://www.kaggle.com/c/m5-forecasting-accuracy) challenges.
-We don't need to fetch the whole dataset, we'll settle for its subset named `tiny_m5`.
+As an example we'll the `global_economy` dataset from the `{tsibbledata}` package.
 
-```{r }
-head(tiny_m5)
+`global_economy` is a n example of **panel dataset**. It simply means that in contains multiple
+time series, distinguished with **Country** What we'd like to do, after optional preprocessing such as scaling, imputation etc. is to create a set of arrays (tensors) or a generator, which serves respective batch-level tensors on fly.
+
+```{r data}
+head(global_economy)
 ```
+
 ```{r dates}
-summary(tiny_m5$date)
+summary(global_economy$Year)
 ```
 
-`tiny_m5` is a n example of **panel dataset**. It simply means that in contains multiple
-time series, distinguished with **item_id** and **store_id**. What we'd like to do, after optional preprocessing such as scaling, imputation etc. is to create a set of arrays (tensors) or a generator, which serves respective batch-level tensors on fly.
+
+```{r sample_plots}
+glob_econ <- as.data.table(global_economy)
+
+sample_countries <- sample(unique(global_economy$Country), 4)
+
+ggplot(glob_econ[Country %in% sample_countries]) +
+  geom_line(aes(Year, GDP)) +
+  facet_wrap(vars(Country), scales = 'free_y')
+```
+
+## Data preprocessing
+
+```{r preprocess}
+split_year <- 2000
+
+ge_recipe <- 
+  recipe(GDP ~ . , data = glob_econ) %>% 
+  step_mutate(Country_idx = Country) %>% 
+  step_integer(Country_idx) %>% 
+  prep()
+
+train <- 
+  glob_econ[Year <= split_year] %>% 
+  bake(ge_recipe, .)
+
+setDT(train)
+
+test <- 
+  glob_econ[Year > split_year] %>% 
+  bake(ge_recipe, .)
+
+setDT(test)
+```
+
+## Arrays
 
 Typically, in the time series forecasting field, we can distiguish the following types of variables:
 
@@ -52,49 +97,31 @@ Typically, in the time series forecasting field, we can distiguish the following
 
 Past target values can be simply treated as a part of the tensor of the past dynamic features.
 
+
 The simpliest possible scenario is to split the dataset using certain date.
 ```{r}
-PAST_FUTURE_SPLIT_DATE <- as.Date('2016-01-01')
+KEY         <- 'Country'
+INDEX       <- 'Year'
+TARGET      <- 'GDP'
+NUMERIC     <- c('Growth', 'CPI', 'Imports', 'Exports', 'Population')
+CATEGORICAL <- 'Country_idx'
 
-past <- tiny_m5[date < PAST_FUTURE_SPLIT_DATE]
-future <- tiny_m5[date >= PAST_FUTURE_SPLIT_DATE]
+LOOKBACK <- 2
+HOIRZON  <- 1
 
-ID          <- c('item_id', 'store_id')
-DATE        <- 'date'
-TARGET      <- 'value'
-NUMERIC     <- c('sell_price')
-CATEGORICAL <- c('wday', 'month', 'snap')
-
-# X_past_numeric <-
-#   past %>% 
-#   select(!!c(TARGET, NUMERIC, DATE, ID)) %>% 
-#   as.data.table() %>% 
-#   as_3d_array(key = ID, index = DATE)
-# 
-# print(dim(X_past_numeric))
-# # print(X_past_numeric[1, 1:10, 1:2])
-# 
-# X_past_categorical <-
-#   past %>% 
-#   select(!!c(CATEGORICAL, DATE, ID)) %>% 
-#   as_3d_array(key = ID, index = DATE)
-# 
-# print(dim(X_past_categorical))
-# #print(X_past_categorical[1, 1:10, 1:2])
-# 
-# X_future_numeric <-
-#   past %>% 
-#   select(!!c(NUMERIC, DATE, ID)) %>% 
-#   as_3d_array(key = ID, index = DATE)
-# 
-# print(dim(X_past_categorical))
-# #print(X_past_categorical[1, 1:10, 1:2])
-# 
-# y <-
-#   future %>% 
-#   select(!!c(TARGET, DATE, ID)) %>% 
-#   as_3d_array(key = ID, index = DATE)
-# 
-# print(y)
+# train_arrays <- 
+#   make_arrays(
+#     data        = train,
+#     key         = KEY,
+#     index       = INDEX,
+#     lookback    = LOOKBACK,
+#     horizon     = HOIRZON,
+#     stride      = 4,
+#     shuffle     = TRUE,
+#     target      = TARGET,
+#     categorical = CATEGORICAL,
+#     numeric     = NUMERIC
+#   )
 ```
 
+## Generators

@@ -7,7 +7,8 @@
 #' @include layer-scaled-dot-attention.R
 #'
 #' @references
-#' [TFT original implementation by Google](https://github.com/google-research/google-research/blob/4808a726f4b126ea38d49cdd152a6bb5d42efdf0/tft/libs/tft_model.py#L278)
+#' 1. 2. B. Lim, S.O. Arik, N. Loeff, T. Pfiste, [Temporal Fusion Transformers for Interpretable Multi-horizon Time Series Forecasting](https://arxiv.org/abs/1912.09363)(2020)
+#' 2. [TFT original implementation by Google](https://github.com/google-research/google-research/blob/4808a726f4b126ea38d49cdd152a6bb5d42efdf0/tft/libs/tft_model.py#L278)
 #'
 #' @examples
 #' lookback   <- 28

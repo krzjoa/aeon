@@ -25,7 +25,7 @@ loss_tweedie(p = 1.5, reduction = 'auto')(y_true, y_pred)
 loss_tweedie(p = 1.5, reduction = 'sum')(y_true, y_pred)
 }
 \references{
-\itemize{
+\enumerate{
 \item \href{https://towardsdatascience.com/tweedie-loss-function-for-right-skewed-data-2c5ca470678f}{Tweedie Loss Function}
 \item \href{https://stats.stackexchange.com/questions/123598/tweedie-p-parameter-interpretation}{p parameter}
 }

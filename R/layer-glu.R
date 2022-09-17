@@ -17,9 +17,9 @@
 #' with identical shape.
 #'
 #' @references
-#' 1. Dauphin, Yann N., et al. (2017). [Language modeling with gated convolutional networks.](https://arxiv.org/abs/1612.08083).
-#' International conference on machine learning. PMLR
-#' 2. Lim, Bryan et al. (2019). [Temporal Fusion Transformers for Interpretable Multi-horizon Time Series Forecasting](https://arxiv.org/abs/1612.08083). arXiv
+#' 1. Y. N. Dauphin., et al. [Language modeling with gated convolutional networks.](https://arxiv.org/abs/1612.08083).
+#' International conference on machine learning. PMLR (2017)
+#' 2. B. Lim, S.O. Arik, N. Loeff, T. Pfiste, [Temporal Fusion Transformers for Interpretable Multi-horizon Time Series Forecasting](https://arxiv.org/abs/1912.09363)(2020)
 #' 3. [Implementation PyTorch by Jan Beitner](https://github.com/jdb78/pytorch-forecasting/blob/268121aa9aa732558beefb6d9f95feff955ad08b/pytorch_forecasting/models/temporal_fusion_transformer/sub_modules.py#L71)
 #' 4. [Implementation PyTorch by Playtika Research](https://github.com/PlaytikaResearch/tft-torch/blob/9eee6db42b8ec6b6a586e8852e3af6e2d6b18035/tft_torch/tft.py#L11)
 #'

@@ -102,3 +102,6 @@ dim(gate)
 values[1, all_dims()]
 gate[1, all_dims()]
 }
+\references{
+B. Lim, S.O. Arik, N. Loeff, T. Pfiste, \href{https://arxiv.org/abs/1912.09363}{Temporal Fusion Transformers for Interpretable Multi-horizon Time Series Forecasting}(2020)
+}

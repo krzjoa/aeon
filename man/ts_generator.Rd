@@ -24,6 +24,8 @@ ts_generator(
 )
 }
 \arguments{
+\item{data}{A \verb{[data.table::data.table()]} instance}
+
 \item{lookback}{The length of the context from the past}
 
 \item{horizon}{The forecast length}

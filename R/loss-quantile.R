@@ -9,7 +9,7 @@
 #' \deqn{QL(y_t, \hat{y}_t, q) = max(q(y_t - \hat{y}_t), 0) +  max((1 - q)(\hat{y}_t - y_t), 0)}
 #'
 #' When multiple quantiles are defined, the generalized, averaged loss is computed according to the equation:
-#' \deqn{\mathcal{L}(\Omega, W) = \Sigma_{y_t \in \Omega}\Sigma_{q \in \mathcal{Q}}\Sigma^{\tau_{max}}_{\tau=1} = \frac{QL(y_t, \hat{y}(q, t - \tau, \tau), q)}{M_{\tau_{max}}}}
+#' \deqn{\mathcal{L}(\Omega, W) = \Sigma_{y_t \in \Omega}\Sigma_{q \in \mathcal{Q}}\Sigma^{\tau_{max}}_{\tau=1} \frac{QL(y_t, \hat{y}(q, t - \tau, \tau), q)}{M_{\tau_{max}}}}
 #'
 #' The loss function is computed as above when `reduction = 'auto` or `reduction = 'mean'`.
 #'
@@ -21,7 +21,6 @@
 #' @inheritParams loss-functions
 #' @param quantiles List of quantiles (numeric vector with values between 0 and 1).
 #'
-#' @importFrom keras keras_array
 #' @import tensorflow
 #'
 #' @examples
@@ -30,11 +29,14 @@
 #'
 #' loss_quantile(quantiles = c(0.1, 0.5, 0.9), reduction = 'auto')(y_true, y_pred)
 #' loss_quantile(quantiles = c(0.1, 0.5, 0.9), reduction = 'sum')(y_true, y_pred)
+#'
+#' @seealso [metric_q_risk()]
+#'
 #' @references
-#'  * [Quantile loss function for machine learning](https://www.evergreeninnovations.co/blog-quantile-loss-function-for-machine-learning/)
-#'  * [Pinball loss function (Lokad)](https://www.lokad.com/pinball-loss-function-definition)
-#'  * [Temporal Fusion Transformer](https://arxiv.org/pdf/1912.09363.pdf)
-#'  * [Original TFT implementation by Google](https://github.com/google-research/google-research/blob/f87f702c0f78f1cdc19bf167123c43304d01ee08/tft/libs/tft_model.py#L1059)
+#' 1. B. Lim, S.O. Arik, N. Loeff, T. Pfiste, [Temporal Fusion Transformers for Interpretable Multi-horizon Time Series Forecasting](https://arxiv.org/abs/1912.09363)(2020)
+#' 2. [Quantile loss function for machine learning](https://www.evergreeninnovations.co/blog-quantile-loss-function-for-machine-learning/)
+#' 3. [Pinball loss function (Lokad)](https://www.lokad.com/pinball-loss-function-definition)
+#' 4. [Original TFT implementation by Google](https://github.com/google-research/google-research/blob/f87f702c0f78f1cdc19bf167123c43304d01ee08/tft/libs/tft_model.py#L1059)
 #'
 #' @export
 loss_quantile <- keras::new_loss_class(
@@ -46,21 +48,20 @@ loss_quantile <- keras::new_loss_class(
     self$quantiles <- self$.validate_quantiles(quantiles)
   },
 
-  call = function(y_true, y_pred, quantiles, reduction = 'auto'){
+  call = function(y_true, y_pred){
 
-    if (missing(quantiles))
-      quantiles <- self$quantiles
-    else
-      quantiles <- self$.validate_quantiles(quantiles)
+    quantiles <- array(self$quantiles, c(1, 1, length(self$quantiles)))
+    quantiles <- keras::keras_array(quantiles)
 
-    quantiles <- array(quantiles, c(1, 1, length(quantiles)))
-    quantiles <- keras_array(quantiles)
+    errors <- tensorflow::tf$subtract(y_pred, y_true)
+    errors <- keras::k_cast(errors, 'float32')
 
-    errors <- tf$subtract(y_pred, y_true)
-    errors <- k_cast(errors, 'float32')
+    loss   <-
+      tensorflow::tf$maximum(
+        tensorflow::tf$subtract(quantiles, 1) * errors,
+        quantiles * errors
+      )
 
-    loss   <- tf$maximum(tf$subtract(quantiles, 1) * errors,
-                         quantiles * errors)
     loss
   },
 

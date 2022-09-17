@@ -23,7 +23,7 @@ or equivalently as :
 \deqn{QL(y_t, \hat{y}_t, q) = max(q(y_t - \hat{y}_t), 0) +  max((1 - q)(\hat{y}_t - y_t), 0)}
 
 When multiple quantiles are defined, the generalized, averaged loss is computed according to the equation:
-\deqn{\mathcal{L}(\Omega, W) = \Sigma_{y_t \in \Omega}\Sigma_{q \in \mathcal{Q}}\Sigma^{\tau_{max}}_{\tau=1} = \frac{QL(y_t, \hat{y}(q, t - \tau, \tau), q)}{M_{\tau_{max}}}}
+\deqn{\mathcal{L}(\Omega, W) = \Sigma_{y_t \in \Omega}\Sigma_{q \in \mathcal{Q}}\Sigma^{\tau_{max}}_{\tau=1} \frac{QL(y_t, \hat{y}(q, t - \tau, \tau), q)}{M_{\tau_{max}}}}
 
 The loss function is computed as above when \verb{reduction = 'auto} or \code{reduction = 'mean'}.
 }
@@ -38,12 +38,16 @@ y_true <- array(runif(20), c(2, 10, 1))
 
 loss_quantile(quantiles = c(0.1, 0.5, 0.9), reduction = 'auto')(y_true, y_pred)
 loss_quantile(quantiles = c(0.1, 0.5, 0.9), reduction = 'sum')(y_true, y_pred)
+
 }
 \references{
-\itemize{
+\enumerate{
+\item B. Lim, S.O. Arik, N. Loeff, T. Pfiste, \href{https://arxiv.org/abs/1912.09363}{Temporal Fusion Transformers for Interpretable Multi-horizon Time Series Forecasting}(2020)
 \item \href{https://www.evergreeninnovations.co/blog-quantile-loss-function-for-machine-learning/}{Quantile loss function for machine learning}
 \item \href{https://www.lokad.com/pinball-loss-function-definition}{Pinball loss function (Lokad)}
-\item \href{https://arxiv.org/pdf/1912.09363.pdf}{Temporal Fusion Transformer}
 \item \href{https://github.com/google-research/google-research/blob/f87f702c0f78f1cdc19bf167123c43304d01ee08/tft/libs/tft_model.py#L1059}{Original TFT implementation by Google}
 }
+}
+\seealso{
+\code{\link[=metric_q_risk]{metric_q_risk()}}
 }

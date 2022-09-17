@@ -8,6 +8,10 @@
 #'
 #' @include layer-interpretable-mh-attention.R layer-grn.R
 #'
+#' @seealso
+#' TFT components:
+#' [layer_glu()], [layer_grn()], [layer_multi_embedding()], [layer_multi_dense()]
+#'
 #' @references
 #' 1. [Paper](https://arxiv.org/abs/1912.09363)
 #' 2. [Original TFT implementation in TensorFlow](https://github.com/google-research/google-research/blob/master/tft/libs/tft_model.py)

@@ -86,9 +86,9 @@ gate[1,]
 }
 \references{
 \enumerate{
-\item Dauphin, Yann N., et al. (2017). \href{https://arxiv.org/abs/1612.08083}{Language modeling with gated convolutional networks.}.
-International conference on machine learning. PMLR
-\item Lim, Bryan et al. (2019). \href{https://arxiv.org/abs/1612.08083}{Temporal Fusion Transformers for Interpretable Multi-horizon Time Series Forecasting}. arXiv
+\item Y. N. Dauphin., et al. \href{https://arxiv.org/abs/1612.08083}{Language modeling with gated convolutional networks.}.
+International conference on machine learning. PMLR (2017)
+\item B. Lim, S.O. Arik, N. Loeff, T. Pfiste, \href{https://arxiv.org/abs/1912.09363}{Temporal Fusion Transformers for Interpretable Multi-horizon Time Series Forecasting}(2020)
 \item \href{https://github.com/jdb78/pytorch-forecasting/blob/268121aa9aa732558beefb6d9f95feff955ad08b/pytorch_forecasting/models/temporal_fusion_transformer/sub_modules.py#L71}{Implementation PyTorch by Jan Beitner}
 \item \href{https://github.com/PlaytikaResearch/tft-torch/blob/9eee6db42b8ec6b6a586e8852e3af6e2d6b18035/tft_torch/tft.py#L11}{Implementation PyTorch by Playtika Research}
 }

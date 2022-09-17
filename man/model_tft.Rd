@@ -61,3 +61,7 @@ tft(X_past_num, X_past_cat, X_fut_num, X_fut_cat, X_static_num, X_static_cat)
 \item \href{https://github.com/PlaytikaResearch/tft-torch/blob/main/tft_torch/tft.py}{A very clear implementation in PyTorch}
 }
 }
+\seealso{
+TFT components:
+\code{\link[=layer_glu]{layer_glu()}}, \code{\link[=layer_grn]{layer_grn()}}, \code{\link[=layer_multi_embedding]{layer_multi_embedding()}}, \code{\link[=layer_multi_dense]{layer_multi_dense()}}
+}

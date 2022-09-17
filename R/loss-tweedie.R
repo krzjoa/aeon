@@ -4,8 +4,8 @@
 #' @param p Power parameter from the [0, 2] range. It allows to choose a desired distribution from the Tweedie distributions family.
 #'
 #' @references
-#' * [Tweedie Loss Function](https://towardsdatascience.com/tweedie-loss-function-for-right-skewed-data-2c5ca470678f)
-#' * [p parameter](https://stats.stackexchange.com/questions/123598/tweedie-p-parameter-interpretation)
+#' 1. [Tweedie Loss Function](https://towardsdatascience.com/tweedie-loss-function-for-right-skewed-data-2c5ca470678f)
+#' 2. [p parameter](https://stats.stackexchange.com/questions/123598/tweedie-p-parameter-interpretation)
 #'
 #' @note
 #' For the moment, you can only use `loss_quantile` to instantiate a class
