@@ -26,8 +26,8 @@ quantiles at once."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/aj
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/m5_forecasting.html">M5 Forecasting challenges</a>
-    <a class="dropdown-item" href="../articles/preparing_input.html">Preparing input</a>
+    <a class="dropdown-item" href="../articles/m5_forecasting.html">M5 Forecasting competitions</a>
+    <a class="dropdown-item" href="../articles/preparing_input.html">Preparing input for time series models</a>
   </div>
 </li>
       </ul><form class="form-inline my-2 my-lg-0" role="search">
@@ -82,19 +82,26 @@ and not call directly like other loss in <code>keras</code>. Please see:
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
     
-<ul><li><p><a href="https://www.evergreeninnovations.co/blog-quantile-loss-function-for-machine-learning/" class="external-link">Quantile loss function for machine learning</a></p></li>
+<ol><li><p>B. Lim, S.O. Arik, N. Loeff, T. Pfiste, <a href="https://arxiv.org/abs/1912.09363" class="external-link">Temporal Fusion Transformers for Interpretable Multi-horizon Time Series Forecasting</a>(2020)</p></li>
+<li><p><a href="https://www.evergreeninnovations.co/blog-quantile-loss-function-for-machine-learning/" class="external-link">Quantile loss function for machine learning</a></p></li>
 <li><p><a href="https://www.lokad.com/pinball-loss-function-definition" class="external-link">Pinball loss function (Lokad)</a></p></li>
-<li><p><a href="https://arxiv.org/pdf/1912.09363.pdf" class="external-link">Temporal Fusion Transformer</a></p></li>
 <li><p><a href="https://github.com/google-research/google-research/blob/f87f702c0f78f1cdc19bf167123c43304d01ee08/tft/libs/tft_model.py#L1059" class="external-link">Original TFT implementation by Google</a></p></li>
-</ul></div>
+</ol></div>
+    <div class="section level2">
+    <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
+    <div class="dont-index"><p><code><a href="metric_q_risk.html">metric_q_risk()</a></code></p></div>
+    </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="va">y_pred</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/array.html" class="external-link">array</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">60</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">10</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span>
-<span class="va">y_true</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/array.html" class="external-link">array</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">20</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">10</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span>
-
-<span class="fu">loss_quantile</span><span class="op">(</span>quantiles <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.1</span>, <span class="fl">0.5</span>, <span class="fl">0.9</span><span class="op">)</span>, reduction <span class="op">=</span> <span class="st">'auto'</span><span class="op">)</span><span class="op">(</span><span class="va">y_true</span>, <span class="va">y_pred</span><span class="op">)</span>
-<span class="fu">loss_quantile</span><span class="op">(</span>quantiles <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.1</span>, <span class="fl">0.5</span>, <span class="fl">0.9</span><span class="op">)</span>, reduction <span class="op">=</span> <span class="st">'sum'</span><span class="op">)</span><span class="op">(</span><span class="va">y_true</span>, <span class="va">y_pred</span><span class="op">)</span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">y_pred</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/array.html" class="external-link">array</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">60</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">10</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">y_true</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/array.html" class="external-link">array</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">20</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">10</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="fu">loss_quantile</span><span class="op">(</span>quantiles <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.1</span>, <span class="fl">0.5</span>, <span class="fl">0.9</span><span class="op">)</span>, reduction <span class="op">=</span> <span class="st">'auto'</span><span class="op">)</span><span class="op">(</span><span class="va">y_true</span>, <span class="va">y_pred</span><span class="op">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> tf.Tensor(0.1629582, shape=(), dtype=float32)</span>
+<span class="r-in"><span class="fu">loss_quantile</span><span class="op">(</span>quantiles <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.1</span>, <span class="fl">0.5</span>, <span class="fl">0.9</span><span class="op">)</span>, reduction <span class="op">=</span> <span class="st">'sum'</span><span class="op">)</span><span class="op">(</span><span class="va">y_true</span>, <span class="va">y_pred</span><span class="op">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> tf.Tensor(9.777493, shape=(), dtype=float32)</span>
+<span class="r-in"></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

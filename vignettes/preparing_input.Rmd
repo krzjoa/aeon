@@ -1,5 +1,5 @@
 ---
-title: "Preparing input"
+title: "Preparing input for time series models"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{preparing_input}
@@ -10,7 +10,9 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  fig.width=6, 
+  fig.height=4
 )
 ```
 
@@ -30,8 +32,9 @@ set.seed(7)
 ```
 
 We feed a `{keras}` models in two ways, using:
-* arrays
-* generators
+
+* **arrays**
+* **generators**
  
 Below I present, how to prepare both types of inputs/outputs using `{aion}`.
 
@@ -76,13 +79,9 @@ train <-
   glob_econ[Year <= split_year] %>% 
   bake(ge_recipe, .)
 
-setDT(train)
-
 test <- 
   glob_econ[Year > split_year] %>% 
   bake(ge_recipe, .)
-
-setDT(test)
 ```
 
 ## Arrays
@@ -93,35 +92,116 @@ Typically, in the time series forecasting field, we can distiguish the following
 * **future values of the target variable** 
 * **past dynamic features** (numeric and categorical)
 * **future dynamic features** (numeric and categorical)
-* **static features** 
+* **static features** (numeric and categorical)
 
 Past target values can be simply treated as a part of the tensor of the past dynamic features.
 
 
-The simpliest possible scenario is to split the dataset using certain date.
+The simplest possible scenario is to split the dataset using certain date.
 ```{r}
 KEY         <- 'Country'
 INDEX       <- 'Year'
 TARGET      <- 'GDP'
 NUMERIC     <- c('Growth', 'CPI', 'Imports', 'Exports', 'Population')
 CATEGORICAL <- 'Country_idx'
+STATIC      <- 'Country_idx'
 
-LOOKBACK <- 2
-HOIRZON  <- 1
+LOOKBACK <- 10
+HOIRZON  <- 5
 
-# train_arrays <- 
-#   make_arrays(
-#     data        = train,
-#     key         = KEY,
-#     index       = INDEX,
-#     lookback    = LOOKBACK,
-#     horizon     = HOIRZON,
-#     stride      = 4,
-#     shuffle     = TRUE,
-#     target      = TARGET,
-#     categorical = CATEGORICAL,
-#     numeric     = NUMERIC
-#   )
+train_arrays <-
+  make_arrays(
+    data        = train,
+    key         = KEY,
+    index       = INDEX,
+    lookback    = LOOKBACK,
+    horizon     = HOIRZON,
+    stride      = 4,
+    shuffle     = TRUE,
+    target      = TARGET,
+    categorical = CATEGORICAL,
+    numeric     = NUMERIC
+  )
+
+print(names(train_arrays))
+print(dim(train_arrays$X_past_num))
+```
+As you can see, it contains five types of arrays. One of them, **y_fut** is the target,
+while the rest may be used as the model input. To demonstrate, how we can manipulate the 
+data with `make_arrays` function, let's add **static variables** and a separarte array
+for past `GDP` values.
+
+```{r make_arrays_2}
+train_arrays <-
+  make_arrays(
+    data        = train,
+    key         = KEY,
+    index       = INDEX,
+    lookback    = LOOKBACK,
+    horizon     = HOIRZON,
+    stride      = 4,
+    shuffle     = TRUE,
+    target      = TARGET,
+    categorical = CATEGORICAL,
+    numeric     = NUMERIC,
+    static      = STATIC,
+    y_past_sep  = TRUE 
+  )
+
+print(names(train_arrays))
+print(dim(train_arrays$X_past_num))
 ```
 
 ## Generators
+
+```{r generator}
+c(train_gen, train_n_steps) %<-%
+  ts_generator(
+    data        = train,
+    key         = KEY,
+    index       = INDEX,
+    lookback    = LOOKBACK,
+    horizon     = HOIRZON,
+    stride      = 4,
+    shuffle     = TRUE,
+    target      = TARGET,
+    categorical = CATEGORICAL,
+    numeric     = NUMERIC,
+    static      = STATIC,
+    y_past_sep  = TRUE,
+    batch_size  = 32 
+  )
+
+print(class(train_gen))
+```
+As we can see, the output is not list of arrays, but a list of two objects:
+
+* **generator function**  
+Returns a batch of training data at every call. After the loop comes to the end,
+the counter is reset and the generator starts serving the same data from the beginning again.
+
+* **number of steps**  
+An argument required by the `{keras}` methods.
+
+```{r batch}
+batch <- train_gen()
+names(batch)
+print(dim(batch$y_past))
+```
+We can them pass these arguments to the `fit` function as follows:
+```{r keras_model, eval=FALSE}
+model %>% 
+  fit(
+    x = train_gen,
+    steps_per_epoch = train_n_steps,
+    validation_data = val_gen,
+    validation_steps = val_n_steps
+  )
+
+model %>% 
+  predict(
+    x = test_gen,
+    steps = test_n_steps
+  )
+```
+

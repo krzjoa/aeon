@@ -57,6 +57,9 @@ layer_multi_dense <- keras::new_layer_class(
 
     super()$`__init__`(...)
 
+    if (new_dim & (safe_var(units) != 0))
+      stop("You canot add a new dimension since output spaces differ!")
+
     self$units   <- as.integer(units)
     self$new_dim <- new_dim
     self$len     <- length(units)
@@ -71,15 +74,9 @@ layer_multi_dense <- keras::new_layer_class(
       .units     <- as.integer(rep(self$units[[1]], last_dim))
       self$units <- .units
       self$len   <- length(.units)
-    } else {
-      .units <- as.integer(as.array(self$units))
     }
 
-    if (self$new_dim & (safe_var(.units) != 0))
-      stop("You canot add a new dimension since output spaces differ!")
-
     for (i in seq(self$len)) {
-
       # See: comment in layer_multi_embedding
       if (self$len > 1)
         minus <- 1

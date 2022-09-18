@@ -97,7 +97,7 @@ Note that these decoder matrices can span across
 all of the units of an input sequence.
 }
 \examples{
-\donttest{
+\dontrun{
 library(keras)
 inp <- layer_input(c(28, 3))
 hidden_cell <- layer_lstm_cell(10)

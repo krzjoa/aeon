@@ -38,8 +38,8 @@ processed ath the end.
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/m5_forecasting.html">M5 Forecasting challenges</a>
-    <a class="dropdown-item" href="../articles/preparing_input.html">Preparing input</a>
+    <a class="dropdown-item" href="../articles/m5_forecasting.html">M5 Forecasting competitions</a>
+    <a class="dropdown-item" href="../articles/preparing_input.html">Preparing input for time series models</a>
   </div>
 </li>
       </ul><form class="form-inline my-2 my-lg-0" role="search">
@@ -81,31 +81,31 @@ processed ath the end.</p></li>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code>
-<span class="va">lookback</span>   <span class="op">&lt;-</span> <span class="fl">28</span>
-<span class="va">horizon</span>    <span class="op">&lt;-</span> <span class="fl">14</span>
-<span class="va">all_steps</span>  <span class="op">&lt;-</span> <span class="va">lookback</span> <span class="op">+</span> <span class="va">horizon</span>
-<span class="va">state_size</span> <span class="op">&lt;-</span> <span class="fl">5</span>
-
-<span class="va">lstm_output</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/keras/man/layer_input.html" class="external-link">layer_input</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">all_steps</span>, <span class="va">state_size</span><span class="op">)</span><span class="op">)</span>
-<span class="va">context</span>     <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/keras/man/layer_input.html" class="external-link">layer_input</a></span><span class="op">(</span><span class="va">state_size</span><span class="op">)</span>
-
-<span class="co"># No attentiion scores returned</span>
-<span class="va">tdf</span> <span class="op">&lt;-</span> <span class="fu">layer_temporal_fusion_decoder</span><span class="op">(</span>
-   hidden_units <span class="op">=</span> <span class="fl">30</span>,
-   state_size <span class="op">=</span> <span class="va">state_size</span>,
-   use_context <span class="op">=</span> <span class="cn">TRUE</span>,
-   num_heads <span class="op">=</span> <span class="fl">10</span>
-<span class="op">)</span><span class="op">(</span><span class="va">lstm_output</span>, <span class="va">context</span><span class="op">)</span>
-
-<span class="co"># With attention scores</span>
-<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">tfd</span>, <span class="va">attention_scores</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/pkg/keras/man/multi-assign.html" class="external-link">%&lt;-%</a></span>
-   <span class="fu">layer_temporal_fusion_decoder</span><span class="op">(</span>
-      hidden_units <span class="op">=</span> <span class="fl">30</span>,
-      state_size <span class="op">=</span> <span class="va">state_size</span>,
-      use_context <span class="op">=</span> <span class="cn">TRUE</span>,
-      num_heads <span class="op">=</span> <span class="fl">10</span>
-   <span class="op">)</span><span class="op">(</span><span class="va">lstm_output</span>, <span class="va">context</span>, return_attention_scores<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
+<span class="r-in"><span class="va">lookback</span>   <span class="op">&lt;-</span> <span class="fl">28</span></span>
+<span class="r-in"><span class="va">horizon</span>    <span class="op">&lt;-</span> <span class="fl">14</span></span>
+<span class="r-in"><span class="va">all_steps</span>  <span class="op">&lt;-</span> <span class="va">lookback</span> <span class="op">+</span> <span class="va">horizon</span></span>
+<span class="r-in"><span class="va">state_size</span> <span class="op">&lt;-</span> <span class="fl">5</span></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="va">lstm_output</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/keras/man/layer_input.html" class="external-link">layer_input</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">all_steps</span>, <span class="va">state_size</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">context</span>     <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/keras/man/layer_input.html" class="external-link">layer_input</a></span><span class="op">(</span><span class="va">state_size</span><span class="op">)</span></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="co"># No attentiion scores returned</span></span>
+<span class="r-in"><span class="va">tdf</span> <span class="op">&lt;-</span> <span class="fu">layer_temporal_fusion_decoder</span><span class="op">(</span></span>
+<span class="r-in">   hidden_units <span class="op">=</span> <span class="fl">30</span>,</span>
+<span class="r-in">   state_size <span class="op">=</span> <span class="va">state_size</span>,</span>
+<span class="r-in">   use_context <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span class="r-in">   num_heads <span class="op">=</span> <span class="fl">10</span></span>
+<span class="r-in"><span class="op">)</span><span class="op">(</span><span class="va">lstm_output</span>, <span class="va">context</span><span class="op">)</span></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="co"># With attention scores</span></span>
+<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">tfd</span>, <span class="va">attention_scores</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/pkg/keras/man/multi-assign.html" class="external-link">%&lt;-%</a></span></span>
+<span class="r-in">   <span class="fu">layer_temporal_fusion_decoder</span><span class="op">(</span></span>
+<span class="r-in">      hidden_units <span class="op">=</span> <span class="fl">30</span>,</span>
+<span class="r-in">      state_size <span class="op">=</span> <span class="va">state_size</span>,</span>
+<span class="r-in">      use_context <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span class="r-in">      num_heads <span class="op">=</span> <span class="fl">10</span></span>
+<span class="r-in">   <span class="op">)</span><span class="op">(</span><span class="va">lstm_output</span>, <span class="va">context</span>, return_attention_scores<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="description" content="aion">
-<title>Preparing input • aion</title>
+<title>Preparing input for time series models • aion</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
@@ -17,7 +17,7 @@
 <link href="../deps/bootstrap-5.1.0/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.1.0/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Preparing input">
+<!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Preparing input for time series models">
 <meta property="og:description" content="aion">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -47,8 +47,8 @@
 <li class="active nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/m5_forecasting.html">M5 Forecasting challenges</a>
-    <a class="dropdown-item" href="../articles/preparing_input.html">Preparing input</a>
+    <a class="dropdown-item" href="../articles/m5_forecasting.html">M5 Forecasting competitions</a>
+    <a class="dropdown-item" href="../articles/preparing_input.html">Preparing input for time series models</a>
   </div>
 </li>
       </ul>
@@ -68,7 +68,7 @@
 
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-      <img src="" class="logo" alt=""><h1>Preparing input</h1>
+      <img src="" class="logo" alt=""><h1>Preparing input for time series models</h1>
             
       
       
@@ -83,50 +83,80 @@ series deep learning models. To do so quickly, we’ll use functions from
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-datatable.com" class="external-link">data.table</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span>, warn.conflicts <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/krzjoa/m5" class="external-link">m5</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">aion</span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://keras.rstudio.com" class="external-link">keras</a></span><span class="op">)</span></code></pre></div>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://keras.rstudio.com" class="external-link">keras</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tsibbledata.tidyverts.org/" class="external-link">tsibbledata</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/tidymodels/recipes" class="external-link">recipes</a></span>, warn.conflicts <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span>
+
+<span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">7</span><span class="op">)</span></code></pre></div>
+<p>We feed a <a href="https://keras.rstudio.com" class="external-link">keras</a> models in two ways, using:</p>
+<ul>
+<li><strong>arrays</strong></li>
+<li><strong>generators</strong></li>
+</ul>
+<p>Below I present, how to prepare both types of inputs/outputs using
+<code>{aion}</code>.</p>
 <div class="section level2">
-<h2 id="panel-data-m5">Panel data (M5)<a class="anchor" aria-label="anchor" href="#panel-data-m5"></a>
+<h2 id="data-analysis">Data analysis<a class="anchor" aria-label="anchor" href="#data-analysis"></a>
 </h2>
-<p><a href="https://github.com/krzjoa/m5" class="external-link">m5</a> package contains functions to download and
-preprocess the data from the <a href="https://www.kaggle.com/c/m5-forecasting-accuracy" class="external-link">M5
-Forecasting</a> challenges. We don’t need to fetch the whole dataset,
-we’ll settle for its subset named <code>tiny_m5</code>.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">tiny_m5</span><span class="op">)</span>
-<span class="co">#&gt;          item_id   dept_id  cat_id store_id state_id value       date wm_yr_wk</span>
-<span class="co">#&gt; 1: HOBBIES_1_330 HOBBIES_1 HOBBIES     CA_1       CA     0 2011-01-29    11101</span>
-<span class="co">#&gt; 2: HOBBIES_1_330 HOBBIES_1 HOBBIES     CA_1       CA     0 2011-01-30    11101</span>
-<span class="co">#&gt; 3: HOBBIES_1_330 HOBBIES_1 HOBBIES     CA_1       CA     0 2011-01-31    11101</span>
-<span class="co">#&gt; 4: HOBBIES_1_330 HOBBIES_1 HOBBIES     CA_1       CA     0 2011-02-01    11101</span>
-<span class="co">#&gt; 5: HOBBIES_1_330 HOBBIES_1 HOBBIES     CA_1       CA     2 2011-02-02    11101</span>
-<span class="co">#&gt; 6: HOBBIES_1_330 HOBBIES_1 HOBBIES     CA_1       CA     4 2011-02-03    11101</span>
-<span class="co">#&gt;      weekday wday month year event_name_1 event_type_1 event_name_2</span>
-<span class="co">#&gt; 1:  Saturday    1     1 2011                                       </span>
-<span class="co">#&gt; 2:    Sunday    2     1 2011                                       </span>
-<span class="co">#&gt; 3:    Monday    3     1 2011                                       </span>
-<span class="co">#&gt; 4:   Tuesday    4     2 2011                                       </span>
-<span class="co">#&gt; 5: Wednesday    5     2 2011                                       </span>
-<span class="co">#&gt; 6:  Thursday    6     2 2011                                       </span>
-<span class="co">#&gt;    event_type_2 snap sell_price</span>
-<span class="co">#&gt; 1:                 0       7.44</span>
-<span class="co">#&gt; 2:                 0       7.44</span>
-<span class="co">#&gt; 3:                 0       7.44</span>
-<span class="co">#&gt; 4:                 1       7.44</span>
-<span class="co">#&gt; 5:                 1       7.44</span>
-<span class="co">#&gt; 6:                 1       7.44</span></code></pre></div>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">tiny_m5</span><span class="op">$</span><span class="va">date</span><span class="op">)</span>
-<span class="co">#&gt;         Min.      1st Qu.       Median         Mean      3rd Qu.         Max. </span>
-<span class="co">#&gt; "2011-01-29" "2012-05-21" "2013-09-11" "2013-09-11" "2015-01-02" "2016-04-24"</span></code></pre></div>
-<p><code>tiny_m5</code> is a n example of <strong>panel
+<p>As an example we’ll the <code>global_economy</code> dataset from the
+<a href="https://tsibbledata.tidyverts.org/" class="external-link">tsibbledata</a> package.</p>
+<p><code>global_economy</code> is a n example of <strong>panel
 dataset</strong>. It simply means that in contains multiple time series,
-distinguished with <strong>item_id</strong> and
-<strong>store_id</strong>. What we’d like to do, after optional
-preprocessing such as scaling, imputation etc. is to create a set of
-arrays (tensors) or a generator, which serves respective batch-level
-tensors on fly.</p>
+distinguished with <strong>Country</strong> What we’d like to do, after
+optional preprocessing such as scaling, imputation etc. is to create a
+set of arrays (tensors) or a generator, which serves respective
+batch-level tensors on fly.</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">global_economy</span><span class="op">)</span>
+<span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 9</span></span>
+<span class="co">#&gt;   Country     Code   Year         GDP Growth   CPI Imports Exports Population</span>
+<span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">1</span> Afghanistan AFG    <span style="text-decoration: underline;">1</span>960  537<span style="text-decoration: underline;">777</span>811.     <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    7.02    4.13    8<span style="text-decoration: underline;">996</span>351</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">2</span> Afghanistan AFG    <span style="text-decoration: underline;">1</span>961  548<span style="text-decoration: underline;">888</span>896.     <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    8.10    4.45    9<span style="text-decoration: underline;">166</span>764</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">3</span> Afghanistan AFG    <span style="text-decoration: underline;">1</span>962  546<span style="text-decoration: underline;">666</span>678.     <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    9.35    4.88    9<span style="text-decoration: underline;">345</span>868</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">4</span> Afghanistan AFG    <span style="text-decoration: underline;">1</span>963  751<span style="text-decoration: underline;">111</span>191.     <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>   16.9     9.17    9<span style="text-decoration: underline;">533</span>954</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">5</span> Afghanistan AFG    <span style="text-decoration: underline;">1</span>964  800<span style="text-decoration: underline;">000</span>044.     <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>   18.1     8.89    9<span style="text-decoration: underline;">731</span>361</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">6</span> Afghanistan AFG    <span style="text-decoration: underline;">1</span>965 <span style="text-decoration: underline;">1</span>006<span style="text-decoration: underline;">666</span>638.     <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>   21.4    11.3     9<span style="text-decoration: underline;">938</span>414</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">global_economy</span><span class="op">$</span><span class="va">Year</span><span class="op">)</span>
+<span class="co">#&gt;    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. </span>
+<span class="co">#&gt;    1960    1974    1989    1989    2003    2017</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">glob_econ</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/as.data.table.html" class="external-link">as.data.table</a></span><span class="op">(</span><span class="va">global_economy</span><span class="op">)</span>
+
+<span class="va">sample_countries</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/duplicated.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">global_economy</span><span class="op">$</span><span class="va">Country</span><span class="op">)</span>, <span class="fl">4</span><span class="op">)</span>
+
+<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">glob_econ</span><span class="op">[</span><span class="va">Country</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="va">sample_countries</span><span class="op">]</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">Year</span>, <span class="va">GDP</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">Country</span><span class="op">)</span>, scales <span class="op">=</span> <span class="st">'free_y'</span><span class="op">)</span>
+<span class="co">#&gt; Warning: Removed 31 row(s) containing missing values (geom_path).</span></code></pre></div>
+<p><img src="preparing_input_files/figure-html/sample_plots-1.png" width="576"></p>
+</div>
+<div class="section level2">
+<h2 id="data-preprocessing">Data preprocessing<a class="anchor" aria-label="anchor" href="#data-preprocessing"></a>
+</h2>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">split_year</span> <span class="op">&lt;-</span> <span class="fl">2000</span>
+
+<span class="va">ge_recipe</span> <span class="op">&lt;-</span> 
+  <span class="fu"><a href="https://recipes.tidymodels.org/reference/recipe.html" class="external-link">recipe</a></span><span class="op">(</span><span class="va">GDP</span> <span class="op">~</span> <span class="va">.</span> , data <span class="op">=</span> <span class="va">glob_econ</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_mutate.html" class="external-link">step_mutate</a></span><span class="op">(</span>Country_idx <span class="op">=</span> <span class="va">Country</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_integer.html" class="external-link">step_integer</a></span><span class="op">(</span><span class="va">Country_idx</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu"><a href="https://recipes.tidymodels.org/reference/prep.html" class="external-link">prep</a></span><span class="op">(</span><span class="op">)</span>
+
+<span class="va">train</span> <span class="op">&lt;-</span> 
+  <span class="va">glob_econ</span><span class="op">[</span><span class="va">Year</span> <span class="op">&lt;=</span> <span class="va">split_year</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu"><a href="https://recipes.tidymodels.org/reference/bake.html" class="external-link">bake</a></span><span class="op">(</span><span class="va">ge_recipe</span>, <span class="va">.</span><span class="op">)</span>
+
+<span class="va">test</span> <span class="op">&lt;-</span> 
+  <span class="va">glob_econ</span><span class="op">[</span><span class="va">Year</span> <span class="op">&gt;</span> <span class="va">split_year</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu"><a href="https://recipes.tidymodels.org/reference/bake.html" class="external-link">bake</a></span><span class="op">(</span><span class="va">ge_recipe</span>, <span class="va">.</span><span class="op">)</span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="arrays">Arrays<a class="anchor" aria-label="anchor" href="#arrays"></a>
+</h2>
 <p>Typically, in the time series forecasting field, we can distiguish
 the following types of variables:</p>
 <ul>
@@ -138,57 +168,139 @@ categorical)</li>
 <li>
 <strong>future dynamic features</strong> (numeric and
 categorical)</li>
-<li><strong>static features</strong></li>
+<li>
+<strong>static features</strong> (numeric and categorical)</li>
 </ul>
 <p>Past target values can be simply treated as a part of the tensor of
 the past dynamic features.</p>
-<p>The simpliest possible scenario is to split the dataset using certain
+<p>The simplest possible scenario is to split the dataset using certain
 date.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">PAST_FUTURE_SPLIT_DATE</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="st">'2016-01-01'</span><span class="op">)</span>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">KEY</span>         <span class="op">&lt;-</span> <span class="st">'Country'</span>
+<span class="va">INDEX</span>       <span class="op">&lt;-</span> <span class="st">'Year'</span>
+<span class="va">TARGET</span>      <span class="op">&lt;-</span> <span class="st">'GDP'</span>
+<span class="va">NUMERIC</span>     <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'Growth'</span>, <span class="st">'CPI'</span>, <span class="st">'Imports'</span>, <span class="st">'Exports'</span>, <span class="st">'Population'</span><span class="op">)</span>
+<span class="va">CATEGORICAL</span> <span class="op">&lt;-</span> <span class="st">'Country_idx'</span>
+<span class="va">STATIC</span>      <span class="op">&lt;-</span> <span class="st">'Country_idx'</span>
 
-<span class="va">past</span> <span class="op">&lt;-</span> <span class="va">tiny_m5</span><span class="op">[</span><span class="va">date</span> <span class="op">&lt;</span> <span class="va">PAST_FUTURE_SPLIT_DATE</span><span class="op">]</span>
-<span class="va">future</span> <span class="op">&lt;-</span> <span class="va">tiny_m5</span><span class="op">[</span><span class="va">date</span> <span class="op">&gt;=</span> <span class="va">PAST_FUTURE_SPLIT_DATE</span><span class="op">]</span>
+<span class="va">LOOKBACK</span> <span class="op">&lt;-</span> <span class="fl">10</span>
+<span class="va">HOIRZON</span>  <span class="op">&lt;-</span> <span class="fl">5</span>
 
-<span class="va">ID</span>          <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'item_id'</span>, <span class="st">'store_id'</span><span class="op">)</span>
-<span class="va">DATE</span>        <span class="op">&lt;-</span> <span class="st">'date'</span>
-<span class="va">TARGET</span>      <span class="op">&lt;-</span> <span class="st">'value'</span>
-<span class="va">NUMERIC</span>     <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'sell_price'</span><span class="op">)</span>
-<span class="va">CATEGORICAL</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'wday'</span>, <span class="st">'month'</span>, <span class="st">'snap'</span><span class="op">)</span>
+<span class="va">train_arrays</span> <span class="op">&lt;-</span>
+  <span class="fu"><a href="../reference/make_arrays.html">make_arrays</a></span><span class="op">(</span>
+    data        <span class="op">=</span> <span class="va">train</span>,
+    key         <span class="op">=</span> <span class="va">KEY</span>,
+    index       <span class="op">=</span> <span class="va">INDEX</span>,
+    lookback    <span class="op">=</span> <span class="va">LOOKBACK</span>,
+    horizon     <span class="op">=</span> <span class="va">HOIRZON</span>,
+    stride      <span class="op">=</span> <span class="fl">4</span>,
+    shuffle     <span class="op">=</span> <span class="cn">TRUE</span>,
+    target      <span class="op">=</span> <span class="va">TARGET</span>,
+    categorical <span class="op">=</span> <span class="va">CATEGORICAL</span>,
+    numeric     <span class="op">=</span> <span class="va">NUMERIC</span>
+  <span class="op">)</span>
+<span class="co">#&gt; Warning in make_arrays(data = train, key = KEY, index = INDEX, lookback =</span>
+<span class="co">#&gt; LOOKBACK, : Found samples with end_time - start_time &lt; total_window_length.</span>
+<span class="co">#&gt; They'll be removed.</span>
 
-<span class="co"># X_past_numeric &lt;-</span>
-<span class="co">#   past %&gt;% </span>
-<span class="co">#   select(!!c(TARGET, NUMERIC, DATE, ID)) %&gt;% </span>
-<span class="co">#   as.data.table() %&gt;% </span>
-<span class="co">#   as_3d_array(key = ID, index = DATE)</span>
-<span class="co"># </span>
-<span class="co"># print(dim(X_past_numeric))</span>
-<span class="co"># # print(X_past_numeric[1, 1:10, 1:2])</span>
-<span class="co"># </span>
-<span class="co"># X_past_categorical &lt;-</span>
-<span class="co">#   past %&gt;% </span>
-<span class="co">#   select(!!c(CATEGORICAL, DATE, ID)) %&gt;% </span>
-<span class="co">#   as_3d_array(key = ID, index = DATE)</span>
-<span class="co"># </span>
-<span class="co"># print(dim(X_past_categorical))</span>
-<span class="co"># #print(X_past_categorical[1, 1:10, 1:2])</span>
-<span class="co"># </span>
-<span class="co"># X_future_numeric &lt;-</span>
-<span class="co">#   past %&gt;% </span>
-<span class="co">#   select(!!c(NUMERIC, DATE, ID)) %&gt;% </span>
-<span class="co">#   as_3d_array(key = ID, index = DATE)</span>
-<span class="co"># </span>
-<span class="co"># print(dim(X_past_categorical))</span>
-<span class="co"># #print(X_past_categorical[1, 1:10, 1:2])</span>
-<span class="co"># </span>
-<span class="co"># y &lt;-</span>
-<span class="co">#   future %&gt;% </span>
-<span class="co">#   select(!!c(TARGET, DATE, ID)) %&gt;% </span>
-<span class="co">#   as_3d_array(key = ID, index = DATE)</span>
-<span class="co"># </span>
-<span class="co"># print(y)</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">train_arrays</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt; [1] "X_past_num" "X_past_cat" "y_fut"      "X_fut_num"  "X_fut_cat"</span>
+<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">train_arrays</span><span class="op">$</span><span class="va">X_past_num</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt; [1] 1820   10    6</span></code></pre></div>
+<p>As you can see, it contains five types of arrays. One of them,
+<strong>y_fut</strong> is the target, while the rest may be used as the
+model input. To demonstrate, how we can manipulate the data with
+<code>make_arrays</code> function, let’s add <strong>static
+variables</strong> and a separarte array for past <code>GDP</code>
+values.</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">train_arrays</span> <span class="op">&lt;-</span>
+  <span class="fu"><a href="../reference/make_arrays.html">make_arrays</a></span><span class="op">(</span>
+    data        <span class="op">=</span> <span class="va">train</span>,
+    key         <span class="op">=</span> <span class="va">KEY</span>,
+    index       <span class="op">=</span> <span class="va">INDEX</span>,
+    lookback    <span class="op">=</span> <span class="va">LOOKBACK</span>,
+    horizon     <span class="op">=</span> <span class="va">HOIRZON</span>,
+    stride      <span class="op">=</span> <span class="fl">4</span>,
+    shuffle     <span class="op">=</span> <span class="cn">TRUE</span>,
+    target      <span class="op">=</span> <span class="va">TARGET</span>,
+    categorical <span class="op">=</span> <span class="va">CATEGORICAL</span>,
+    numeric     <span class="op">=</span> <span class="va">NUMERIC</span>,
+    static      <span class="op">=</span> <span class="va">STATIC</span>,
+    y_past_sep  <span class="op">=</span> <span class="cn">TRUE</span> 
+  <span class="op">)</span>
+<span class="co">#&gt; Warning in make_arrays(data = train, key = KEY, index = INDEX, lookback =</span>
+<span class="co">#&gt; LOOKBACK, : Found samples with end_time - start_time &lt; total_window_length.</span>
+<span class="co">#&gt; They'll be removed.</span>
+
+<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">train_arrays</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt; [1] "y_past"       "X_past_num"   "X_past_cat"   "y_fut"        "X_fut_num"   </span>
+<span class="co">#&gt; [6] "X_fut_cat"    "X_static_cat"</span>
+<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">train_arrays</span><span class="op">$</span><span class="va">X_past_num</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt; [1] 1820   10    5</span></code></pre></div>
 </div>
-  </main>
+<div class="section level2">
+<h2 id="generators">Generators<a class="anchor" aria-label="anchor" href="#generators"></a>
+</h2>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">train_gen</span>, <span class="va">train_n_steps</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/pkg/keras/man/multi-assign.html" class="external-link">%&lt;-%</a></span>
+  <span class="fu"><a href="../reference/ts_generator.html">ts_generator</a></span><span class="op">(</span>
+    data        <span class="op">=</span> <span class="va">train</span>,
+    key         <span class="op">=</span> <span class="va">KEY</span>,
+    index       <span class="op">=</span> <span class="va">INDEX</span>,
+    lookback    <span class="op">=</span> <span class="va">LOOKBACK</span>,
+    horizon     <span class="op">=</span> <span class="va">HOIRZON</span>,
+    stride      <span class="op">=</span> <span class="fl">4</span>,
+    shuffle     <span class="op">=</span> <span class="cn">TRUE</span>,
+    target      <span class="op">=</span> <span class="va">TARGET</span>,
+    categorical <span class="op">=</span> <span class="va">CATEGORICAL</span>,
+    numeric     <span class="op">=</span> <span class="va">NUMERIC</span>,
+    static      <span class="op">=</span> <span class="va">STATIC</span>,
+    y_past_sep  <span class="op">=</span> <span class="cn">TRUE</span>,
+    batch_size  <span class="op">=</span> <span class="fl">32</span> 
+  <span class="op">)</span>
+<span class="co">#&gt; Warning in ts_generator(data = train, key = KEY, index = INDEX, lookback =</span>
+<span class="co">#&gt; LOOKBACK, : Found samples with end_time - start_time &lt; total_window_length.</span>
+<span class="co">#&gt; They'll be removed.</span>
+
+<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">train_gen</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt; [1] "function"</span></code></pre></div>
+<p>As we can see, the output is not list of arrays, but a list of two
+objects:</p>
+<ul>
+<li><p><strong>generator function</strong><br>
+Returns a batch of training data at every call. After the loop comes to
+the end, the counter is reset and the generator starts serving the same
+data from the beginning again.</p></li>
+<li><p><strong>number of steps</strong><br>
+An argument required by the <a href="https://keras.rstudio.com" class="external-link">keras</a> methods.</p></li>
+</ul>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">batch</span> <span class="op">&lt;-</span> <span class="fu">train_gen</span><span class="op">(</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">batch</span><span class="op">)</span>
+<span class="co">#&gt; [1] "y_past"       "X_past_num"   "X_past_cat"   "y_fut"        "X_fut_num"   </span>
+<span class="co">#&gt; [6] "X_fut_cat"    "X_static_cat"</span>
+<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">batch</span><span class="op">$</span><span class="va">y_past</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt; [1] 32 10  1</span></code></pre></div>
+<p>We can them pass these arguments to the <code>fit</code> function as
+follows:</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">model</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit</a></span><span class="op">(</span>
+    x <span class="op">=</span> <span class="va">train_gen</span>,
+    steps_per_epoch <span class="op">=</span> <span class="va">train_n_steps</span>,
+    validation_data <span class="op">=</span> <span class="va">val_gen</span>,
+    validation_steps <span class="op">=</span> <span class="va">val_n_steps</span>
+  <span class="op">)</span>
+
+<span class="va">model</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span>
+    x <span class="op">=</span> <span class="va">test_gen</span>,
+    steps <span class="op">=</span> <span class="va">test_n_steps</span>
+  <span class="op">)</span></code></pre></div>
+</div>
+  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+    </nav></aside>
 </div>
 
 

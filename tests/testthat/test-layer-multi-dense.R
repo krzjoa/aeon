@@ -1,3 +1,4 @@
+library(keras)
 
 test_that("Test MultiDense with simple concat", {
 

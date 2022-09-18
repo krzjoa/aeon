@@ -1,5 +1,7 @@
+library(keras)
 
 test_that("Test GLU with return_gate = TRUE", {
+
   inp  <- layer_input(30)
   out  <- layer_glu(units = 10, return_gate = TRUE)(inp)
 

@@ -90,18 +90,31 @@
 #'        numeric=NUMERIC
 #'    )
 #' @export
-ts_generator <- function(data, key, index, lookback,
-                         horizon, stride=1, shuffle=TRUE, sample_frac = 1.,
-                         target, numeric=NULL, categorical=NULL, static=NULL,
-                         past=NULL, future=NULL, batch_size=1, ...){
+ts_generator <- function(data, key, index,
+                         lookback, horizon, stride=1,
+                         target, numeric=NULL, categorical=NULL,
+                         static=NULL, past=NULL, future=NULL,
+                         shuffle=TRUE, sample_frac = 1.,
+                         y_past_sep = FALSE, batch_size=1, ...){
+
+  setDT(data)
+
   # Start of each time series we can identify with unique key
   total_window_length <- lookback + horizon
   key_index <- c(key, index)
 
   ts_starts <-
     data[, .(start_time = min(get(index)),
-             end_time = max(get(index)) - total_window_length),
+             end_time = max(get(index))),
          by = eval(key)]
+
+  if (any(ts_starts$end_time - ts_starts$start_time < total_window_length))
+    warning("Found samples with end_time - start_time < total_window_length. They'll be removed.")
+
+  ts_starts <-
+    ts_starts[end_time - start_time  >= total_window_length]
+
+  ts_starts[, end_time := end_time - total_window_length]
 
   # Types
   ts_starts[, window_start := Map(\(x, y) seq(x, y, stride),
@@ -129,6 +142,7 @@ ts_generator <- function(data, key, index, lookback,
 
   ext_static <- c(static_categorical, static_numeric, key, index)
 
+  # Resolve variables
   past_cat <- resolve_variables(past, categorical)
   past_num <- resolve_variables(past, numeric)
   fut_cat  <- resolve_variables(future, categorical)
@@ -140,16 +154,41 @@ ts_generator <- function(data, key, index, lookback,
   setorderv(data, c(key, index))
   setorderv(ts_starts, c(key, index))
 
-  data[, row_idx := 1:.N]
-  ts_starts[data, row_idx := row_idx, on=(eval(key_index))]
-
-  # Resolve variables
+  indices <- data[, ..key_index][, row_idx := 1:.N]
+  ts_starts[indices, row_idx := row_idx, on=(eval(key_index))]
+  rm(indices)
+  gc()
 
   # Convert to numeric - required by the Rcpp function, which uses NumericVector
   all_dynamic_vars <- c(categorical, numeric, target)
 
   for (v in all_dynamic_vars)
     data.table::set(data, j = v, value = as.numeric(data[[v]]))
+
+  if (!y_past_sep) {
+    past_num <- c(target, past_num)
+    target_past <- NULL
+  } else {
+    target_past <- target
+  }
+
+  # Dynamic variables
+  past_var <-
+    list(
+      y_past     = target_past,
+      X_past_num = past_num,
+      X_past_cat = past_cat
+    )
+
+  fut_var <-
+    list(
+      y_fut      = target,
+      X_fut_num  = fut_num,
+      X_fut_cat  = fut_cat
+    )
+
+  past_var <- remove_nulls(past_var)
+  fut_var  <- remove_nulls(fut_var)
 
   i <- 0
 
@@ -174,21 +213,6 @@ ts_generator <- function(data, key, index, lookback,
       static_arrays$X_static_num <-
           as.matrix(data[rows, ..static_numeric])
 
-    # Dynamic variables
-    past_var <-
-      list(
-        y_past     = target,
-        X_past_num = past_num,
-        X_past_cat = past_cat
-      )
-
-    fut_var <-
-      list(
-        y_fut      = target,
-        X_fut_num  = fut_num,
-        X_fut_cat  = fut_cat
-      )
-
     dynamic_arrays <-
       get_arrays(
         data           = data,
@@ -201,7 +225,6 @@ ts_generator <- function(data, key, index, lookback,
 
     c(dynamic_arrays, static_arrays)
   }
-
 
   list(generator, n_steps)
 }

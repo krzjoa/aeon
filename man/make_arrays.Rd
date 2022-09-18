@@ -11,14 +11,15 @@ make_arrays(
   lookback,
   horizon,
   stride = 1,
-  shuffle = TRUE,
-  sample_frac = 1,
   target,
   numeric = NULL,
   categorical = NULL,
   static = NULL,
   past = NULL,
   future = NULL,
+  shuffle = TRUE,
+  sample_frac = 1,
+  y_past_sep = FALSE,
   ...
 )
 }
@@ -31,8 +32,6 @@ make_arrays(
 
 \item{stride}{Stride of the moving window}
 
-\item{shuffle}{Shuffle samples. Set \code{FALSE} for the test dataset.}
-
 \item{target}{Target variable(s)}
 
 \item{numeric}{Numeric variables}
@@ -40,6 +39,13 @@ make_arrays(
 \item{categorical}{Categorical variables}
 
 \item{static}{Static variables}
+
+\item{shuffle}{Shuffle samples. Set \code{FALSE} for the test dataset.}
+
+\item{y_past_sep}{Return past values of the target variable as a separate array.
+Typically, it returned as a first feature of the \code{X_past_num} array. However,
+for some models (such as \strong{NBEATS}) it may be easier for further processing
+to keep these values as a separate array.}
 }
 \value{
 A list of arrays. The maximal possible content embraces eight arrays:

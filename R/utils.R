@@ -21,3 +21,22 @@ try_import <- function(name, site){
                     "See: {site}"))
   reticulate::import(name)
 }
+
+#' @keywords internal
+remove_nulls <- function(l){
+  Filter(\(x)!is.null(x), l)
+}
+
+#' Get cardinalities of the categorical variables
+#'
+#' Needed as an input to the `[layer_multi_embedding()]`
+#'
+#' @param data A `data.frame` object
+#' @param categorical List of the categorical variables
+#'
+#' @examples
+#' dict_size(m5::tiny_m5, c('event_name_1', 'event_type_1'))
+#' @export
+dict_size <- function(data, categorical){
+  sapply(as.data.frame(data)[categorical], dplyr::n_distinct)
+}

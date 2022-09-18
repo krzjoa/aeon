@@ -24,8 +24,8 @@
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/m5_forecasting.html">M5 Forecasting challenges</a>
-    <a class="dropdown-item" href="../articles/preparing_input.html">Preparing input</a>
+    <a class="dropdown-item" href="../articles/m5_forecasting.html">M5 Forecasting competitions</a>
+    <a class="dropdown-item" href="../articles/preparing_input.html">Preparing input for time series models</a>
   </div>
 </li>
       </ul><form class="form-inline my-2 my-lg-0" role="search">
@@ -73,6 +73,10 @@
 <dt>future_numeric_size</dt>
 <dd><p>Number of numeric features from the future</p></dd>
 
+
+<dt>output_size</dt>
+<dd><p>Number of the models output. For simple point estimate set <code>1</code>.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
@@ -83,44 +87,48 @@
 </ol></div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p>TFT components:
-<code><a href="layer_glu.html">layer_glu()</a></code>, <code><a href="layer_grn.html">layer_grn()</a></code>, <code><a href="layer_multi_embedding.html">layer_multi_embedding()</a></code>, <code><a href="layer_multi_dense.html">layer_multi_dense()</a></code></p></div>
+    <div class="dont-index"><p>TFT components:</p>
+<p><code><a href="layer_glu.html">layer_glu()</a></code>, <code><a href="layer_grn.html">layer_grn()</a></code>, <code><a href="layer_multi_embedding.html">layer_multi_embedding()</a></code>, <code><a href="layer_multi_dense.html">layer_multi_dense()</a></code>,
+<code><a href="layer_scaled_dot_attention.html">layer_scaled_dot_attention()</a></code>, <code><a href="layer_interpretable_mh_attention.html">layer_interpretable_mh_attention()</a></code>, <code><a href="layer_temporal_fusion_decoder.html">layer_temporal_fusion_decoder()</a></code></p></div>
     </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://keras.rstudio.com" class="external-link">keras</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">aion</span><span class="op">)</span>
-
-<span class="va">tft</span> <span class="op">&lt;-</span> <span class="fu">model_tft</span><span class="op">(</span>
-   lookback                <span class="op">=</span> <span class="fl">28</span>,
-   horizon                 <span class="op">=</span> <span class="fl">14</span>,
-   past_numeric_size       <span class="op">=</span> <span class="fl">5</span>,
-   past_categorical_size   <span class="op">=</span> <span class="fl">2</span>,
-   future_numeric_size     <span class="op">=</span> <span class="fl">4</span>,
-   future_categorical_size <span class="op">=</span> <span class="fl">2</span>,
-   vocab_static_size       <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">5</span><span class="op">)</span>,
-   vocab_dynamic_size      <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">4</span><span class="op">)</span>,
-   optimizer               <span class="op">=</span> <span class="st">'adam'</span>,
-   hidden_dim              <span class="op">=</span> <span class="fl">12</span>,
-   state_size              <span class="op">=</span> <span class="fl">7</span>,
-   n_heads                 <span class="op">=</span> <span class="fl">10</span>,
-   dropout_rate            <span class="op">=</span> <span class="fl">0.1</span>,
-   output_size             <span class="op">=</span> <span class="fl">3</span>
-   <span class="co">#quantiles               = 0.5</span>
-<span class="op">)</span>
-
-<span class="va">X_static_cat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/array.html" class="external-link">array</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">32</span> <span class="op">*</span> <span class="fl">2</span>, replace<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">32</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="op">-</span> <span class="fl">1</span>
-<span class="va">X_static_num</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/array.html" class="external-link">array</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">32</span> <span class="op">*</span> <span class="fl">1</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">32</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span>
-
-<span class="va">X_past_num</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/array.html" class="external-link">array</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">32</span> <span class="op">*</span> <span class="fl">28</span> <span class="op">*</span> <span class="fl">2</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">32</span>, <span class="fl">28</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span>
-<span class="va">X_past_cat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/array.html" class="external-link">array</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">32</span> <span class="op">*</span> <span class="fl">28</span> <span class="op">*</span> <span class="fl">2</span>, replace<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">32</span>, <span class="fl">28</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span>
-
-<span class="va">X_fut_num</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/array.html" class="external-link">array</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">32</span> <span class="op">*</span> <span class="fl">14</span> <span class="op">*</span> <span class="fl">5</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">32</span>, <span class="fl">28</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span>
-<span class="va">X_fut_cat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/array.html" class="external-link">array</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">32</span> <span class="op">*</span> <span class="fl">14</span> <span class="op">*</span> <span class="fl">2</span>, replace<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">32</span>, <span class="fl">28</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span>
-
-<span class="fu">tft</span><span class="op">(</span><span class="va">X_past_num</span>, <span class="va">X_past_cat</span>, <span class="va">X_fut_num</span>, <span class="va">X_fut_cat</span>, <span class="va">X_static_num</span>, <span class="va">X_static_cat</span><span class="op">)</span>
-
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://keras.rstudio.com" class="external-link">keras</a></span><span class="op">)</span></span>
+<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">aion</span><span class="op">)</span></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="va">tft</span> <span class="op">&lt;-</span> <span class="fu">model_tft</span><span class="op">(</span></span>
+<span class="r-in">   lookback                <span class="op">=</span> <span class="fl">28</span>,</span>
+<span class="r-in">   horizon                 <span class="op">=</span> <span class="fl">14</span>,</span>
+<span class="r-in">   past_numeric_size       <span class="op">=</span> <span class="fl">5</span>,</span>
+<span class="r-in">   past_categorical_size   <span class="op">=</span> <span class="fl">2</span>,</span>
+<span class="r-in">   future_numeric_size     <span class="op">=</span> <span class="fl">4</span>,</span>
+<span class="r-in">   future_categorical_size <span class="op">=</span> <span class="fl">2</span>,</span>
+<span class="r-in">   vocab_static_size       <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">5</span><span class="op">)</span>,</span>
+<span class="r-in">   vocab_dynamic_size      <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">4</span><span class="op">)</span>,</span>
+<span class="r-in">   optimizer               <span class="op">=</span> <span class="st">'adam'</span>,</span>
+<span class="r-in">   hidden_dim              <span class="op">=</span> <span class="fl">12</span>,</span>
+<span class="r-in">   state_size              <span class="op">=</span> <span class="fl">7</span>,</span>
+<span class="r-in">   num_heads                 <span class="op">=</span> <span class="fl">10</span>,</span>
+<span class="r-in">   dropout_rate            <span class="op">=</span> <span class="fl">0.1</span>,</span>
+<span class="r-in">   output_size             <span class="op">=</span> <span class="fl">3</span></span>
+<span class="r-in">   <span class="co">#quantiles               = 0.5</span></span>
+<span class="r-in"><span class="op">)</span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in py_call_impl(x, dots$args, dots$keywords):</span> RuntimeError: Evaluation error: TypeError: ('Keyword argument not understood:', 'optimizer')</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> .</span>
+<span class="r-in"></span>
+<span class="r-in"><span class="va">X_static_cat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/array.html" class="external-link">array</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">32</span> <span class="op">*</span> <span class="fl">2</span>, replace<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">32</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="op">-</span> <span class="fl">1</span></span>
+<span class="r-in"><span class="va">X_static_num</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/array.html" class="external-link">array</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">32</span> <span class="op">*</span> <span class="fl">1</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">32</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="va">X_past_num</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/array.html" class="external-link">array</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">32</span> <span class="op">*</span> <span class="fl">28</span> <span class="op">*</span> <span class="fl">2</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">32</span>, <span class="fl">28</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">X_past_cat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/array.html" class="external-link">array</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">32</span> <span class="op">*</span> <span class="fl">28</span> <span class="op">*</span> <span class="fl">2</span>, replace<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">32</span>, <span class="fl">28</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="va">X_fut_num</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/array.html" class="external-link">array</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">32</span> <span class="op">*</span> <span class="fl">14</span> <span class="op">*</span> <span class="fl">5</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">32</span>, <span class="fl">28</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">X_fut_cat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/array.html" class="external-link">array</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">32</span> <span class="op">*</span> <span class="fl">14</span> <span class="op">*</span> <span class="fl">2</span>, replace<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">32</span>, <span class="fl">28</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="fu">tft</span><span class="op">(</span><span class="va">X_past_num</span>, <span class="va">X_past_cat</span>, <span class="va">X_fut_num</span>, <span class="va">X_fut_cat</span>, <span class="va">X_static_num</span>, <span class="va">X_static_cat</span><span class="op">)</span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in tft(X_past_num, X_past_cat, X_fut_num, X_fut_cat, X_static_num,     X_static_cat):</span> could not find function "tft"</span>
+<span class="r-in"></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

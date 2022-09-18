@@ -12,6 +12,10 @@
 #' @param numeric Numeric variables
 #' @param categorical Categorical variables
 #' @param static Static variables
+#' @param y_past_sep Return past values of the target variable as a separate array.
+#' Typically, it returned as a first feature of the `X_past_num` array. However,
+#' for some models (such as **NBEATS**) it may be easier for further processing
+#' to keep these values as a separate array.
 #'
 #' @include utils.R
 #'
@@ -105,10 +109,14 @@
 #' print(names(test_arrays))
 #' print(dim(test_arrays$X_past_num))
 #' @export
-make_arrays <- function(data, key, index, lookback,
-                        horizon, stride=1, shuffle=TRUE, sample_frac = 1.,
-                        target, numeric=NULL, categorical=NULL, static=NULL,
-                        past=NULL, future=NULL, ...){
+make_arrays <- function(data, key, index,
+                        lookback, horizon, stride=1,
+                        target, numeric=NULL, categorical=NULL,
+                        static=NULL, past=NULL, future=NULL,
+                        shuffle=TRUE, sample_frac = 1.,
+                        y_past_sep = FALSE, ...){
+
+  setDT(data)
 
   # Start of each time series we can identify with unique key
   total_window_length <- lookback + horizon
@@ -120,10 +128,10 @@ make_arrays <- function(data, key, index, lookback,
          by = eval(key)]
 
   if (any(ts_starts$end_time - ts_starts$start_time < total_window_length))
-    warning("In couple of examples start_time - edn_time < total_window_length")
+    warning("Found samples with end_time - start_time < total_window_length. They'll be removed.")
 
   ts_starts <-
-    ts_starts[ts_starts$start_time - ts_starts$end_time >= total_window_length]
+    ts_starts[end_time - start_time  >= total_window_length]
 
   ts_starts[, end_time := end_time - total_window_length]
 
@@ -143,7 +151,7 @@ make_arrays <- function(data, key, index, lookback,
 
   # Static
   # TODO: move into Rcpp
-  if (!is.null(static))
+  if (!is.null(static)) {
     static_categorical <- resolve_variables(static, categorical)
     static_numeric     <- resolve_variables(static, numeric)
 
@@ -162,6 +170,9 @@ make_arrays <- function(data, key, index, lookback,
     if (length(static_numeric) > 0)
       static_arrays$X_static_num <-
         as.matrix(static_features[, ..static_numeric])
+  } else {
+    static_arrays <- NULL
+  }
 
   setnames(ts_starts, 'window_start', index)
 
@@ -184,10 +195,17 @@ make_arrays <- function(data, key, index, lookback,
   for (v in all_dynamic_vars)
     data.table::set(data, j = v, value = as.numeric(data[[v]]))
 
+  if (!y_past_sep) {
+    past_num <- c(target, past_num)
+    target_past <- NULL
+  } else {
+    target_past <- target
+  }
+
   # Dynamic variables
   past_var <-
     list(
-      y_past     = target,
+      y_past     = target_past,
       X_past_num = past_num,
       X_past_cat = past_cat
     )
@@ -198,6 +216,9 @@ make_arrays <- function(data, key, index, lookback,
       X_fut_num  = fut_num,
       X_fut_cat  = fut_cat
     )
+
+  past_var <- remove_nulls(past_var)
+  fut_var  <- remove_nulls(fut_var)
 
   dynamic_arrays <-
     get_arrays(

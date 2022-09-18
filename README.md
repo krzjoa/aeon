@@ -9,7 +9,7 @@
 status](https://www.r-pkg.org/badges/version/aion)](https://CRAN.R-project.org/package=aion)
 <!-- badges: end -->
 
-Temporal Fusion Transformer for keras in R
+> Time Series models for keras in R
 
 ## Installation
 
@@ -24,10 +24,12 @@ devtools::install_github("krzjoa/aion")
 ## Key features
 
 -   Temporal Fusion Transformer model
--   Additional layers: Temporal Convolutional Network block & Legendre
+-   additional layers: Temporal Convolutional Network block & Legendre
     Memory Unit
 -   `make_array` and `ts_generator` functions to quickly prepare
     input/output for `{keras}` time series models
+-   new loss functions: `loss_quantile`, `loss_tweedie` and
+    `loss_negative_log_likelihood`
 
 ## Usage
 
@@ -76,9 +78,6 @@ HORIZON     <- 14
 STRIDE      <- LOOKBACK
 BATCH_SIZE  <- 32
 
-setDT(train)
-setDT(test)
-
 # ==========================================================================
 #                          CREATING GENERATORS
 # ==========================================================================
@@ -98,11 +97,6 @@ c(train_generator, train_steps) %<-%
         batch_size=BATCH_SIZE    
   )
 
-batch <- train_generator()
-print(names(batch))
-#> [1] "y_past"       "X_past_num"   "X_past_cat"   "y_fut"        "X_fut_num"   
-#> [6] "X_fut_cat"    "X_static_cat"
-
 test_generator <-
     ts_generator(
         data = test,
@@ -117,5 +111,3 @@ test_generator <-
         numeric=NUMERIC
     )
 ```
-
-# <https://github.com/LongxingTan/Time-series-prediction/blob/master/tfts/layers/nbeats_layer.py>

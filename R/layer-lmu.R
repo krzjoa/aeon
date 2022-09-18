@@ -57,7 +57,7 @@
 #' 4. [Is LSTM (Long Short-Term Memory) dead?, CrossValidated](https://stats.stackexchange.com/questions/472822/is-lstm-long-short-term-memory-dead)
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' library(keras)
 #' inp <- layer_input(c(28, 3))
 #' hidden_cell <- layer_lstm_cell(10)
@@ -112,11 +112,11 @@ layer_lmu <- function(object,
 
   args <- append(args, list(...))
 
-  keras.lmu <- try_import(
+  keras_lmu <- try_import(
     name = 'keras_lmu',
     site = 'https://github.com/nengo/keras-lmu'
   )
 
-  create_layer(keras.lmu$LMU, object, args)
+  create_layer(keras_lmu$LMU, object, args)
 }
 

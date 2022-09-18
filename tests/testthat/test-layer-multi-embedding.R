@@ -14,8 +14,7 @@ test_that("Test MultiEmbedding with simple concat", {
   dummy_input[,,3] <- sample(8,size = 28, replace = TRUE)
 
   out <- emb_model(dummy_input)
-  dim(out)
-
+  # dim(out)
 
   expect_true(dim(out)[[3]] == sum(dim_out))
   expect_true(length(dim(out)) ==  3)

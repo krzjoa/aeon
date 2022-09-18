@@ -25,10 +25,11 @@ void alloc_arrays(List& list, DataFrame& ts_starts,
 // Fill arrays with data from the data.table
 void fill_arrays(DataFrame& data, List& list,
                  DataFrame& ts_starts, List& vars,
-                 int& timesteps, int list_start_idx){
+                 int& timesteps, int list_start_idx,
+                 int row_start_shift){
 
   for (int i = 0; i < ts_starts.nrow(); i++) {
-    int row_start_idx = as<NumericVector>(ts_starts["row_idx"])[i] - 1;
+    int row_start_idx = as<NumericVector>(ts_starts["row_idx"])[i] - 1 + row_start_shift;
 
     for (int var = 0; var < vars.length(); var++){
       CharacterVector var_set = as<CharacterVector>(vars[var]);
@@ -71,10 +72,10 @@ List get_arrays(DataFrame data, DataFrame ts_starts,
   // Test, if it can speed up the function execution
 
   // PAST
-  fill_arrays(data, list, ts_starts, past_var, lookback, 0);
+  fill_arrays(data, list, ts_starts, past_var, lookback, 0, 0);
 
   // FUTURE
-  fill_arrays(data, list, ts_starts, fut_var, horizon, past_var.length());
+  fill_arrays(data, list, ts_starts, fut_var, horizon, past_var.length(), lookback);
 
   return list;
 }

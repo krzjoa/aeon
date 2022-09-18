@@ -16,6 +16,8 @@ model_tft(...)
 \item{past_categorical_size}{Number of categorical features from the past}
 
 \item{future_numeric_size}{Number of numeric features from the future}
+
+\item{output_size}{Number of the models output. For simple point estimate set \code{1}.}
 }
 \description{
 Temporal Fusion Transformer model
@@ -36,7 +38,7 @@ tft <- model_tft(
    optimizer               = 'adam',
    hidden_dim              = 12,
    state_size              = 7,
-   n_heads                 = 10,
+   num_heads                 = 10,
    dropout_rate            = 0.1,
    output_size             = 3
    #quantiles               = 0.5
@@ -63,5 +65,7 @@ tft(X_past_num, X_past_cat, X_fut_num, X_fut_cat, X_static_num, X_static_cat)
 }
 \seealso{
 TFT components:
-\code{\link[=layer_glu]{layer_glu()}}, \code{\link[=layer_grn]{layer_grn()}}, \code{\link[=layer_multi_embedding]{layer_multi_embedding()}}, \code{\link[=layer_multi_dense]{layer_multi_dense()}}
+
+\code{\link[=layer_glu]{layer_glu()}}, \code{\link[=layer_grn]{layer_grn()}}, \code{\link[=layer_multi_embedding]{layer_multi_embedding()}}, \code{\link[=layer_multi_dense]{layer_multi_dense()}},
+\code{\link[=layer_scaled_dot_attention]{layer_scaled_dot_attention()}}, \code{\link[=layer_interpretable_mh_attention]{layer_interpretable_mh_attention()}}, \code{\link[=layer_temporal_fusion_decoder]{layer_temporal_fusion_decoder()}}
 }

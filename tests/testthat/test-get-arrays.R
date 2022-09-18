@@ -1,9 +1,9 @@
-test_that("Test get_arrays", {
+library(m5)
+library(recipes)
+library(data.table)
+library(dplyr)
 
-  library(m5)
-  library(recipes)
-  library(data.table)
-  library(dplyr)
+test_that("Test get_arrays", {
 
   train <- tiny_m5[date < '2016-01-01']
   test  <- tiny_m5[date >= '2016-01-01']
@@ -21,9 +21,9 @@ test_that("Test get_arrays", {
   train <- bake(m5_recipe, train)
   #test  <- bake(m5_recipe, test)
 
-  categorical <- c('event_name_1', 'event_type_1', 'sell_price')
+  categorical <- c('event_name_1', 'event_type_1')
   target      <- "value"
-  NUMERIC     <- c('')
+  numeric     <- 'sell_price'
 
   setDT(train)
 
@@ -52,10 +52,10 @@ test_that("Test get_arrays", {
   ts_starts <- ts_starts[, .(window_start = do.call('c', window_start)),
                          by = eval(key)]
 
-  if (sample_frac < 1.)
-    ts_starts <-
-    ts_starts[,.SD[sample(.N,as.integer(floor(.N * sample_frac)))]
-              ,by = eval(key)]
+  # if (sample_frac < 1.)
+  #   ts_starts <-
+  #   ts_starts[,.SD[sample(.N,as.integer(floor(.N * sample_frac)))]
+  #             ,by = eval(key)]
 
   setnames(ts_starts, 'window_start', index)
 
@@ -76,7 +76,7 @@ test_that("Test get_arrays", {
       ts_starts = ts_starts,
       lookback = lookback,
       horizon = horizon,
-      past_var = list(X_past_cat=categorical, y_past=target),
+      past_var = list(X_past_cat=categorical, X_past_num=numeric, y_past=target),
       fut_var = list(X_fut_cat=categorical)
     )
 

@@ -49,8 +49,8 @@
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="articles/m5_forecasting.html">M5 Forecasting challenges</a>
-    <a class="dropdown-item" href="articles/preparing_input.html">Preparing input</a>
+    <a class="dropdown-item" href="articles/m5_forecasting.html">M5 Forecasting competitions</a>
+    <a class="dropdown-item" href="articles/preparing_input.html">Preparing input for time series models</a>
   </div>
 </li>
       </ul>
@@ -70,7 +70,9 @@
 </h1></div>
 <!-- badges: start -->
 
-<p>Temporal Fusion Transformer for keras in R</p>
+<blockquote>
+<p>Time Series models for keras in R</p>
+</blockquote>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
@@ -84,9 +86,11 @@
 </h2>
 <ul>
 <li>Temporal Fusion Transformer model</li>
-<li>Additional layers: Temporal Convolutional Network block &amp; Legendre Memory Unit</li>
+<li>additional layers: Temporal Convolutional Network block &amp; Legendre Memory Unit</li>
 <li>
 <code>make_array</code> and <code>ts_generator</code> functions to quickly prepare input/output for <a href="https://keras.rstudio.com" class="external-link">keras</a> time series models</li>
+<li>new loss functions: <code>loss_quantile</code>, <code>loss_tweedie</code> and <code>loss_negative_log_likelihood</code>
+</li>
 </ul>
 </div>
 <div class="section level2">
@@ -137,9 +141,6 @@
 <span class="va">STRIDE</span>      <span class="op">&lt;-</span> <span class="va">LOOKBACK</span>
 <span class="va">BATCH_SIZE</span>  <span class="op">&lt;-</span> <span class="fl">32</span>
 
-<span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/setDT.html" class="external-link">setDT</a></span><span class="op">(</span><span class="va">train</span><span class="op">)</span>
-<span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/setDT.html" class="external-link">setDT</a></span><span class="op">(</span><span class="va">test</span><span class="op">)</span>
-
 <span class="co"># ==========================================================================</span>
 <span class="co">#                          CREATING GENERATORS</span>
 <span class="co"># ==========================================================================</span>
@@ -159,11 +160,6 @@
         batch_size<span class="op">=</span><span class="va">BATCH_SIZE</span>    
   <span class="op">)</span>
 
-<span class="va">batch</span> <span class="op">&lt;-</span> <span class="fu">train_generator</span><span class="op">(</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">batch</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; [1] "y_past"       "X_past_num"   "X_past_cat"   "y_fut"        "X_fut_num"   </span>
-<span class="co">#&gt; [6] "X_fut_cat"    "X_static_cat"</span>
-
 <span class="va">test_generator</span> <span class="op">&lt;-</span>
     <span class="fu"><a href="reference/ts_generator.html">ts_generator</a></span><span class="op">(</span>
         data <span class="op">=</span> <span class="va">test</span>,
@@ -179,12 +175,6 @@
     <span class="op">)</span></code></pre></div>
 </div>
 </div>
-<div class="section level1">
-<h1 id="httpsgithubcomlongxingtantime-series-predictionblobmastertftslayersnbeats_layerpy">
-<a href="https://github.com/LongxingTan/Time-series-prediction/blob/master/tfts/layers/nbeats_layer.py" class="external-link uri">https://github.com/LongxingTan/Time-series-prediction/blob/master/tfts/layers/nbeats_layer.py</a><a class="anchor" aria-label="anchor" href="#httpsgithubcomlongxingtantime-series-predictionblobmastertftslayersnbeats_layerpy"></a>
-</h1>
-</div>
-
   </main><aside class="col-md-3"><div class="license">
 <h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">

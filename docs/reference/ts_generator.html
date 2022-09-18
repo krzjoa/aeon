@@ -34,8 +34,8 @@ It means that we don't have to store all the examples in RAM at the same time.">
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/m5_forecasting.html">M5 Forecasting challenges</a>
-    <a class="dropdown-item" href="../articles/preparing_input.html">Preparing input</a>
+    <a class="dropdown-item" href="../articles/m5_forecasting.html">M5 Forecasting competitions</a>
+    <a class="dropdown-item" href="../articles/preparing_input.html">Preparing input for time series models</a>
   </div>
 </li>
       </ul><form class="form-inline my-2 my-lg-0" role="search">
@@ -71,14 +71,15 @@ It means that we don't have to store all the examples in RAM at the same time.</
   <span class="va">lookback</span>,
   <span class="va">horizon</span>,
   stride <span class="op">=</span> <span class="fl">1</span>,
-  shuffle <span class="op">=</span> <span class="cn">TRUE</span>,
-  sample_frac <span class="op">=</span> <span class="fl">1</span>,
   <span class="va">target</span>,
   numeric <span class="op">=</span> <span class="cn">NULL</span>,
   categorical <span class="op">=</span> <span class="cn">NULL</span>,
   static <span class="op">=</span> <span class="cn">NULL</span>,
   past <span class="op">=</span> <span class="cn">NULL</span>,
   future <span class="op">=</span> <span class="cn">NULL</span>,
+  shuffle <span class="op">=</span> <span class="cn">TRUE</span>,
+  sample_frac <span class="op">=</span> <span class="fl">1</span>,
+  y_past_sep <span class="op">=</span> <span class="cn">FALSE</span>,
   batch_size <span class="op">=</span> <span class="fl">1</span>,
   <span class="va">...</span>
 <span class="op">)</span></code></pre></div>
@@ -86,7 +87,11 @@ It means that we don't have to store all the examples in RAM at the same time.</
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
-    <dl><dt>lookback</dt>
+    <dl><dt>data</dt>
+<dd><p>A <code>[data.table::data.table()]</code> instance</p></dd>
+
+
+<dt>lookback</dt>
 <dd><p>The length of the context from the past</p></dd>
 
 
@@ -96,10 +101,6 @@ It means that we don't have to store all the examples in RAM at the same time.</
 
 <dt>stride</dt>
 <dd><p>Stride of the moving window</p></dd>
-
-
-<dt>shuffle</dt>
-<dd><p>Shuffle samples. Set <code>FALSE</code> for the test dataset.</p></dd>
 
 
 <dt>target</dt>
@@ -118,6 +119,17 @@ It means that we don't have to store all the examples in RAM at the same time.</
 <dd><p>Static variables</p></dd>
 
 
+<dt>shuffle</dt>
+<dd><p>Shuffle samples. Set <code>FALSE</code> for the test dataset.</p></dd>
+
+
+<dt>y_past_sep</dt>
+<dd><p>Return past values of the target variable as a separate array.
+Typically, it returned as a first feature of the <code>X_past_num</code> array. However,
+for some models (such as <strong>NBEATS</strong>) it may be easier for further processing
+to keep these values as a separate array.</p></dd>
+
+
 <dt>batch_size</dt>
 <dd><p>Batch size</p></dd>
 
@@ -125,82 +137,84 @@ It means that we don't have to store all the examples in RAM at the same time.</
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/krzjoa/m5" class="external-link">m5</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/tidymodels/recipes" class="external-link">recipes</a></span>, warn.conflicts<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/nteetor/zeallot" class="external-link">zeallot</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span>, warn.conflicts<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-datatable.com" class="external-link">data.table</a></span>, warn.conflicts<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span>
-
-<span class="co"># ==========================================================================</span>
-<span class="co">#                          PREPARING THE DATA</span>
-<span class="co"># ==========================================================================</span>
-
-<span class="va">train</span> <span class="op">&lt;-</span> <span class="va">tiny_m5</span><span class="op">[</span><span class="va">date</span> <span class="op">&lt;</span> <span class="st">'2016-01-01'</span><span class="op">]</span>
-<span class="va">test</span>  <span class="op">&lt;-</span> <span class="va">tiny_m5</span><span class="op">[</span><span class="va">date</span> <span class="op">&gt;=</span> <span class="st">'2016-01-01'</span><span class="op">]</span>
-
-<span class="va">m5_recipe</span> <span class="op">&lt;-</span>
-   <span class="fu"><a href="https://recipes.tidymodels.org/reference/recipe.html" class="external-link">recipe</a></span><span class="op">(</span><span class="va">value</span> <span class="op">~</span> <span class="va">.</span>, data<span class="op">=</span><span class="va">train</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-   <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_mutate.html" class="external-link">step_mutate</a></span><span class="op">(</span>item_id_idx<span class="op">=</span><span class="va">item_id</span>, store_id_idx<span class="op">=</span><span class="va">store_id</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-   <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_integer.html" class="external-link">step_integer</a></span><span class="op">(</span><span class="va">item_id_idx</span>, <span class="va">store_id_idx</span>,
-                <span class="va">wday</span>, <span class="va">month</span>,
-                <span class="va">event_name_1</span>, <span class="va">event_type_1</span>,
-                <span class="va">event_name_2</span>, <span class="va">event_type_2</span>,
-                zero_based<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-   <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_naomit.html" class="external-link">step_naomit</a></span><span class="op">(</span><span class="fu"><a href="https://recipes.tidymodels.org/reference/has_role.html" class="external-link">all_predictors</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-   <span class="fu"><a href="https://recipes.tidymodels.org/reference/prep.html" class="external-link">prep</a></span><span class="op">(</span><span class="op">)</span>
-
-<span class="va">train</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://recipes.tidymodels.org/reference/bake.html" class="external-link">bake</a></span><span class="op">(</span><span class="va">m5_recipe</span>, <span class="va">train</span><span class="op">)</span>
-<span class="va">test</span>  <span class="op">&lt;-</span> <span class="fu"><a href="https://recipes.tidymodels.org/reference/bake.html" class="external-link">bake</a></span><span class="op">(</span><span class="va">m5_recipe</span>, <span class="va">test</span><span class="op">)</span>
-
-<span class="va">TARGET</span>      <span class="op">&lt;-</span> <span class="st">'value'</span>
-<span class="va">STATIC</span>      <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'item_id_idx'</span>, <span class="st">'store_id_idx'</span><span class="op">)</span>
-<span class="va">CATEGORICAL</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'event_name_1'</span>, <span class="st">'event_type_1'</span>, <span class="va">STATIC</span><span class="op">)</span>
-<span class="va">NUMERIC</span>     <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'sell_price'</span>, <span class="st">'sell_price'</span><span class="op">)</span>
-<span class="va">KEY</span>         <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'item_id'</span>, <span class="st">'store_id'</span><span class="op">)</span>
-<span class="va">INDEX</span>       <span class="op">&lt;-</span> <span class="st">'date'</span>
-<span class="va">LOOKBACK</span>    <span class="op">&lt;-</span> <span class="fl">28</span>
-<span class="va">HORIZON</span>     <span class="op">&lt;-</span> <span class="fl">14</span>
-<span class="va">STRIDE</span>      <span class="op">&lt;-</span> <span class="va">LOOKBACK</span>
-<span class="va">BATCH_SIZE</span>  <span class="op">&lt;-</span> <span class="fl">32</span>
-
-<span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/setDT.html" class="external-link">setDT</a></span><span class="op">(</span><span class="va">train</span><span class="op">)</span>
-<span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/setDT.html" class="external-link">setDT</a></span><span class="op">(</span><span class="va">test</span><span class="op">)</span>
-
-<span class="co"># ==========================================================================</span>
-<span class="co">#                          CREATING GENERATORS</span>
-<span class="co"># ==========================================================================</span>
-
-<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">train_generator</span>, <span class="va">train_steps</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/pkg/zeallot/man/operator.html" class="external-link">%&lt;-%</a></span>
-   <span class="fu">ts_generator</span><span class="op">(</span>
-       data <span class="op">=</span> <span class="va">train</span>,
-       key <span class="op">=</span> <span class="va">KEY</span>,
-       index <span class="op">=</span> <span class="va">INDEX</span>,
-       lookback <span class="op">=</span> <span class="va">LOOKBACK</span>,
-       horizon <span class="op">=</span> <span class="va">HORIZON</span>,
-       stride <span class="op">=</span> <span class="va">STRIDE</span>,
-       target<span class="op">=</span><span class="va">TARGET</span>,
-       static<span class="op">=</span><span class="va">STATIC</span>,
-       categorical<span class="op">=</span><span class="va">CATEGORICAL</span>,
-       numeric<span class="op">=</span><span class="va">NUMERIC</span>,
-       batch_size<span class="op">=</span><span class="va">BATCH_SIZE</span>
-   <span class="op">)</span>
-
-<span class="va">batch</span> <span class="op">&lt;-</span> <span class="fu">train_generator</span><span class="op">(</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">batch</span><span class="op">)</span><span class="op">)</span>
-
-<span class="va">test_generator</span> <span class="op">&lt;-</span>
-   <span class="fu">ts_generator</span><span class="op">(</span>
-       data <span class="op">=</span> <span class="va">test</span>,
-       key <span class="op">=</span> <span class="va">KEY</span>,
-       index <span class="op">=</span> <span class="va">INDEX</span>,
-       lookback <span class="op">=</span> <span class="va">LOOKBACK</span>,
-       horizon <span class="op">=</span> <span class="va">HORIZON</span>,
-       stride <span class="op">=</span> <span class="va">STRIDE</span>,
-       target<span class="op">=</span><span class="va">TARGET</span>,
-       static<span class="op">=</span><span class="va">STATIC</span>,
-       categorical<span class="op">=</span><span class="va">CATEGORICAL</span>,
-       numeric<span class="op">=</span><span class="va">NUMERIC</span>
-   <span class="op">)</span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/krzjoa/m5" class="external-link">m5</a></span><span class="op">)</span></span>
+<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/tidymodels/recipes" class="external-link">recipes</a></span>, warn.conflicts<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span>
+<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/nteetor/zeallot" class="external-link">zeallot</a></span><span class="op">)</span></span>
+<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span>, warn.conflicts<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span>
+<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-datatable.com" class="external-link">data.table</a></span>, warn.conflicts<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="co"># ==========================================================================</span></span>
+<span class="r-in"><span class="co">#                          PREPARING THE DATA</span></span>
+<span class="r-in"><span class="co"># ==========================================================================</span></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="va">train</span> <span class="op">&lt;-</span> <span class="va">tiny_m5</span><span class="op">[</span><span class="va">date</span> <span class="op">&lt;</span> <span class="st">'2016-01-01'</span><span class="op">]</span></span>
+<span class="r-in"><span class="va">test</span>  <span class="op">&lt;-</span> <span class="va">tiny_m5</span><span class="op">[</span><span class="va">date</span> <span class="op">&gt;=</span> <span class="st">'2016-01-01'</span><span class="op">]</span></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="va">m5_recipe</span> <span class="op">&lt;-</span></span>
+<span class="r-in">   <span class="fu"><a href="https://recipes.tidymodels.org/reference/recipe.html" class="external-link">recipe</a></span><span class="op">(</span><span class="va">value</span> <span class="op">~</span> <span class="va">.</span>, data<span class="op">=</span><span class="va">train</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span class="r-in">   <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_mutate.html" class="external-link">step_mutate</a></span><span class="op">(</span>item_id_idx<span class="op">=</span><span class="va">item_id</span>, store_id_idx<span class="op">=</span><span class="va">store_id</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span class="r-in">   <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_integer.html" class="external-link">step_integer</a></span><span class="op">(</span><span class="va">item_id_idx</span>, <span class="va">store_id_idx</span>,</span>
+<span class="r-in">                <span class="va">wday</span>, <span class="va">month</span>,</span>
+<span class="r-in">                <span class="va">event_name_1</span>, <span class="va">event_type_1</span>,</span>
+<span class="r-in">                <span class="va">event_name_2</span>, <span class="va">event_type_2</span>,</span>
+<span class="r-in">                zero_based<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span class="r-in">   <span class="fu"><a href="https://recipes.tidymodels.org/reference/step_naomit.html" class="external-link">step_naomit</a></span><span class="op">(</span><span class="fu"><a href="https://recipes.tidymodels.org/reference/has_role.html" class="external-link">all_predictors</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span class="r-in">   <span class="fu"><a href="https://recipes.tidymodels.org/reference/prep.html" class="external-link">prep</a></span><span class="op">(</span><span class="op">)</span></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="va">train</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://recipes.tidymodels.org/reference/bake.html" class="external-link">bake</a></span><span class="op">(</span><span class="va">m5_recipe</span>, <span class="va">train</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">test</span>  <span class="op">&lt;-</span> <span class="fu"><a href="https://recipes.tidymodels.org/reference/bake.html" class="external-link">bake</a></span><span class="op">(</span><span class="va">m5_recipe</span>, <span class="va">test</span><span class="op">)</span></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="va">TARGET</span>      <span class="op">&lt;-</span> <span class="st">'value'</span></span>
+<span class="r-in"><span class="va">STATIC</span>      <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'item_id_idx'</span>, <span class="st">'store_id_idx'</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">CATEGORICAL</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'event_name_1'</span>, <span class="st">'event_type_1'</span>, <span class="va">STATIC</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">NUMERIC</span>     <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'sell_price'</span>, <span class="st">'sell_price'</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">KEY</span>         <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'item_id'</span>, <span class="st">'store_id'</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">INDEX</span>       <span class="op">&lt;-</span> <span class="st">'date'</span></span>
+<span class="r-in"><span class="va">LOOKBACK</span>    <span class="op">&lt;-</span> <span class="fl">28</span></span>
+<span class="r-in"><span class="va">HORIZON</span>     <span class="op">&lt;-</span> <span class="fl">14</span></span>
+<span class="r-in"><span class="va">STRIDE</span>      <span class="op">&lt;-</span> <span class="va">LOOKBACK</span></span>
+<span class="r-in"><span class="va">BATCH_SIZE</span>  <span class="op">&lt;-</span> <span class="fl">32</span></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/setDT.html" class="external-link">setDT</a></span><span class="op">(</span><span class="va">train</span><span class="op">)</span></span>
+<span class="r-in"><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/setDT.html" class="external-link">setDT</a></span><span class="op">(</span><span class="va">test</span><span class="op">)</span></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="co"># ==========================================================================</span></span>
+<span class="r-in"><span class="co">#                          CREATING GENERATORS</span></span>
+<span class="r-in"><span class="co"># ==========================================================================</span></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">train_generator</span>, <span class="va">train_steps</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/pkg/zeallot/man/operator.html" class="external-link">%&lt;-%</a></span></span>
+<span class="r-in">   <span class="fu">ts_generator</span><span class="op">(</span></span>
+<span class="r-in">       data <span class="op">=</span> <span class="va">train</span>,</span>
+<span class="r-in">       key <span class="op">=</span> <span class="va">KEY</span>,</span>
+<span class="r-in">       index <span class="op">=</span> <span class="va">INDEX</span>,</span>
+<span class="r-in">       lookback <span class="op">=</span> <span class="va">LOOKBACK</span>,</span>
+<span class="r-in">       horizon <span class="op">=</span> <span class="va">HORIZON</span>,</span>
+<span class="r-in">       stride <span class="op">=</span> <span class="va">STRIDE</span>,</span>
+<span class="r-in">       target<span class="op">=</span><span class="va">TARGET</span>,</span>
+<span class="r-in">       static<span class="op">=</span><span class="va">STATIC</span>,</span>
+<span class="r-in">       categorical<span class="op">=</span><span class="va">CATEGORICAL</span>,</span>
+<span class="r-in">       numeric<span class="op">=</span><span class="va">NUMERIC</span>,</span>
+<span class="r-in">       batch_size<span class="op">=</span><span class="va">BATCH_SIZE</span></span>
+<span class="r-in">   <span class="op">)</span></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="va">batch</span> <span class="op">&lt;-</span> <span class="fu">train_generator</span><span class="op">(</span><span class="op">)</span></span>
+<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">batch</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "X_past_num"   "X_past_cat"   "y_fut"        "X_fut_num"    "X_fut_cat"   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [6] "X_static_cat"</span>
+<span class="r-in"></span>
+<span class="r-in"><span class="va">test_generator</span> <span class="op">&lt;-</span></span>
+<span class="r-in">   <span class="fu">ts_generator</span><span class="op">(</span></span>
+<span class="r-in">       data <span class="op">=</span> <span class="va">test</span>,</span>
+<span class="r-in">       key <span class="op">=</span> <span class="va">KEY</span>,</span>
+<span class="r-in">       index <span class="op">=</span> <span class="va">INDEX</span>,</span>
+<span class="r-in">       lookback <span class="op">=</span> <span class="va">LOOKBACK</span>,</span>
+<span class="r-in">       horizon <span class="op">=</span> <span class="va">HORIZON</span>,</span>
+<span class="r-in">       stride <span class="op">=</span> <span class="va">STRIDE</span>,</span>
+<span class="r-in">       target<span class="op">=</span><span class="va">TARGET</span>,</span>
+<span class="r-in">       static<span class="op">=</span><span class="va">STATIC</span>,</span>
+<span class="r-in">       categorical<span class="op">=</span><span class="va">CATEGORICAL</span>,</span>
+<span class="r-in">       numeric<span class="op">=</span><span class="va">NUMERIC</span></span>
+<span class="r-in">   <span class="op">)</span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

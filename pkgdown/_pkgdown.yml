@@ -42,3 +42,4 @@ reference:
   contents:
   - make_arrays
   - ts_generator
+  - dict_size

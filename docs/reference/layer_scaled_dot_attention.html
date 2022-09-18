@@ -26,8 +26,8 @@ Defined as:"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/m5_forecasting.html">M5 Forecasting challenges</a>
-    <a class="dropdown-item" href="../articles/preparing_input.html">Preparing input</a>
+    <a class="dropdown-item" href="../articles/m5_forecasting.html">M5 Forecasting competitions</a>
+    <a class="dropdown-item" href="../articles/preparing_input.html">Preparing input for time series models</a>
   </div>
 </li>
       </ul><form class="form-inline my-2 my-lg-0" role="search">
@@ -89,22 +89,25 @@ to either using the training mode of the parent layer/model, or FALSE
 </ul></div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
-    <p><a href="https://arxiv.org/pdf/1706.03762v5.pdf" class="external-link">Attention Is All You Need</a>.</p>
-    </div>
+    
+<ol><li><p>A. Vaswani et al. <a href="https://arxiv.org/pdf/1706.03762v5.pdf" class="external-link">Attention Is All You Need</a>(2017)</p></li>
+<li><p></p><ol><li><p>B. Lim, S.O. Arik, N. Loeff, T. Pfiste, <a href="https://arxiv.org/abs/1912.09363" class="external-link">Temporal Fusion Transformers for Interpretable Multi-horizon Time Series Forecasting</a>(2020)</p></li>
+</ol></li>
+</ol></div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code>
-<span class="va">lookback</span>   <span class="op">&lt;-</span> <span class="fl">28</span>
-<span class="va">horizon</span>    <span class="op">&lt;-</span> <span class="fl">14</span>
-<span class="va">all_steps</span>  <span class="op">&lt;-</span> <span class="va">lookback</span> <span class="op">+</span> <span class="va">horizon</span>
-<span class="va">state_size</span> <span class="op">&lt;-</span> <span class="fl">5</span>
-
-<span class="va">queries</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/keras/man/layer_input.html" class="external-link">layer_input</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">horizon</span>, <span class="va">state_size</span><span class="op">)</span><span class="op">)</span>
-<span class="va">keys</span>    <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/keras/man/layer_input.html" class="external-link">layer_input</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">all_steps</span>, <span class="va">state_size</span><span class="op">)</span><span class="op">)</span>
-<span class="va">values</span>  <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/keras/man/layer_input.html" class="external-link">layer_input</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">all_steps</span>, <span class="va">state_size</span><span class="op">)</span><span class="op">)</span>
-
-<span class="va">sdp_attention</span> <span class="op">&lt;-</span> <span class="fu">layer_scaled_dot_attention</span><span class="op">(</span><span class="op">)</span><span class="op">(</span><span class="va">queries</span>, <span class="va">keys</span>, <span class="va">values</span><span class="op">)</span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
+<span class="r-in"><span class="va">lookback</span>   <span class="op">&lt;-</span> <span class="fl">28</span></span>
+<span class="r-in"><span class="va">horizon</span>    <span class="op">&lt;-</span> <span class="fl">14</span></span>
+<span class="r-in"><span class="va">all_steps</span>  <span class="op">&lt;-</span> <span class="va">lookback</span> <span class="op">+</span> <span class="va">horizon</span></span>
+<span class="r-in"><span class="va">state_size</span> <span class="op">&lt;-</span> <span class="fl">5</span></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="va">queries</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/keras/man/layer_input.html" class="external-link">layer_input</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">horizon</span>, <span class="va">state_size</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">keys</span>    <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/keras/man/layer_input.html" class="external-link">layer_input</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">all_steps</span>, <span class="va">state_size</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">values</span>  <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/keras/man/layer_input.html" class="external-link">layer_input</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">all_steps</span>, <span class="va">state_size</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="va">sdp_attention</span> <span class="op">&lt;-</span> <span class="fu">layer_scaled_dot_attention</span><span class="op">(</span><span class="op">)</span><span class="op">(</span><span class="va">queries</span>, <span class="va">keys</span>, <span class="va">values</span><span class="op">)</span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

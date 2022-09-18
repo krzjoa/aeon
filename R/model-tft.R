@@ -5,12 +5,15 @@
 #' @param past_numeric_size Number of numeric features from the past
 #' @param past_categorical_size Number of categorical features from the past
 #' @param future_numeric_size Number of numeric features from the future
+#' @param output_size Number of the models output. For simple point estimate set `1`.
 #'
 #' @include layer-interpretable-mh-attention.R layer-grn.R
 #'
 #' @seealso
 #' TFT components:
-#' [layer_glu()], [layer_grn()], [layer_multi_embedding()], [layer_multi_dense()]
+#'
+#' [layer_glu()], [layer_grn()], [layer_multi_embedding()], [layer_multi_dense()],
+#' [layer_scaled_dot_attention()], [layer_interpretable_mh_attention()], [layer_temporal_fusion_decoder()]
 #'
 #' @references
 #' 1. [Paper](https://arxiv.org/abs/1912.09363)
@@ -33,7 +36,7 @@
 #'    optimizer               = 'adam',
 #'    hidden_dim              = 12,
 #'    state_size              = 7,
-#'    n_heads                 = 10,
+#'    num_heads                 = 10,
 #'    dropout_rate            = 0.1,
 #'    output_size             = 3
 #'    #quantiles               = 0.5
@@ -63,10 +66,9 @@ model_tft <- keras::new_model_class(
                         future_categorical_size = 7,
                         vocab_static_size,
                         vocab_dynamic_size,
-                        optimizer,
                         hidden_dim = 10,
                         state_size = 5,
-                        n_heads = 10,
+                        num_heads = 10,
                         dropout_rate = NULL,
                         output_size = 1, ...){
 
@@ -193,7 +195,7 @@ model_tft <- keras::new_model_class(
       state_size   = state_size,
       dropout_rate = dropout_rate,
       use_context  = TRUE,
-      num_heads    = n_heads
+      num_heads    = num_heads
     )
 
     # Last gate

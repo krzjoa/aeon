@@ -1,0 +1,6 @@
+* tests for LMU, TCN, attention layers, TFD and model_tft
+* fix generator to return two lists
+* rename values (X => x)
+* tweak DESCRIPTION
+* tweak docs for layers and model_tft
+* nbeats: https://github.com/LongxingTan/Time-series-prediction/blob/master/tfts/layers/nbeats_layer.py

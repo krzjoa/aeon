@@ -26,8 +26,8 @@
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/m5_forecasting.html">M5 Forecasting challenges</a>
-    <a class="dropdown-item" href="../articles/preparing_input.html">Preparing input</a>
+    <a class="dropdown-item" href="../articles/m5_forecasting.html">M5 Forecasting competitions</a>
+    <a class="dropdown-item" href="../articles/preparing_input.html">Preparing input for time series models</a>
   </div>
 </li>
       </ul><form class="form-inline my-2 my-lg-0" role="search">
@@ -85,26 +85,28 @@ where they also refer to as $$d_model$$</p></dd>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code>
-<span class="co"># =========================================================================</span>
-<span class="co">#               THREE-DIMENSIONAL INPUT (STATIC FEATURES)</span>
-<span class="co"># =========================================================================</span>
-
-<span class="co"># input: (batch_size, n_features, state_size)</span>
-
-<span class="va">inp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/keras/man/layer_input.html" class="external-link">layer_input</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span>
-<span class="va">out</span> <span class="op">&lt;-</span> <span class="fu">layer_vsn</span><span class="op">(</span>hidden_units <span class="op">=</span> <span class="fl">10</span>, state_size <span class="op">=</span> <span class="fl">5</span><span class="op">)</span><span class="op">(</span><span class="va">inp</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">out</span><span class="op">)</span>
-
-<span class="co"># =========================================================================</span>
-<span class="co">#               FOUR-DIMENSIONAL INPUT (DYNAMIC FEATURES)</span>
-<span class="co"># =========================================================================</span>
-
-<span class="co"># input: (batch_size, timesteps, n_features, state_size)</span>
-
-<span class="va">inp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/keras/man/layer_input.html" class="external-link">layer_input</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">28</span>, <span class="fl">10</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span>
-<span class="va">out</span> <span class="op">&lt;-</span> <span class="fu">layer_vsn</span><span class="op">(</span>hidden_units <span class="op">=</span> <span class="fl">10</span>, state_size <span class="op">=</span> <span class="fl">5</span><span class="op">)</span><span class="op">(</span><span class="va">inp</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">out</span><span class="op">)</span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
+<span class="r-in"><span class="co"># =========================================================================</span></span>
+<span class="r-in"><span class="co">#               THREE-DIMENSIONAL INPUT (STATIC FEATURES)</span></span>
+<span class="r-in"><span class="co"># =========================================================================</span></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="co"># input: (batch_size, n_features, state_size)</span></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="va">inp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/keras/man/layer_input.html" class="external-link">layer_input</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">out</span> <span class="op">&lt;-</span> <span class="fu">layer_vsn</span><span class="op">(</span>hidden_units <span class="op">=</span> <span class="fl">10</span>, state_size <span class="op">=</span> <span class="fl">5</span><span class="op">)</span><span class="op">(</span><span class="va">inp</span><span class="op">)</span></span>
+<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">out</span><span class="op">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] NA  5</span>
+<span class="r-in"></span>
+<span class="r-in"><span class="co"># =========================================================================</span></span>
+<span class="r-in"><span class="co">#               FOUR-DIMENSIONAL INPUT (DYNAMIC FEATURES)</span></span>
+<span class="r-in"><span class="co"># =========================================================================</span></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="co"># input: (batch_size, timesteps, n_features, state_size)</span></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="va">inp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/keras/man/layer_input.html" class="external-link">layer_input</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">28</span>, <span class="fl">10</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">out</span> <span class="op">&lt;-</span> <span class="fu">layer_vsn</span><span class="op">(</span>hidden_units <span class="op">=</span> <span class="fl">10</span>, state_size <span class="op">=</span> <span class="fl">5</span><span class="op">)</span><span class="op">(</span><span class="va">inp</span><span class="op">)</span></span>
+<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">out</span><span class="op">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] NA 28  5</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

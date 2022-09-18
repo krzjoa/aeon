@@ -26,8 +26,8 @@ It may be considered as a replacement for the recurrent layers."><!-- mathjax --
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/m5_forecasting.html">M5 Forecasting challenges</a>
-    <a class="dropdown-item" href="../articles/preparing_input.html">Preparing input</a>
+    <a class="dropdown-item" href="../articles/m5_forecasting.html">M5 Forecasting competitions</a>
+    <a class="dropdown-item" href="../articles/preparing_input.html">Preparing input for time series models</a>
   </div>
 </li>
       </ul><form class="form-inline my-2 my-lg-0" role="search">
@@ -123,12 +123,20 @@ It may be considered as a replacement for the recurrent layers.</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="co"># \donttest{</span>
-<span class="va">inp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/keras/man/layer_input.html" class="external-link">layer_input</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">28</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span>
-<span class="va">tcn</span> <span class="op">&lt;-</span> <span class="fu">layer_tcn</span><span class="op">(</span><span class="op">)</span><span class="op">(</span><span class="va">inp</span><span class="op">)</span>
-<span class="va">model</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/keras/man/keras_model.html" class="external-link">keras_model</a></span><span class="op">(</span><span class="va">inp</span>, <span class="va">tcn</span><span class="op">)</span>
-<span class="fu">model</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/array.html" class="external-link">array</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">32</span>, <span class="fl">28</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
-<span class="co"># }</span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># \donttest{</span></span>
+<span class="r-in"><span class="va">inp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/keras/man/layer_input.html" class="external-link">layer_input</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">28</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">tcn</span> <span class="op">&lt;-</span> <span class="fu">layer_tcn</span><span class="op">(</span><span class="op">)</span><span class="op">(</span><span class="va">inp</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/keras/man/keras_model.html" class="external-link">keras_model</a></span><span class="op">(</span><span class="va">inp</span>, <span class="va">tcn</span><span class="op">)</span></span>
+<span class="r-in"><span class="fu">model</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/array.html" class="external-link">array</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">32</span>, <span class="fl">28</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> tf.Tensor(</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[1.2380545 5.4867787 0.        ... 7.667675  1.3840262 4.999212 ]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1.2380545 5.4867787 0.        ... 7.667675  1.3840262 4.999212 ]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1.2380545 5.4867787 0.        ... 7.667675  1.3840262 4.999212 ]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1.2380545 5.4867787 0.        ... 7.667675  1.3840262 4.999212 ]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1.2380545 5.4867787 0.        ... 7.667675  1.3840262 4.999212 ]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1.2380545 5.4867787 0.        ... 7.667675  1.3840262 4.999212 ]], shape=(32, 64), dtype=float32)</span>
+<span class="r-in"><span class="co"># }</span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
