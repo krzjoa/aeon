@@ -42,7 +42,6 @@ to either using the training mode of the parent layer/model, or FALSE
 }
 
 \examples{
-
 lookback   <- 28
 horizon    <- 14
 all_steps  <- lookback + horizon
@@ -56,10 +55,10 @@ sdp_attention <- layer_scaled_dot_attention()(queries, keys, values)
 }
 \references{
 \enumerate{
-\item A. Vaswani et al. \href{https://arxiv.org/pdf/1706.03762v5.pdf}{Attention Is All You Need}(2017)
+\item A. Vaswani et al. \href{https://arxiv.org/pdf/1706.03762v5.pdf}{Attention Is All You Need} (2017)
 \item 
 \enumerate{
-\item B. Lim, S.O. Arik, N. Loeff, T. Pfiste, \href{https://arxiv.org/abs/1912.09363}{Temporal Fusion Transformers for Interpretable Multi-horizon Time Series Forecasting}(2020)
+\item B. Lim, S.O. Arik, N. Loeff, T. Pfiste, \href{https://arxiv.org/abs/1912.09363}{Temporal Fusion Transformers for Interpretable Multi-horizon Time Series Forecasting} (2020)
 }
 }
 }

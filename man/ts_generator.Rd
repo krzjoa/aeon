@@ -44,7 +44,7 @@ ts_generator(
 \item{shuffle}{Shuffle samples. Set \code{FALSE} for the test dataset.}
 
 \item{y_past_sep}{Return past values of the target variable as a separate array.
-Typically, it returned as a first feature of the \code{X_past_num} array. However,
+Typically, it returned as a first feature of the \code{x_past_num} array. However,
 for some models (such as \strong{NBEATS}) it may be easier for further processing
 to keep these values as a separate array.}
 
@@ -68,7 +68,6 @@ library(data.table, warn.conflicts=FALSE)
 # ==========================================================================
 #                          PREPARING THE DATA
 # ==========================================================================
-
 train <- tiny_m5[date < '2016-01-01']
 test  <- tiny_m5[date >= '2016-01-01']
 
@@ -97,13 +96,9 @@ HORIZON     <- 14
 STRIDE      <- LOOKBACK
 BATCH_SIZE  <- 32
 
-setDT(train)
-setDT(test)
-
 # ==========================================================================
-#                          CREATING GENERATORS
+#                          CREATING GENERATOR
 # ==========================================================================
-
 c(train_generator, train_steps) \%<-\%
    ts_generator(
        data = train,
@@ -120,19 +115,5 @@ c(train_generator, train_steps) \%<-\%
    )
 
 batch <- train_generator()
-print(names(batch))
-
-test_generator <-
-   ts_generator(
-       data = test,
-       key = KEY,
-       index = INDEX,
-       lookback = LOOKBACK,
-       horizon = HORIZON,
-       stride = STRIDE,
-       target=TARGET,
-       static=STATIC,
-       categorical=CATEGORICAL,
-       numeric=NUMERIC
-   )
+print(names(batch[[1]]))
 }

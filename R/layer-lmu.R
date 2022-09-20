@@ -48,12 +48,15 @@
 #' @param return_sequences If TRUE, return the full output sequence. Otherwise, return just the last
 #' output in the output sequence.
 #'
+#' @inheritSection keras::layer_rnn Input shape
+#' @inheritSection keras::layer_rnn Output shape
+#'
 #' @include utils.R
 #'
 #' @references
-#' 1. [Voelker, Kajic I. and Eliasmith, Legendre Memory Units: Continuous-Time Representation in Recurrent Neural Networks](http://compneuro.uwaterloo.ca/files/publications/voelker.2019.lmu.pdf)
-#' 2. [Voelker and Eliasmith (2018). Improving spiking dynamical networks: Accurate delays, higher-order synapses, and time cells. Neural Computation, 30(3): 569-609.](http://compneuro.uwaterloo.ca/files/publications/voelker.2018.pdf)
-#' 3. [Voelker and Eliasmith. "Methods and systems for implementing dynamic neural networks." U.S. Patent Application No. 15/243,223.](https://patents.google.com/patent/US20180053090A1/en)
+#' 1. A. Voelker, I. Kajić and C. Eliasmith, [Legendre Memory Units: Continuous-Time Representation in Recurrent Neural Networks](http://compneuro.uwaterloo.ca/files/publications/voelker.2019.lmu.pdf) (2019)
+#' 2. A. Voelker and C. Eliasmith [Improving spiking dynamical networks: Accurate delays, higher-order synapses, and time cells. Neural Computation, 30(3): 569-609.](http://compneuro.uwaterloo.ca/files/publications/voelker.2018.pdf) (2018)
+#' 3. A. Voelker and C. Eliasmith [Methods and systems for implementing dynamic neural networks. U.S. Patent Application No. 15/243,223.](https://patents.google.com/patent/US20180053090A1/en)
 #' 4. [Is LSTM (Long Short-Term Memory) dead?, CrossValidated](https://stats.stackexchange.com/questions/472822/is-lstm-long-short-term-memory-dead)
 #'
 #' @examples

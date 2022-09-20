@@ -96,6 +96,22 @@ derivative, energy, median value, etc (\link{1}\emph{, \link{2}}).
 Note that these decoder matrices can span across
 all of the units of an input sequence.
 }
+\section{Output shape}{
+
+
+\itemize{
+\item if \code{return_state}: a list of tensors. The first tensor is
+the output. The remaining tensors are the last states,
+each with shape \verb{(batch_size, state_size)}, where \code{state_size}
+could be a high dimension tensor shape.
+\item if \code{return_sequences}: N-D tensor with shape \verb{[batch_size, timesteps, output_size]}, where \code{output_size} could be a high dimension tensor shape, or
+\verb{[timesteps, batch_size, output_size]} when \code{time_major} is \code{TRUE}
+\item else, N-D tensor with shape \verb{[batch_size, output_size]}, where
+\code{output_size} could be a high dimension tensor shape.
+}
+
+}
+
 \examples{
 \dontrun{
 library(keras)
@@ -108,9 +124,9 @@ model(array(1, c(32, 28, 3)))
 }
 \references{
 \enumerate{
-\item \href{http://compneuro.uwaterloo.ca/files/publications/voelker.2019.lmu.pdf}{Voelker, Kajic I. and Eliasmith, Legendre Memory Units: Continuous-Time Representation in Recurrent Neural Networks}
-\item \href{http://compneuro.uwaterloo.ca/files/publications/voelker.2018.pdf}{Voelker and Eliasmith (2018). Improving spiking dynamical networks: Accurate delays, higher-order synapses, and time cells. Neural Computation, 30(3): 569-609.}
-\item \href{https://patents.google.com/patent/US20180053090A1/en}{Voelker and Eliasmith. "Methods and systems for implementing dynamic neural networks." U.S. Patent Application No. 15/243,223.}
+\item A. Voelker, I. Kajić and C. Eliasmith, \href{http://compneuro.uwaterloo.ca/files/publications/voelker.2019.lmu.pdf}{Legendre Memory Units: Continuous-Time Representation in Recurrent Neural Networks} (2019)
+\item A. Voelker and C. Eliasmith \href{http://compneuro.uwaterloo.ca/files/publications/voelker.2018.pdf}{Improving spiking dynamical networks: Accurate delays, higher-order synapses, and time cells. Neural Computation, 30(3): 569-609.} (2018)
+\item A. Voelker and C. Eliasmith \href{https://patents.google.com/patent/US20180053090A1/en}{Methods and systems for implementing dynamic neural networks. U.S. Patent Application No. 15/243,223.}
 \item \href{https://stats.stackexchange.com/questions/472822/is-lstm-long-short-term-memory-dead}{Is LSTM (Long Short-Term Memory) dead?, CrossValidated}
 }
 }

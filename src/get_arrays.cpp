@@ -6,9 +6,7 @@ using namespace Rcpp;
 // In C++ transformed to the zero-based index
 int flat_index(int dim1, int dim2,
                int idx1, int idx2, int idx3){
-  idx1++;
-  int output = idx1 + idx2 * dim1 + idx3 * dim1 * dim2;
-  return output-1;
+  return idx1 + idx2 * dim1 + idx3 * dim1 * dim2;
 }
 
 // Allocate required arrays (tensors)

@@ -61,25 +61,19 @@ would have shape \verb{(batch_size, unit)}.
 
 \examples{
 library(keras)
-
 # ================================================================
 #             SEQUENTIAL MODEL, NO GATE VALUES RETURNED
 # ================================================================
-
 model <-
   keras_model_sequential() \%>\%
   layer_grn(10, input_shape = 30)
-
 model
-
 output <- model(matrix(1, 32, 30))
 dim(output)
 output[1,]
-
 #'================================================================
 #            WITH GATE VALUES AND ADDITIONAL CONTEXT
 # ================================================================
-
 inp  <- layer_input(c(28, 5))
 ctx  <- layer_input(10)
 out  <- layer_grn(
@@ -87,18 +81,13 @@ out  <- layer_grn(
             return_gate = TRUE,
             use_context = TRUE
          )(inp, context = ctx)
-
 model <- keras_model(list(inp, ctx), out)
-
 model
-
 arr_1 <- array(1, dim = c(1, 28, 5))
 arr_2 <- array(1, dim = c(1, 10))
-
 c(values, gate) \%<-\% model(list(arr_1, arr_2))
 dim(values)
 dim(gate)
-
 values[1, all_dims()]
 gate[1, all_dims()]
 }

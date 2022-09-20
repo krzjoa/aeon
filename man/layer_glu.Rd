@@ -51,36 +51,26 @@ would have shape \verb{(batch_size, unit)}.
 
 \examples{
 library(keras)
-
 # ================================================================
 #             SEQUENTIAL MODEL, NO GATE VALUES RETURNED
 # ================================================================
-
 model <-
   keras_model_sequential() \%>\%
   layer_glu(10, input_shape = 30)
-
 model
-
 output <- model(matrix(1, 32, 30))
 dim(output)
 output[1,]
-
 # ================================================================
 #                     WITH GATE VALUES RETURNED
 # ================================================================
-
-inp  <- layer_input(30)
-out  <- layer_glu(units = 10, return_gate = TRUE)(inp)
-
+inp   <- layer_input(30)
+out   <- layer_glu(units = 10, return_gate = TRUE)(inp)
 model <- keras_model(inp, out)
-
 model
-
 c(values, gate) \%<-\% model(matrix(1, 32, 30))
 dim(values)
 dim(gate)
-
 values[1,]
 gate[1,]
 }

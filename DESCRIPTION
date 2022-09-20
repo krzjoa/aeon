@@ -1,6 +1,6 @@
 Package: aion
 Type: Package
-Title: Time Series with keras
+Title: Time Series with 'keras'
 Version: 0.1.0
 Authors@R: 
     person(given   = "Krzysztof",
@@ -8,8 +8,11 @@ Authors@R:
            role    = c("aut", "cre"),
            email   = "joachimiak.krzysztof@gmail.com",
            comment = c(ORCID = "0000-0003-4780-7947"))
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
+Description: Delivers useful functions to prepare input/ouput data for 'keras'
+    time series models. Includes a 'Temporal Fusion Transformer' implementation
+    and exposes its componets by sharing component layers in public package API.
+    Introduces interface for 'keras-tcn' and 'keras_lmu' libraries and adds three
+    loss function classes and one metric class.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
@@ -24,11 +27,12 @@ Config/testthat/edition: 3
 Collate: 
     'RcppExports.R'
     'aion-package.R'
+    'utils.R'
+    'arrays-utils.R'
     'layer-glu.R'
     'layer-grn.R'
     'layer-scaled-dot-attention.R'
     'layer-interpretable-mh-attention.R'
-    'utils.R'
     'layer-lmu.R'
     'layer-multi-dense.R'
     'layer-multi-embedding.R'

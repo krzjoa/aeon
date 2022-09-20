@@ -59,6 +59,6 @@ model(array(1, c(32, 28, 3)))
 \references{
 \enumerate{
 \item \href{https://github.com/philipperemy/keras-tcn}{Keras TCN library by Philippe Rémy}
-\item \href{https://arxiv.org/abs/1803.01271}{Bai Sh., Kolter J.Z., Koltun V., An Empirical Evaluation of Generic Convolutional and Recurrent Networks for Sequence Modeling, 2018}
+\item Sh. Bai.,  J.Z Kolter, V. Koltun, An Empirical Evaluation of Generic Convolutional and Recurrent Networks for Sequence Modeling](https://arxiv.org/abs/1803.01271) (2018)
 }
 }

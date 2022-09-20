@@ -43,10 +43,10 @@ test_that("Test make_arrays", {
       numeric     = NUMERIC
     )
 
-  expect_equal(dim(train_arrays$X_past_num)[2], 10)
-  expect_equal(dim(train_arrays$X_past_num)[3], length(NUMERIC) + 1)
+  expect_equal(dim(train_arrays$x_past_num)[2], 10)
+  expect_equal(dim(train_arrays$x_past_num)[3], length(NUMERIC) + 1)
 
-  expect_equal(dim(train_arrays$X_fut_cat)[2], 5)
-  expect_equal(dim(train_arrays$X_fut_cat)[3], length(CATEGORICAL))
+  expect_equal(dim(train_arrays$x_fut_cat)[2], 5)
+  expect_equal(dim(train_arrays$x_fut_cat)[3], length(CATEGORICAL))
 
 })

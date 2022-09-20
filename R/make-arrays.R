@@ -13,22 +13,25 @@
 #' @param categorical Categorical variables
 #' @param static Static variables
 #' @param y_past_sep Return past values of the target variable as a separate array.
-#' Typically, it returned as a first feature of the `X_past_num` array. However,
+#' Typically, it returned as a first feature of the `x_past_num` array. However,
 #' for some models (such as **NBEATS**) it may be easier for further processing
 #' to keep these values as a separate array.
 #'
-#' @include utils.R
+#' @include utils.R arrays-utils.R
 #'
 #' @returns
 #' A list of arrays. The maximal possible content embraces eight arrays:
-#' - **y_past**
-#' - **X_past_cat**
-#' - **X_past_num**
+#' - (**y_past**)
+#'  - **x_past_num**
+#' - **x_past_cat**
 #' - **y_fut**
-#' - **X_fut_cat**
-#' - **X_fut_num**
-#' - **X_static_cat**
-#' - **X_static_num**
+#' - **x_fut_num**
+#' - **x_fut_cat**
+#' - **x_static_num**
+#' - **x_static_cat**
+#'
+#' **y_past** is optional, if `y_past_sep = TRUE`, otherwise those values are part of
+#' the **x_past_num** array. Some array may miss depending on the specified variables.
 #'
 #' @examples
 #' library(m5)
@@ -40,7 +43,6 @@
 #' # ==========================================================================
 #' #                          PREPARING THE DATA
 #' # ==========================================================================
-#'
 #' train <- tiny_m5[date < '2016-01-01']
 #' test  <- tiny_m5[date >= '2016-01-01']
 #'
@@ -67,14 +69,9 @@
 #' LOOKBACK    <- 28
 #' HORIZON     <- 14
 #' STRIDE      <- LOOKBACK
-#'
-#' setDT(train)
-#' setDT(test)
-#'
 #' # ==========================================================================
 #' #                           CREATING ARRAYS
 #' # ==========================================================================
-#'
 #' train_arrays <-
 #'    make_arrays(
 #'        data        = train,
@@ -90,7 +87,7 @@
 #'    )
 #'
 #' print(names(train_arrays))
-#' print(dim(train_arrays$X_past_num))
+#' print(dim(train_arrays$x_past_num))
 #'
 #' test_arrays <-
 #'    make_arrays(
@@ -107,7 +104,7 @@
 #'    )
 #'
 #' print(names(test_arrays))
-#' print(dim(test_arrays$X_past_num))
+#' print(dim(test_arrays$x_past_num))
 #' @export
 make_arrays <- function(data, key, index,
                         lookback, horizon, stride=1,
@@ -116,112 +113,162 @@ make_arrays <- function(data, key, index,
                         shuffle=TRUE, sample_frac = 1.,
                         y_past_sep = FALSE, ...){
 
-  setDT(data)
+  output <- prepare_idx_and_vars(
+    data        = data,
+    lookback    = lookback,
+    horizon     = horizon,
+    key         = key,
+    index       = index,
+    stride      = stride,
+    target      = target,
+    numeric     = numeric,
+    categorical = categorical,
+    past        = past,
+    future      = future,
+    static      = static,
+    shuffle     = shuffle,
+    sample_frac = sample_frac,
+    y_past_sep  = y_past_sep
+  )
 
-  # Start of each time series we can identify with unique key
-  total_window_length <- lookback + horizon
-  key_index <- c(key, index)
+  ts_starts          <- output[[1]]
+  past_var           <- output[[2]]
+  fut_var            <- output[[3]]
+  static_numeric     <- output[[4]]
+  static_categorical <- output[[5]]
 
-  ts_starts <-
-    data[, .(start_time = min(get(index)),
-             end_time = max(get(index))),
-         by = eval(key)]
+  # browser()
 
-  if (any(ts_starts$end_time - ts_starts$start_time < total_window_length))
-    warning("Found samples with end_time - start_time < total_window_length. They'll be removed.")
-
-  ts_starts <-
-    ts_starts[end_time - start_time  >= total_window_length]
-
-  ts_starts[, end_time := end_time - total_window_length]
-
-  # Types
-  ts_starts[, window_start := Map(\(x, y) seq(x, y, stride),
-                                   ts_starts$start_time,
-                                   ts_starts$end_time)]
-
-  # https://stackoverflow.com/questions/15659783/why-does-unlist-kill-dates-in-r
-  ts_starts <- ts_starts[, .(window_start = do.call('c', window_start)),
-                         by = eval(key)]
-
-  if (sample_frac < 1.)
-    ts_starts <-
-      ts_starts[,.SD[sample(.N,as.integer(floor(.N * sample_frac)))]
-                ,by = eval(key)]
-
-  # Static
-  # TODO: move into Rcpp
   if (!is.null(static)) {
-    static_categorical <- resolve_variables(static, categorical)
-    static_numeric     <- resolve_variables(static, numeric)
 
     ext_static_cat <- c(static_categorical, static_numeric, key, index)
+
     static_features <-
       merge(ts_starts, data[, ..ext_static_cat],
-            by.x = c(key, 'window_start'),
-            by.y = c(key, index))
+            by = c(key, index))
 
     static_arrays <- list()
 
     if (length(static_categorical) > 0)
-      static_arrays$X_static_cat <-
+      static_arrays$x_static_cat <-
         as.matrix(static_features[, ..static_categorical])
 
     if (length(static_numeric) > 0)
-      static_arrays$X_static_num <-
+      static_arrays$x_static_num <-
         as.matrix(static_features[, ..static_numeric])
   } else {
     static_arrays <- NULL
   }
 
-  setnames(ts_starts, 'window_start', index)
-
-  # Sort & create indices
-  setorderv(data, c(key, index))
-  setorderv(ts_starts, c(key, index))
-
-  data[, row_idx := 1:.N]
-  ts_starts[data, row_idx := row_idx, on=(eval(key_index))]
-
-  # Resolve variables
-  past_cat <- resolve_variables(past, categorical)
-  past_num <- resolve_variables(past, numeric)
-  fut_cat  <- resolve_variables(future, categorical)
-  fut_num  <- resolve_variables(future, numeric)
-
-  # Convert to numeric - required by the Rcpp function, which uses NumericVector
-  all_dynamic_vars <- c(categorical, numeric, target)
-
-  for (v in all_dynamic_vars)
-    data.table::set(data, j = v, value = as.numeric(data[[v]]))
-
-  if (!y_past_sep) {
-    past_num <- c(target, past_num)
-    target_past <- NULL
-  } else {
-    target_past <- target
-  }
-
-  # Dynamic variables
-  past_var <-
-    list(
-      y_past     = target_past,
-      X_past_num = past_num,
-      X_past_cat = past_cat
-    )
-
-  fut_var <-
-    list(
-      y_fut      = target,
-      X_fut_num  = fut_num,
-      X_fut_cat  = fut_cat
-    )
-
-  past_var <- remove_nulls(past_var)
-  fut_var  <- remove_nulls(fut_var)
+  # setDT(data)
+  #
+  # # Check if data contains gaps
+  # check_gaps(data, key, index)
+  #
+  # # Start of each time series we can identify with unique key
+  # total_window_length <- lookback + horizon
+  # key_index <- c(key, index)
+  #
+  # ts_starts <-
+  #   data[, .(start_time = min(get(index)),
+  #            end_time = max(get(index))),
+  #        by = eval(key)]
+  #
+  # if (any(ts_starts$end_time - ts_starts$start_time < total_window_length))
+  #   warning("Found samples with end_time - start_time < total_window_length. They'll be removed.")
+  #
+  # ts_starts <-
+  #   ts_starts[end_time - start_time  >= total_window_length]
+  #
+  # ts_starts[, end_time := end_time - total_window_length]
+  #
+  # # Types
+  # ts_starts[, window_start := Map(\(x, y) seq(x, y, stride),
+  #                                  ts_starts$start_time,
+  #                                  ts_starts$end_time)]
+  #
+  # # https://stackoverflow.com/questions/15659783/why-does-unlist-kill-dates-in-r
+  # ts_starts <- ts_starts[, .(window_start = do.call('c', window_start)),
+  #                        by = eval(key)]
+  #
+  # if (sample_frac < 1.)
+  #   ts_starts <-
+  #     ts_starts[,.SD[sample(.N,as.integer(floor(.N * sample_frac)))]
+  #               ,by = eval(key)]
+  #
+  # # Static
+  # # TODO: move into Rcpp
+  # if (!is.null(static)) {
+  #   static_categorical <- resolve_variables(static, categorical)
+  #   static_numeric     <- resolve_variables(static, numeric)
+  #
+  #   ext_static_cat <- c(static_categorical, static_numeric, key, index)
+  #   static_features <-
+  #     merge(ts_starts, data[, ..ext_static_cat],
+  #           by.x = c(key, 'window_start'),
+  #           by.y = c(key, index))
+  #
+  #   static_arrays <- list()
+  #
+  #   if (length(static_categorical) > 0)
+  #     static_arrays$x_static_cat <-
+  #       as.matrix(static_features[, ..static_categorical])
+  #
+  #   if (length(static_numeric) > 0)
+  #     static_arrays$x_static_num <-
+  #       as.matrix(static_features[, ..static_numeric])
+  # } else {
+  #   static_arrays <- NULL
+  # }
+  #
+  # setnames(ts_starts, 'window_start', index)
+  #
+  # # Sort & create indices
+  # setorderv(data, c(key, index))
+  # setorderv(ts_starts, c(key, index))
+  #
+  # data[, row_idx := 1:.N]
+  # ts_starts[data, row_idx := row_idx, on=(eval(key_index))]
+  #
+  # # Resolve variables
+  # past_cat <- resolve_variables(past, categorical)
+  # past_num <- resolve_variables(past, numeric)
+  # fut_cat  <- resolve_variables(future, categorical)
+  # fut_num  <- resolve_variables(future, numeric)
+  #
+  # # Convert to numeric - required by the Rcpp function, which uses NumericVector
+  # all_dynamic_vars <- c(categorical, numeric, target)
+  #
+  # for (v in all_dynamic_vars)
+  #   data.table::set(data, j = v, value = as.numeric(data[[v]]))
+  #
+  # if (!y_past_sep) {
+  #   past_num <- c(target, past_num)
+  #   target_past <- NULL
+  # } else {
+  #   target_past <- target
+  # }
+  #
+  # # Dynamic variables
+  # past_var <-
+  #   list(
+  #     y_past     = target_past,
+  #     x_past_num = past_num,
+  #     x_past_cat = past_cat
+  #   )
+  #
+  # fut_var <-
+  #   list(
+  #     y_fut      = target,
+  #     x_fut_num  = fut_num,
+  #     x_fut_cat  = fut_cat
+  #   )
+  #
+  # past_var <- remove_nulls(past_var)
+  # fut_var  <- remove_nulls(fut_var)
 
   dynamic_arrays <-
-    get_arrays(
+    aion:::get_arrays(
       data           = data,
       ts_starts      = ts_starts,
       lookback       = lookback,

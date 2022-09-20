@@ -49,12 +49,12 @@ test_that("Test ts_generator", {
 
   batch <- train_gen()
 
-  expect_equal(dim(batch$X_past_num)[1], BATCH_SIZE)
-  expect_equal(dim(batch$X_past_num)[2], 10)
-  expect_equal(dim(batch$X_past_num)[3], length(NUMERIC))
+  expect_equal(dim(batch$x_past_num)[1], BATCH_SIZE)
+  expect_equal(dim(batch$x_past_num)[2], 10)
+  expect_equal(dim(batch$x_past_num)[3], length(NUMERIC))
 
-  expect_equal(dim(batch$X_fut_cat)[1], BATCH_SIZE)
-  expect_equal(dim(batch$X_fut_cat)[2], 5)
-  expect_equal(dim(batch$X_fut_cat)[3], length(CATEGORICAL))
+  expect_equal(dim(batch$x_fut_cat)[1], BATCH_SIZE)
+  expect_equal(dim(batch$x_fut_cat)[2], 5)
+  expect_equal(dim(batch$x_fut_cat)[3], length(CATEGORICAL))
 
 })

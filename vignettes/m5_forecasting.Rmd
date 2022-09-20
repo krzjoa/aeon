@@ -132,11 +132,11 @@ tft %>%
 ## Training
 
 ```{r tft_training}
-# tft %>% 
-#   fit(
-#     x = train_generator,
-#     steps_per_epoch = train_steps
-#   )
+tft %>%
+  fit(
+    x = train_generator,
+    steps_per_epoch = train_steps
+  )
 ```
 
 ## Forecasting

@@ -43,3 +43,5 @@ reference:
   - make_arrays
   - ts_generator
   - dict_size
+  - rand_array
+  - find_gaps

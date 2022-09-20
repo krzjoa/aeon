@@ -13,10 +13,9 @@
 #' @inheritSection keras::layer_multi_head_attention Call arguments
 #'
 #' @references
-#' 1. A. Vaswani et al. [Attention Is All You Need](https://arxiv.org/pdf/1706.03762v5.pdf)(2017)
-#' 2. 2. B. Lim, S.O. Arik, N. Loeff, T. Pfiste, [Temporal Fusion Transformers for Interpretable Multi-horizon Time Series Forecasting](https://arxiv.org/abs/1912.09363)(2020)
+#' 1. A. Vaswani et al. [Attention Is All You Need](https://arxiv.org/pdf/1706.03762v5.pdf) (2017)
+#' 2. 2. B. Lim, S.O. Arik, N. Loeff, T. Pfiste, [Temporal Fusion Transformers for Interpretable Multi-horizon Time Series Forecasting](https://arxiv.org/abs/1912.09363) (2020)
 #' @examples
-#'
 #' lookback   <- 28
 #' horizon    <- 14
 #' all_steps  <- lookback + horizon
