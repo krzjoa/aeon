@@ -213,19 +213,25 @@ model_tft <- keras::new_model_class(
     c(x_past_num, x_past_cat,
       x_fut_num, x_fut_cat,
       x_static_num, x_static_cat) %<-% inputs
-    browser()
     # ==========================================================================
     #                       EMBEDDINGS & PROJECTIONS
     # ==========================================================================
 
     # All the inputs are projected to the common-size space
-    static_emb <- self$static_embedding(x_static_cat)
     past_emb   <- self$past_embedding(x_past_cat)
     fut_emb    <- self$future_embedding(x_fut_cat)
 
-    static_proj <- self$static_projection(x_static_num)
+    if (!is.null(x_static_cat))
+      static_emb <- self$static_embedding(x_static_cat)
+
     past_proj   <- self$past_projection(x_past_num)
     fut_proj    <- self$future_projection(x_fut_num)
+
+    if (!is.null(x_static_num))
+      static_proj <- self$static_projection(x_static_num)
+    else
+      static_proj <- NULL
+
 
     # ==========================================================================
     #                       STATIC VARIABLE SELECTION

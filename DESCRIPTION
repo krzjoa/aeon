@@ -27,12 +27,11 @@ Config/testthat/edition: 3
 Collate: 
     'RcppExports.R'
     'aion-package.R'
-    'utils.R'
-    'arrays-utils.R'
     'layer-glu.R'
     'layer-grn.R'
     'layer-scaled-dot-attention.R'
     'layer-interpretable-mh-attention.R'
+    'utils.R'
     'layer-lmu.R'
     'layer-multi-dense.R'
     'layer-multi-embedding.R'

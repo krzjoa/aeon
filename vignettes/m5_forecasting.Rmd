@@ -48,9 +48,6 @@ m5_recipe <-
 
 train <- bake(m5_recipe, train)
 test  <- bake(m5_recipe, test)
-
-setDT(train)
-setDT(test)
 ```
 
 ## Experiment config

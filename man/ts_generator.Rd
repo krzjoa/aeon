@@ -95,7 +95,6 @@ LOOKBACK    <- 28
 HORIZON     <- 14
 STRIDE      <- LOOKBACK
 BATCH_SIZE  <- 32
-
 # ==========================================================================
 #                          CREATING GENERATOR
 # ==========================================================================
@@ -113,7 +112,6 @@ c(train_generator, train_steps) \%<-\%
        numeric=NUMERIC,
        batch_size=BATCH_SIZE
    )
-
 batch <- train_generator()
 print(names(batch[[1]]))
 }
