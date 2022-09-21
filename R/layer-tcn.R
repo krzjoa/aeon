@@ -18,7 +18,7 @@
 #'
 #' @references
 #' 1. [Keras TCN library by Philippe Rémy](https://github.com/philipperemy/keras-tcn)
-#' 2. [Bai Sh., Kolter J.Z., Koltun V., An Empirical Evaluation of Generic Convolutional and Recurrent Networks for Sequence Modeling, 2018](https://arxiv.org/abs/1803.01271)
+#' 2. Sh. Bai.,  J.Z Kolter, V. Koltun, An Empirical Evaluation of Generic Convolutional and Recurrent Networks for Sequence Modeling](https://arxiv.org/abs/1803.01271) (2018)
 #'
 #' @examples
 #' \donttest{

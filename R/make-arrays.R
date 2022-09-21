@@ -13,7 +13,7 @@
 #' @param categorical Categorical variables
 #' @param static Static variables
 #' @param y_past_sep Return past values of the target variable as a separate array.
-#' Typically, it returned as a first feature of the `X_past_num` array. However,
+#' Typically, it returned as a first feature of the `x_past_num` array. However,
 #' for some models (such as **NBEATS**) it may be easier for further processing
 #' to keep these values as a separate array.
 #'
@@ -21,14 +21,17 @@
 #'
 #' @returns
 #' A list of arrays. The maximal possible content embraces eight arrays:
-#' - **y_past**
-#' - **X_past_cat**
-#' - **X_past_num**
+#' - (**y_past**)
+#'  - **x_past_num**
+#' - **x_past_cat**
 #' - **y_fut**
-#' - **X_fut_cat**
-#' - **X_fut_num**
-#' - **X_static_cat**
-#' - **X_static_num**
+#' - **x_fut_num**
+#' - **x_fut_cat**
+#' - **x_static_num**
+#' - **x_static_cat**
+#'
+#' **y_past** is optional, if `y_past_sep = TRUE`, otherwise those values are part of
+#' the **x_past_num** array. Some array may miss depending on the specified variables.
 #'
 #' @examples
 #' library(m5)
@@ -40,7 +43,6 @@
 #' # ==========================================================================
 #' #                          PREPARING THE DATA
 #' # ==========================================================================
-#'
 #' train <- tiny_m5[date < '2016-01-01']
 #' test  <- tiny_m5[date >= '2016-01-01']
 #'
@@ -67,14 +69,9 @@
 #' LOOKBACK    <- 28
 #' HORIZON     <- 14
 #' STRIDE      <- LOOKBACK
-#'
-#' setDT(train)
-#' setDT(test)
-#'
 #' # ==========================================================================
 #' #                           CREATING ARRAYS
 #' # ==========================================================================
-#'
 #' train_arrays <-
 #'    make_arrays(
 #'        data        = train,
@@ -90,7 +87,7 @@
 #'    )
 #'
 #' print(names(train_arrays))
-#' print(dim(train_arrays$X_past_num))
+#' print(dim(train_arrays$x_past_num))
 #'
 #' test_arrays <-
 #'    make_arrays(
@@ -107,7 +104,7 @@
 #'    )
 #'
 #' print(names(test_arrays))
-#' print(dim(test_arrays$X_past_num))
+#' print(dim(test_arrays$x_past_num))
 #' @export
 make_arrays <- function(data, key, index,
                         lookback, horizon, stride=1,
@@ -117,6 +114,9 @@ make_arrays <- function(data, key, index,
                         y_past_sep = FALSE, ...){
 
   setDT(data)
+
+  # Check if data contains gaps
+  check_gaps(data, key, index)
 
   # Start of each time series we can identify with unique key
   total_window_length <- lookback + horizon
@@ -164,11 +164,11 @@ make_arrays <- function(data, key, index,
     static_arrays <- list()
 
     if (length(static_categorical) > 0)
-      static_arrays$X_static_cat <-
+      static_arrays$x_static_cat <-
         as.matrix(static_features[, ..static_categorical])
 
     if (length(static_numeric) > 0)
-      static_arrays$X_static_num <-
+      static_arrays$x_static_num <-
         as.matrix(static_features[, ..static_numeric])
   } else {
     static_arrays <- NULL
@@ -206,22 +206,22 @@ make_arrays <- function(data, key, index,
   past_var <-
     list(
       y_past     = target_past,
-      X_past_num = past_num,
-      X_past_cat = past_cat
+      x_past_num = past_num,
+      x_past_cat = past_cat
     )
 
   fut_var <-
     list(
       y_fut      = target,
-      X_fut_num  = fut_num,
-      X_fut_cat  = fut_cat
+      x_fut_num  = fut_num,
+      x_fut_cat  = fut_cat
     )
 
   past_var <- remove_nulls(past_var)
   fut_var  <- remove_nulls(fut_var)
 
   dynamic_arrays <-
-    get_arrays(
+    aion:::get_arrays(
       data           = data,
       ts_starts      = ts_starts,
       lookback       = lookback,

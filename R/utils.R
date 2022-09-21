@@ -40,3 +40,49 @@ remove_nulls <- function(l){
 dict_size <- function(data, categorical){
   sapply(as.data.frame(data)[categorical], dplyr::n_distinct)
 }
+
+
+#' Generate an array of random values with the given dimensions
+#'
+#' Useful when testing developed model. We can check if the model accepts
+#' input arrays of the expected size and if it returns output with desired shape.
+#'
+#' @param ... Array dimensions.
+#' @returns An array of random values between 0 and 1 with the defined dimensions.
+#'
+#' @examples
+#' rand_array(2,3,4)
+#' dim(rand_array(32,14,8))
+#' @export
+rand_array <- function(...){
+  dims <- c(...)
+  array(runif(prod(dims)), dims)
+}
+
+#' Check if time series in the panel dataset contain time gaps.
+#'
+#' @inheritParams make_arrays
+#' @returns Logical value - TRUE if input data contains time gaps.
+#' @examples
+#' glob_econ <- as.data.table(tsibbledata::global_economy)
+#' find_gaps(glob_econ, 'Country', 'Year')
+#' glob_econ <- glob_econ[Year != 1970]
+#' find_gaps(glob_econ, 'Country', 'Year')
+#' @export
+find_gaps <- function(data, key, index){
+  setDT(data)
+  setorderv(data, key)
+  potential_gaps <-
+    data[, .(diffs = diff(get(index))), by = eval(key)]
+  any(potential_gaps$diffs > 1)
+}
+
+
+#' @keywords internal
+check_gaps <- function(data, key, index){
+  if (find_gaps(data, key, index))
+    stop("The data constains time gaps! Add missing time points or introduce and articifial time index.")
+}
+
+
+

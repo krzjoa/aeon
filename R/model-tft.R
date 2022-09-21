@@ -33,7 +33,6 @@
 #'    future_categorical_size = 2,
 #'    vocab_static_size       = c(5, 5),
 #'    vocab_dynamic_size      = c(4, 4),
-#'    optimizer               = 'adam',
 #'    hidden_dim              = 12,
 #'    state_size              = 7,
 #'    num_heads                 = 10,
@@ -42,16 +41,16 @@
 #'    #quantiles               = 0.5
 #' )
 #'
-#' X_static_cat <- array(sample(5, 32 * 2, replace=TRUE), c(32, 2)) - 1
-#' X_static_num <- array(runif(32 * 1), c(32, 1))
+#' x_static_cat <- array(sample(5, 32 * 2, replace=TRUE), c(32, 2)) - 1
+#' x_static_num <- array(runif(32 * 1), c(32, 1))
 #'
-#' X_past_num <- array(runif(32 * 28 * 2), c(32, 28, 2))
-#' X_past_cat <- array(sample(4, 32 * 28 * 2, replace=TRUE), c(32, 28, 5))
+#' x_past_num <- array(runif(32 * 28 * 2), c(32, 28, 2))
+#' x_past_cat <- array(sample(4, 32 * 28 * 2, replace=TRUE), c(32, 28, 5))
 #'
-#' X_fut_num <- array(runif(32 * 14 * 5), c(32, 28, 1))
-#' X_fut_cat <- array(sample(4, 32 * 14 * 2, replace=TRUE), c(32, 28, 5))
+#' x_fut_num <- array(runif(32 * 14 * 5), c(32, 28, 1))
+#' x_fut_cat <- array(sample(4, 32 * 14 * 2, replace=TRUE), c(32, 28, 5))
 #'
-#' tft(X_past_num, X_past_cat, X_fut_num, X_fut_cat, X_static_num, X_static_cat)
+#' tft(x_past_num, x_past_cat, x_fut_num, x_fut_cat, x_static_num, x_static_cat)
 #'
 #' @export
 model_tft <- keras::new_model_class(
@@ -209,22 +208,30 @@ model_tft <- keras::new_model_class(
 
   },
 
-  call = function(X_past_num, X_past_cat,
-                  X_fut_num, X_fut_cat,
-                  X_static_num, X_static_cat){
+  call = function(inputs){
 
+    c(x_past_num, x_past_cat,
+      x_fut_num, x_fut_cat,
+      x_static_num, x_static_cat) %<-% inputs
     # ==========================================================================
     #                       EMBEDDINGS & PROJECTIONS
     # ==========================================================================
 
     # All the inputs are projected to the common-size space
-    static_emb <- self$static_embedding(X_static_cat)
-    past_emb   <- self$past_embedding(X_past_cat)
-    fut_emb    <- self$future_embedding(X_fut_cat)
+    past_emb   <- self$past_embedding(x_past_cat)
+    fut_emb    <- self$future_embedding(x_fut_cat)
 
-    static_proj <- self$static_projection(X_static_num)
-    past_proj   <- self$past_projection(X_past_num)
-    fut_proj    <- self$future_projection(X_fut_num)
+    if (!is.null(x_static_cat))
+      static_emb <- self$static_embedding(x_static_cat)
+
+    past_proj   <- self$past_projection(x_past_num)
+    fut_proj    <- self$future_projection(x_fut_num)
+
+    if (!is.null(x_static_num))
+      static_proj <- self$static_projection(x_static_num)
+    else
+      static_proj <- NULL
+
 
     # ==========================================================================
     #                       STATIC VARIABLE SELECTION
@@ -319,7 +326,7 @@ model_tft <- keras::new_model_class(
     # ==========================================================================
     #                             LAST GATE
     # ==========================================================================
-    # Bramka ta pozwala zminmalizować wpływ całego bloku Temporal Fusion Decoder
+    # This gate allows the model to minimize TFD block impact if needed
     tfd_output <- self$last_glu(tfd_output)
 
     gated_output <- layer_add(

@@ -76,8 +76,8 @@ test_that("Test get_arrays", {
       ts_starts = ts_starts,
       lookback = lookback,
       horizon = horizon,
-      past_var = list(X_past_cat=categorical, X_past_num=numeric, y_past=target),
-      fut_var = list(X_fut_cat=categorical)
+      past_var = list(x_past_cat=categorical, x_past_num=numeric, y_past=target),
+      fut_var = list(x_fut_cat=categorical)
     )
 
   # ============================================================================
@@ -97,7 +97,7 @@ test_that("Test get_arrays", {
   col_idx <- 1
   idx_start <- ts_starts[row_idx]$row_idx
   expect_identical(
-    x$X_past_cat[row_idx, 1:lookback, col_idx],
+    x$x_past_cat[row_idx, 1:lookback, col_idx],
     data[idx_start:(idx_start+lookback-1), get(categorical[col_idx])]
   )
 
@@ -106,7 +106,7 @@ test_that("Test get_arrays", {
   col_idx <- 1
   idx_start <- ts_starts[row_idx]$row_idx + lookback
   expect_identical(
-    x$X_fut_cat[row_idx, 1:horizon, col_idx],
+    x$x_fut_cat[row_idx, 1:horizon, col_idx],
     data[idx_start:(idx_start+horizon-1), get(categorical[col_idx])]
   )
 
@@ -114,7 +114,7 @@ test_that("Test get_arrays", {
   col_idx <- 2
   idx_start <- ts_starts[row_idx]$row_idx + lookback
   expect_identical(
-    x$X_fut_cat[row_idx, 1:horizon, col_idx],
+    x$x_fut_cat[row_idx, 1:horizon, col_idx],
     data[idx_start:(idx_start+horizon-1), get(categorical[col_idx])]
   )
 

@@ -22,7 +22,6 @@
 #' # ==========================================================================
 #' #                          PREPARING THE DATA
 #' # ==========================================================================
-#'
 #' train <- tiny_m5[date < '2016-01-01']
 #' test  <- tiny_m5[date >= '2016-01-01']
 #'
@@ -50,14 +49,9 @@
 #' HORIZON     <- 14
 #' STRIDE      <- LOOKBACK
 #' BATCH_SIZE  <- 32
-#'
-#' setDT(train)
-#' setDT(test)
-#'
 #' # ==========================================================================
-#' #                          CREATING GENERATORS
+#' #                          CREATING GENERATOR
 #' # ==========================================================================
-#'
 #' c(train_generator, train_steps) %<-%
 #'    ts_generator(
 #'        data = train,
@@ -72,23 +66,8 @@
 #'        numeric=NUMERIC,
 #'        batch_size=BATCH_SIZE
 #'    )
-#'
 #' batch <- train_generator()
-#' print(names(batch))
-#'
-#' test_generator <-
-#'    ts_generator(
-#'        data = test,
-#'        key = KEY,
-#'        index = INDEX,
-#'        lookback = LOOKBACK,
-#'        horizon = HORIZON,
-#'        stride = STRIDE,
-#'        target=TARGET,
-#'        static=STATIC,
-#'        categorical=CATEGORICAL,
-#'        numeric=NUMERIC
-#'    )
+#' print(names(batch[[1]]))
 #' @export
 ts_generator <- function(data, key, index,
                          lookback, horizon, stride=1,
@@ -96,6 +75,8 @@ ts_generator <- function(data, key, index,
                          static=NULL, past=NULL, future=NULL,
                          shuffle=TRUE, sample_frac = 1.,
                          y_past_sep = FALSE, batch_size=1, ...){
+
+  # TODO: keep_nulls option!
 
   setDT(data)
 
@@ -182,13 +163,18 @@ ts_generator <- function(data, key, index,
 
   fut_var <-
     list(
-      y_fut      = target,
-      X_fut_num  = fut_num,
-      X_fut_cat  = fut_cat
+      y_fut     = target,
+      X_fut_num = fut_num,
+      X_fut_cat = fut_cat
     )
 
   past_var <- remove_nulls(past_var)
   fut_var  <- remove_nulls(fut_var)
+
+  all_var_groups <-
+    c(names(past_var), names(fut_var), c('x_static_num', 'x_static_cat'))
+
+  x_var_groups <- setdiff(all_var_groups, 'y_fut')
 
   i <- 0
 
@@ -205,25 +191,37 @@ ts_generator <- function(data, key, index,
 
     static_arrays <- list()
 
-    if (length(static_categorical) > 0)
-      static_arrays$X_static_cat <-
-          as.matrix(data[rows, ..static_categorical])
-
     if (length(static_numeric) > 0)
-      static_arrays$X_static_num <-
+      static_arrays$x_static_num <-
           as.matrix(data[rows, ..static_numeric])
+    else
+      static_arrays$x_static_num  <- NULL
+
+
+    if (length(static_categorical) > 0)
+      static_arrays$x_static_cat <-
+        as.matrix(data[rows, ..static_categorical])
+    else
+      static_arrays$x_static_cat  <- NULL
 
     dynamic_arrays <-
       get_arrays(
-        data           = data,
-        ts_starts      = samples,
-        lookback       = lookback,
-        horizon        = horizon,
-        past_var       = past_var,
-        fut_var        = fut_var
+        data      = data,
+        ts_starts = samples,
+        lookback  = lookback,
+        horizon   = horizon,
+        past_var  = past_var,
+        fut_var   = fut_var
       )
 
-    c(dynamic_arrays, static_arrays)
+    all_vars_list <-
+      c(dynamic_arrays, static_arrays)
+
+    y_list <- all_vars_list$y_fut
+    x_list <- all_vars_list[x_var_groups]
+    # print(x_var_groups)
+
+    list(x_list, y_list)
   }
 
   list(generator, n_steps)

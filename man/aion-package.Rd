@@ -6,7 +6,7 @@
 \alias{aion-package}
 \title{aion: Time Series Models with 'keras'}
 \description{
-More about what it does (maybe more than one line) Use four spaces when indenting paragraphs within the Description.
+Delivers useful functions to prepare input/ouput data for 'keras' time series models. Includes a 'Temporal Fusion Transformer' implementation and exposes its componets by sharing component layers in public package API. Introduces interface for 'keras-tcn' and 'keras_lmu' libraries and adds three loss function classes and one metric class.
 }
 \author{
 Krzysztof Joachimiak

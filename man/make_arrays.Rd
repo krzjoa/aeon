@@ -43,22 +43,25 @@ make_arrays(
 \item{shuffle}{Shuffle samples. Set \code{FALSE} for the test dataset.}
 
 \item{y_past_sep}{Return past values of the target variable as a separate array.
-Typically, it returned as a first feature of the \code{X_past_num} array. However,
+Typically, it returned as a first feature of the \code{x_past_num} array. However,
 for some models (such as \strong{NBEATS}) it may be easier for further processing
 to keep these values as a separate array.}
 }
 \value{
 A list of arrays. The maximal possible content embraces eight arrays:
 \itemize{
-\item \strong{y_past}
-\item \strong{X_past_cat}
-\item \strong{X_past_num}
+\item (\strong{y_past})
+\item \strong{x_past_num}
+\item \strong{x_past_cat}
 \item \strong{y_fut}
-\item \strong{X_fut_cat}
-\item \strong{X_fut_num}
-\item \strong{X_static_cat}
-\item \strong{X_static_num}
+\item \strong{x_fut_num}
+\item \strong{x_fut_cat}
+\item \strong{x_static_num}
+\item \strong{x_static_cat}
 }
+
+\strong{y_past} is optional, if \code{y_past_sep = TRUE}, otherwise those values are part of
+the \strong{x_past_num} array. Some array may miss depending on the specified variables.
 }
 \description{
 Prepare input/taget arrays for time series models
@@ -73,7 +76,6 @@ library(data.table, warn.conflicts=FALSE)
 # ==========================================================================
 #                          PREPARING THE DATA
 # ==========================================================================
-
 train <- tiny_m5[date < '2016-01-01']
 test  <- tiny_m5[date >= '2016-01-01']
 
@@ -100,14 +102,9 @@ INDEX       <- 'date'
 LOOKBACK    <- 28
 HORIZON     <- 14
 STRIDE      <- LOOKBACK
-
-setDT(train)
-setDT(test)
-
 # ==========================================================================
 #                           CREATING ARRAYS
 # ==========================================================================
-
 train_arrays <-
    make_arrays(
        data        = train,
@@ -123,7 +120,7 @@ train_arrays <-
    )
 
 print(names(train_arrays))
-print(dim(train_arrays$X_past_num))
+print(dim(train_arrays$x_past_num))
 
 test_arrays <-
    make_arrays(
@@ -140,5 +137,5 @@ test_arrays <-
    )
 
 print(names(test_arrays))
-print(dim(test_arrays$X_past_num))
+print(dim(test_arrays$x_past_num))
 }

@@ -124,7 +124,7 @@ train_arrays <-
   )
 
 print(names(train_arrays))
-print(dim(train_arrays$X_past_num))
+print(dim(train_arrays$x_past_num))
 ```
 As you can see, it contains five types of arrays. One of them, **y_fut** is the target,
 while the rest may be used as the model input. To demonstrate, how we can manipulate the 
@@ -149,7 +149,7 @@ train_arrays <-
   )
 
 print(names(train_arrays))
-print(dim(train_arrays$X_past_num))
+print(dim(train_arrays$x_past_num))
 ```
 
 ## Generators
