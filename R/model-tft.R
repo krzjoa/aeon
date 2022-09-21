@@ -69,6 +69,7 @@ model_tft <- keras::new_model_class(
                         state_size = 5,
                         num_heads = 10,
                         dropout_rate = NULL,
+                        use_context = TRUE,
                         output_size = 1, ...){
 
     super()$`__init__`(...)
@@ -124,6 +125,7 @@ model_tft <- keras::new_model_class(
     )
 
     # Variable selection layers
+    # TODO: create if (use_context) (?)
     self$vsn_static <- layer_vsn(
       hidden_units   = hidden_dim,
       state_size     = state_size,
@@ -136,7 +138,7 @@ model_tft <- keras::new_model_class(
       hidden_units   = hidden_dim,
       state_size     = state_size,
       dropout_rate   = dropout_rate,
-      use_context    = TRUE,
+      use_context    = use_context,
       return_weights = TRUE
     )
 
@@ -144,7 +146,7 @@ model_tft <- keras::new_model_class(
       hidden_units   = hidden_dim,
       state_size     = state_size,
       dropout_rate   = dropout_rate,
-      use_context    = TRUE,
+      use_context    = use_context,
       return_weights = TRUE
     )
 
@@ -193,7 +195,7 @@ model_tft <- keras::new_model_class(
       hidden_units = hidden_dim,
       state_size   = state_size,
       dropout_rate = dropout_rate,
-      use_context  = TRUE,
+      use_context  = use_context,
       num_heads    = num_heads
     )
 
@@ -210,6 +212,8 @@ model_tft <- keras::new_model_class(
 
   call = function(inputs){
 
+    # browser()
+
     c(x_past_num, x_past_cat,
       x_fut_num, x_fut_cat,
       x_static_num, x_static_cat) %<-% inputs
@@ -221,41 +225,52 @@ model_tft <- keras::new_model_class(
     past_emb   <- self$past_embedding(x_past_cat)
     fut_emb    <- self$future_embedding(x_fut_cat)
 
-    if (!is.null(x_static_cat))
-      static_emb <- self$static_embedding(x_static_cat)
-
     past_proj   <- self$past_projection(x_past_num)
     fut_proj    <- self$future_projection(x_fut_num)
 
+    static_features <- list()
+
+    if (!is.null(x_static_cat))
+      static_features$static_emb <-
+          self$static_embedding(x_static_cat)
+
     if (!is.null(x_static_num))
-      static_proj <- self$static_projection(x_static_num)
-    else
-      static_proj <- NULL
+      static_features$static_proj <-
+          self$static_projection(x_static_num)
 
+    # For some reasons, it can't have names
+    names(static_features) <- NULL
 
-    # ==========================================================================
-    #                       STATIC VARIABLE SELECTION
-    # ==========================================================================
+    if (length(static_features) > 0) {
+      # ==========================================================================
+      #                       STATIC VARIABLE SELECTION
+      # ==========================================================================
 
-    # selected_static: [num_samples x state_size]
-    # static_weights: [num_samples x num_static_inputs x 1]
+      # selected_static: [num_samples x state_size]
+      # static_weights: [num_samples x num_static_inputs x 1]
+      static_features <- layer_concatenate(axis = 1)(static_features)
 
-    static_features <- layer_concatenate(axis = 1)(list(static_emb, static_proj))
+      c(static_selected, static_selection_weights) %<-%
+        self$vsn_static(static_features)
 
-    c(static_selected, static_selection_weights) %<-%
-      self$vsn_static(static_features)
+      # ============================================================================
+      #                     STATIC CONTEXT VECTORS
+      # ============================================================================
 
-    # ============================================================================
-    #                     STATIC CONTEXT VECTORS
-    # ============================================================================
+      # We create four separate static context vectors which are
+      # then send to different parts of the network
 
-    # We create four separate static context vectors which are
-    # then send to different parts of the network
+      c_enrichment <- self$grn_enrichment(static_selected)
+      c_selection  <- self$grn_selection(static_selected)
+      c_seq_cell   <- self$grn_seq_cell(static_selected)
+      c_seq_hidden <- self$grn_hidden(static_selected)
 
-    c_enrichment <- self$grn_enrichment(static_selected)
-    c_selection  <- self$grn_selection(static_selected)
-    c_seq_cell   <- self$grn_seq_cell(static_selected)
-    c_seq_hidden <- self$grn_hidden(static_selected)
+    } else {
+      c_enrichment <- NULL
+      c_selection  <- NULL
+      c_seq_cell   <- NULL
+      c_seq_hidden <- NULL
+    }
 
     # ==========================================================================
     #                       PAST VARIABLE SELECTION
@@ -281,6 +296,9 @@ model_tft <- keras::new_model_class(
 
     initial_state <- list(c_seq_hidden, c_seq_cell)
 
+    if (all(sapply(initial_state, is.null)))
+      initial_state <- NULL
+
     c(processed_past, h1_past, h2_past) %<-%
       self$lstm_past(selected_past, initial_state = initial_state)
 
@@ -289,8 +307,6 @@ model_tft <- keras::new_model_class(
     # ==========================================================================
     #                       LSTM FOR FUTURE FEATURES
     # ==========================================================================
-
-    initial_state <- list(c_seq_hidden, c_seq_cell)
 
     processed_future <-
       self$lstm_future(selected_future, initial_state = hidden_state_past)
@@ -316,6 +332,8 @@ model_tft <- keras::new_model_class(
     )
 
     combined_lstm_output <- self$post_lstm_layer_norm(combined_lstm_output)
+
+    # browser()
 
     # ==========================================================================
     #                   TEMPORAL FUSION TRANSFORMER BLOCK

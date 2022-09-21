@@ -1,4 +1,4 @@
-* tests for TFD and model_tft
+* tests for TFD
 * tweak docs for layers and model_tft
 * refactor make_arrays and ts_generator
 * nbeats: https://github.com/LongxingTan/Time-series-prediction/blob/master/tfts/layers/nbeats_layer.py
