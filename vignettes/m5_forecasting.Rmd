@@ -100,11 +100,30 @@ c(test_generator, test_steps) %<-%
         shuffle     = FALSE,
         batch_size  = BATCH_SIZE    
   )
+
+
+output <- 
+  make_arrays(
+            data        = train,
+        key         = KEY,
+        index       = INDEX,
+        lookback    = LOOKBACK,
+        horizon     = HORIZON,
+        stride      = STRIDE,
+        target      = TARGET,
+        static      = STATIC_CAT,
+        categorical = CATEGORICAL,
+        numeric     = NUMERIC,
+        shuffle     = TRUE
+  )
+
 ```
 
 ## TFT model
 
 ```{r tft}
+devtools::load_all()
+
 tft <-
   model_tft(
     lookback                = LOOKBACK,
@@ -123,12 +142,38 @@ tft <-
   )
 
 tft %>% 
-  compile(optimizer='adam', loss='mse')
+  compile(optimizer='adam', loss=loss_tweedie())
+
+# tft(train_generator()[[1]])
+# debugonce(keras:::fit.keras.engine.training.Model)
+# tft$fit
 ```
 
 ## Training
 
 ```{r tft_training}
+
+glimpse(train_generator()[[1]])
+
+x <- 
+  c(output[-3][1:4], list(NULL), output[-3][5])
+x[5] <- list(NULL)
+glimpse(x)
+
+
+tft(x)
+
+
+tft %>%
+  fit(
+    x = x,
+    y = output[3]
+  )
+
+
+
+
+
 tft %>%
   fit(
     x = train_generator,

@@ -212,8 +212,6 @@ model_tft <- keras::new_model_class(
 
   call = function(inputs){
 
-    # browser()
-
     c(x_past_num, x_past_cat,
       x_fut_num, x_fut_cat,
       x_static_num, x_static_cat) %<-% inputs
@@ -332,8 +330,6 @@ model_tft <- keras::new_model_class(
     )
 
     combined_lstm_output <- self$post_lstm_layer_norm(combined_lstm_output)
-
-    # browser()
 
     # ==========================================================================
     #                   TEMPORAL FUSION TRANSFORMER BLOCK
