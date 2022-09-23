@@ -10,6 +10,23 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
+// trollo
+List trollo(DataFrame data, DataFrame ts_starts, int lookback, int horizon, List past_var, List fut_var, List static_var);
+RcppExport SEXP _aion_trollo(SEXP dataSEXP, SEXP ts_startsSEXP, SEXP lookbackSEXP, SEXP horizonSEXP, SEXP past_varSEXP, SEXP fut_varSEXP, SEXP static_varSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< DataFrame >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< DataFrame >::type ts_starts(ts_startsSEXP);
+    Rcpp::traits::input_parameter< int >::type lookback(lookbackSEXP);
+    Rcpp::traits::input_parameter< int >::type horizon(horizonSEXP);
+    Rcpp::traits::input_parameter< List >::type past_var(past_varSEXP);
+    Rcpp::traits::input_parameter< List >::type fut_var(fut_varSEXP);
+    Rcpp::traits::input_parameter< List >::type static_var(static_varSEXP);
+    rcpp_result_gen = Rcpp::wrap(trollo(data, ts_starts, lookback, horizon, past_var, fut_var, static_var));
+    return rcpp_result_gen;
+END_RCPP
+}
 // get_arrays
 List get_arrays(DataFrame data, DataFrame ts_starts, int lookback, int horizon, List past_var, List fut_var);
 RcppExport SEXP _aion_get_arrays(SEXP dataSEXP, SEXP ts_startsSEXP, SEXP lookbackSEXP, SEXP horizonSEXP, SEXP past_varSEXP, SEXP fut_varSEXP) {
@@ -28,6 +45,7 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
+    {"_aion_trollo", (DL_FUNC) &_aion_trollo, 7},
     {"_aion_get_arrays", (DL_FUNC) &_aion_get_arrays, 6},
     {NULL, NULL, 0}
 };

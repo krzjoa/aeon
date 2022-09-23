@@ -136,7 +136,7 @@ tft <-
     hidden_dim              = 10,
     state_size              = 5,
     num_heads               = 10,
-    dropout_rate            = NULL,
+    dropout_rate            = 0.1,
     output_size             = 1
   )
 

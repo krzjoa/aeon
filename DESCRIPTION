@@ -25,13 +25,14 @@ Suggests:
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
 Collate: 
+    'utils.R'
+    'CopyOfmake-arrays.R'
     'RcppExports.R'
     'aion-package.R'
     'layer-glu.R'
     'layer-grn.R'
     'layer-scaled-dot-attention.R'
     'layer-interpretable-mh-attention.R'
-    'utils.R'
     'layer-lmu.R'
     'layer-multi-dense.R'
     'layer-multi-embedding.R'
