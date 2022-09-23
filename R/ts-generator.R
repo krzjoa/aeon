@@ -77,39 +77,18 @@ ts_generator <- function(data, key, index,
                          y_past_sep = FALSE, batch_size=1, ...){
 
   # TODO: keep_nulls option!
-
   setDT(data)
 
-  # Start of each time series we can identify with unique key
-  total_window_length <- lookback + horizon
-  key_index <- c(key, index)
-
-  ts_starts <-
-    data[, .(start_time = min(get(index)),
-             end_time = max(get(index))),
-         by = eval(key)]
-
-  if (any(ts_starts$end_time - ts_starts$start_time < total_window_length))
-    warning("Found samples with end_time - start_time < total_window_length. They'll be removed.")
-
-  ts_starts <-
-    ts_starts[end_time - start_time  >= total_window_length]
-
-  ts_starts[, end_time := end_time - total_window_length]
-
-  # Types
-  ts_starts[, window_start := Map(\(x, y) seq(x, y, stride),
-                                  ts_starts$start_time,
-                                  ts_starts$end_time)]
-
-  # https://stackoverflow.com/questions/15659783/why-does-unlist-kill-dates-in-r
-  ts_starts <- ts_starts[, .(window_start = do.call('c', window_start)),
-                         by = eval(key)]
-
-  if (sample_frac < 1.)
-    ts_starts <-
-    ts_starts[,.SD[sample(.N,as.integer(floor(.N * sample_frac)))]
-              ,by = eval(key)]
+  c(ts_starts, total_window_length, key_index) %<-%
+    get_ts_starts(
+        data        = data,
+        key         = key,
+        index       = index,
+        lookback    = lookback,
+        horizon     = horizon,
+        stride      = stride,
+        sample_frac = sample_frac
+    )
 
   n_steps <- ceiling(nrow(ts_starts) / batch_size)
 
