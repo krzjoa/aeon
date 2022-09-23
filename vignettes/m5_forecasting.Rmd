@@ -54,10 +54,11 @@ test  <- bake(m5_recipe, test)
 
 ```{r config}
 TARGET      <- 'value'
-STATIC_CAT  <- c('item_id_idx', 'store_id_idx')
+STATIC_CAT  <- c('store_id_idx')
+STATIC_NUM  <- 'item_id_idx'
 DYNAMIC_CAT <- c('event_name_1', 'event_type_1')
 CATEGORICAL <- c(DYNAMIC_CAT, STATIC_CAT)
-NUMERIC     <- c('sell_price', 'sell_price')
+NUMERIC     <- c('sell_price', 'sell_price', 'item_id_idx')
 KEY         <- c('item_id', 'store_id')
 INDEX       <- 'date'
 LOOKBACK    <- 28
@@ -101,22 +102,20 @@ c(test_generator, test_steps) %<-%
         batch_size  = BATCH_SIZE    
   )
 
-
-output <- 
+c(x, y) %<-% 
   make_arrays(
-            data        = train,
-        key         = KEY,
-        index       = INDEX,
-        lookback    = LOOKBACK,
-        horizon     = HORIZON,
-        stride      = STRIDE,
-        target      = TARGET,
-        static      = STATIC_CAT,
-        categorical = CATEGORICAL,
-        numeric     = NUMERIC,
-        shuffle     = TRUE
+      data        = train,
+      key         = KEY,
+      index       = INDEX,
+      lookback    = LOOKBACK,
+      horizon     = HORIZON,
+      stride      = STRIDE,
+      target      = TARGET,
+      static      = c(STATIC_CAT, STATIC_NUM),
+      categorical = CATEGORICAL,
+      numeric     = NUMERIC,
+      shuffle     = TRUE
   )
-
 ```
 
 ## TFT model
@@ -132,8 +131,8 @@ tft <-
     past_categorical_size   = length(DYNAMIC_CAT),
     future_numeric_size     = length(NUMERIC),
     future_categorical_size = length(DYNAMIC_CAT),
-    vocab_static_size       = dict_size(train, STATIC_CAT),
-    vocab_dynamic_size      = dict_size(train, DYNAMIC_CAT),
+    vocab_static_size       = 10, # dict_size(train, STATIC_CAT),
+    vocab_dynamic_size      = c(31, 5), #dict_size(train, DYNAMIC_CAT),
     hidden_dim              = 10,
     state_size              = 5,
     num_heads               = 10,
@@ -141,9 +140,13 @@ tft <-
     output_size             = 1
   )
 
-tft %>% 
-  compile(optimizer='adam', loss=loss_tweedie())
+# loss_fun <- keras::loss_mean_absolute_error()
+# debugonce(loss_fun)
 
+tft %>% 
+  compile(optimizer='adam', loss='mae')
+
+# debugonce(tft$call)
 # tft(train_generator()[[1]])
 # debugonce(keras:::fit.keras.engine.training.Model)
 # tft$fit
@@ -152,27 +155,27 @@ tft %>%
 ## Training
 
 ```{r tft_training}
+# glimpse(train_generator()[[1]])
+# 
+# x <- 
+#  c(output[-3][1:4], list(NULL), output[-3][5])
+# x[5] <- list(NULL)
+# glimpse(x)
 
-glimpse(train_generator()[[1]])
+x <- output[-3]
+y <- output[3]
 
-x <- 
-  c(output[-3][1:4], list(NULL), output[-3][5])
-x[5] <- list(NULL)
-glimpse(x)
-
+# names(x) <- NULL
+# attr(x[[5]], 'dimnames') <- NULL
+# attr(x[[6]], 'dimnames') <- NULL
 
 tft(x)
-
 
 tft %>%
   fit(
     x = x,
-    y = output[3]
+    y = y
   )
-
-
-
-
 
 tft %>%
   fit(

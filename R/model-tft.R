@@ -210,7 +210,9 @@ model_tft <- keras::new_model_class(
 
   },
 
-  call = function(inputs){
+  call = function(inputs, mask = NULL, training = FALSE){
+
+    # browser()
 
     c(x_past_num, x_past_cat,
       x_fut_num, x_fut_cat,

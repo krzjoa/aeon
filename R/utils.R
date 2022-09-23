@@ -38,7 +38,8 @@ remove_nulls <- function(l){
 #' dict_size(m5::tiny_m5, c('event_name_1', 'event_type_1'))
 #' @export
 dict_size <- function(data, categorical){
-  sapply(as.data.frame(data)[categorical], dplyr::n_distinct)
+  # We can't use names, because it causes an error in 'keras'
+  sapply(as.data.frame(data)[categorical], dplyr::n_distinct, USE.NAMES = FALSE)
 }
 
 

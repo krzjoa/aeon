@@ -220,6 +220,11 @@ make_arrays <- function(data, key, index,
   past_var <- remove_nulls(past_var)
   fut_var  <- remove_nulls(fut_var)
 
+  all_var_groups <-
+    c(names(past_var), names(fut_var), c('x_static_num', 'x_static_cat'))
+
+  x_var_groups <- setdiff(all_var_groups, 'y_fut')
+
   dynamic_arrays <-
     aion:::get_arrays(
       data           = data,
@@ -230,5 +235,12 @@ make_arrays <- function(data, key, index,
       fut_var        = fut_var
     )
 
-  c(dynamic_arrays, static_arrays)
+  all_vars_list <-
+    c(dynamic_arrays, static_arrays)
+
+  y_list <- all_vars_list$y_fut
+  x_list <- all_vars_list[x_var_groups]
+
+  list(x_list, y_list)
+
 }
