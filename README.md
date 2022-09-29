@@ -3,6 +3,8 @@
 
 # aion
 
+<img src='man/figures/aion-small.png' align="right" height="139" />
+
 <!-- badges: start -->
 
 [![CRAN
@@ -84,20 +86,20 @@ BATCH_SIZE  <- 32
 
 c(train_generator, train_steps) %<-%
     ts_generator(
-        data = train,
-        key = KEY,
-        index = INDEX,
-        lookback = LOOKBACK,
-        horizon = HORIZON,
-        stride = STRIDE,
-        target=TARGET,
-        static=STATIC,
-        categorical=CATEGORICAL,
-        numeric=NUMERIC,
-        batch_size=BATCH_SIZE    
+        data        = train,
+        key         = KEY,
+        index       = INDEX,
+        lookback    = LOOKBACK,
+        horizon     = HORIZON,
+        stride      = STRIDE,
+        target      = TARGET,
+        static      = STATIC,
+        categorical = CATEGORICAL,
+        numeric     = NUMERIC,
+        batch_size  = BATCH_SIZE    
   )
 
-test_generator <-
+c(test_generator, test_steps)  %<-%
     ts_generator(
         data = test,
         key = KEY,
