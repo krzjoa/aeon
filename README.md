@@ -9,6 +9,9 @@
 
 [![CRAN
 status](https://www.r-pkg.org/badges/version/aion)](https://CRAN.R-project.org/package=aion)
+[![Buy hex
+stciker](https://img.shields.io/badge/buy%20hex-aion-green?style=flat&logo=redbubble)](https://www.redbubble.com/i/sticker/aion-R-package-hex-by-krzjoa/126321293.EJUG5)
+
 <!-- badges: end -->
 
 > Time Series models for keras in R
