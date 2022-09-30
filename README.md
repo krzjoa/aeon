@@ -3,7 +3,7 @@
 
 # aion
 
-<img src='man/figures/aion-small.png' align="right" height="139" />
+<img src='man/figures/aion-small.png' align="right" height="250" />
 
 <!-- badges: start -->
 

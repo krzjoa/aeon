@@ -15,7 +15,7 @@ knitr::opts_chunk$set(
 
 # aion
 
-<img src='man/figures/aion-small.png' align="right" height="139" />
+<img src='man/figures/aion-small.png' align="right" height="250" />
 
 <!-- badges: start -->
 [![CRAN status](https://www.r-pkg.org/badges/version/aion)](https://CRAN.R-project.org/package=aion)
