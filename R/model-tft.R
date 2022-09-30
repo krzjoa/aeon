@@ -210,7 +210,7 @@ model_tft <- keras::new_model_class(
 
   },
 
-  call = function(inputs, mask = NULL, training = FALSE){
+  call = function(inputs, mask = NULL, training = FALSE, return_attention_scores=FALSE){
 
     # browser()
 
@@ -337,7 +337,8 @@ model_tft <- keras::new_model_class(
     #                   TEMPORAL FUSION TRANSFORMER BLOCK
     # ==========================================================================
 
-    tfd_output <- self$tfd(combined_lstm_output, c_enrichment)
+    c(tfd_output, attention_scores) %<-%
+        self$tfd(combined_lstm_output, c_enrichment, return_attention_scores=TRUE)
 
     # ==========================================================================
     #                             LAST GATE
@@ -357,7 +358,10 @@ model_tft <- keras::new_model_class(
     final_output <- self$output_dense(gated_output)
     final_output <- self$output_cut(final_output)
 
-    final_output
+    if (!return_attention_scores)
+      return(final_output)
+    else
+      return(list(final_output, attention_scores))
   }
 
 

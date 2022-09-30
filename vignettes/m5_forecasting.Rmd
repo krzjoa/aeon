@@ -140,36 +140,14 @@ tft <-
     output_size             = 1
   )
 
-# loss_fun <- keras::loss_mean_absolute_error()
-# debugonce(loss_fun)
-
 tft %>% 
   compile(optimizer='adam', loss='mae')
-
-# debugonce(tft$call)
-# tft(train_generator()[[1]])
-# debugonce(keras:::fit.keras.engine.training.Model)
-# tft$fit
 ```
 
 ## Training
 
 ```{r tft_training}
-# glimpse(train_generator()[[1]])
-# 
-# x <- 
-#  c(output[-3][1:4], list(NULL), output[-3][5])
-# x[5] <- list(NULL)
-# glimpse(x)
-
-x <- output[-3]
-y <- output[3]
-
-# names(x) <- NULL
-# attr(x[[5]], 'dimnames') <- NULL
-# attr(x[[6]], 'dimnames') <- NULL
-
-tft(x)
+# tft(x)
 
 tft %>%
   fit(
