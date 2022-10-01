@@ -133,6 +133,9 @@ layer_grn <- keras::new_layer_class(
     hidden <- self$elu_layer(hidden)
     hidden <- self$layer_2(hidden)
 
+    if (!is.null(self$dropout_rate))
+      hidden <- self$dropout(hidden)
+
     c(out, gate) %<-% self$gating_layer(hidden)
 
     output <- layer_add()(list(skip, out))

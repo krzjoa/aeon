@@ -118,7 +118,7 @@ It may be considered as a replacement for the recurrent layers.</p>
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
     
 <ol><li><p><a href="https://github.com/philipperemy/keras-tcn" class="external-link">Keras TCN library by Philippe Rémy</a></p></li>
-<li><p><a href="https://arxiv.org/abs/1803.01271" class="external-link">Bai Sh., Kolter J.Z., Koltun V., An Empirical Evaluation of Generic Convolutional and Recurrent Networks for Sequence Modeling, 2018</a></p></li>
+<li><p>Sh. Bai.,  J.Z Kolter, V. Koltun, An Empirical Evaluation of Generic Convolutional and Recurrent Networks for Sequence Modeling](https://arxiv.org/abs/1803.01271) (2018)</p></li>
 </ol></div>
 
     <div class="section level2">
@@ -128,14 +128,12 @@ It may be considered as a replacement for the recurrent layers.</p>
 <span class="r-in"><span class="va">tcn</span> <span class="op">&lt;-</span> <span class="fu">layer_tcn</span><span class="op">(</span><span class="op">)</span><span class="op">(</span><span class="va">inp</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/keras/man/keras_model.html" class="external-link">keras_model</a></span><span class="op">(</span><span class="va">inp</span>, <span class="va">tcn</span><span class="op">)</span></span>
 <span class="r-in"><span class="fu">model</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/array.html" class="external-link">array</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">32</span>, <span class="fl">28</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> tf.Tensor(</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [[1.2380545 5.4867787 0.        ... 7.667675  1.3840262 4.999212 ]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1.2380545 5.4867787 0.        ... 7.667675  1.3840262 4.999212 ]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1.2380545 5.4867787 0.        ... 7.667675  1.3840262 4.999212 ]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1.2380545 5.4867787 0.        ... 7.667675  1.3840262 4.999212 ]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1.2380545 5.4867787 0.        ... 7.667675  1.3840262 4.999212 ]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1.2380545 5.4867787 0.        ... 7.667675  1.3840262 4.999212 ]], shape=(32, 64), dtype=float32)</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in py_call_impl(callable, dots$args, dots$keywords):</span> tensorflow.python.framework.errors_impl.UnimplementedError: Exception encountered when calling layer "conv1D_0" "                 f"(type Conv1D).</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> {{function_node __wrapped__Conv2D_device_/job:localhost/replica:0/task:0/device:GPU:0}} DNN library is not found. [Op:Conv2D]</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> Call arguments received by layer "conv1D_0" "                 f"(type Conv1D):</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span>   • inputs=tf.Tensor(shape=(32, 28, 3), dtype=float32)</span>
 <span class="r-in"><span class="co"># }</span></span>
 </code></pre></div>
     </div>

@@ -27,8 +27,6 @@ library(dplyr, warn.conflicts=FALSE)
 library(data.table, warn.conflicts=FALSE)
 library(recipes, warn.conflicts=FALSE)
 ```
-
-
 ## Data preprocessing
 
 ```{r prep}
@@ -79,7 +77,7 @@ c(train_generator, train_steps) %<-%
         horizon     = HORIZON,
         stride      = STRIDE,
         target      = TARGET,
-        static      = STATIC_CAT,
+        static      = c(STATIC_CAT, STATIC_NUM),
         categorical = CATEGORICAL,
         numeric     = NUMERIC,
         shuffle     = TRUE,
@@ -95,16 +93,31 @@ c(test_generator, test_steps) %<-%
         horizon     = HORIZON,
         stride      = STRIDE,
         target      = TARGET,
-        static      = STATIC_CAT,
+        static      = c(STATIC_CAT, STATIC_NUM),
         categorical = CATEGORICAL,
         numeric     = NUMERIC,
         shuffle     = FALSE,
         batch_size  = BATCH_SIZE    
   )
 
-c(x, y) %<-% 
+c(x_train, y_train) %<-% 
   make_arrays(
       data        = train,
+      key         = KEY,
+      index       = INDEX,
+      lookback    = LOOKBACK,
+      horizon     = HORIZON,
+      stride      = STRIDE,
+      target      = TARGET,
+      static      = c(STATIC_CAT, STATIC_NUM),
+      categorical = CATEGORICAL,
+      numeric     = NUMERIC,
+      shuffle     = TRUE
+  )
+
+c(x_test, y_test) %<-% 
+  make_arrays(
+      data        = test,
       key         = KEY,
       index       = INDEX,
       lookback    = LOOKBACK,
@@ -131,8 +144,8 @@ tft <-
     past_categorical_size   = length(DYNAMIC_CAT),
     future_numeric_size     = length(NUMERIC),
     future_categorical_size = length(DYNAMIC_CAT),
-    vocab_static_size       = 10, # dict_size(train, STATIC_CAT),
-    vocab_dynamic_size      = c(31, 5), #dict_size(train, DYNAMIC_CAT),
+    vocab_static_size       = dict_size(train, STATIC_CAT),
+    vocab_dynamic_size      = dict_size(train, DYNAMIC_CAT),
     hidden_dim              = 10,
     state_size              = 5,
     num_heads               = 10,
@@ -151,26 +164,38 @@ tft %>%
 
 tft %>%
   fit(
-    x = x,
-    y = y
+    x = x_train,
+    y = y_train,
+    epochs = 1
   )
 
-tft %>%
-  fit(
-    x = train_generator,
-    steps_per_epoch = train_steps
-  )
+# tft %>%
+#   fit(
+#     x = train_generator,
+#     steps_per_epoch = train_steps
+#   )
 ```
 
 ## Forecasting
 
 ```{r tft_forecasting}
-# forecast <- 
-#   tft %>% 
-#   predict(
-#     x = test_generator,
-#     steps_per_epoch = test_steps
+output <- tft(x_test)
+
+# out <- 
+#   neaten(
+#     forecast = forecast,
+#     data     = test,
+#     key      = KEY,
+#     index    = INDEX,
+#     lookback = LOOKBACK,
+#     horizon  = HORIZON,
+#     target   = TARGET,
+#     stride   = STRIDE 
 #   )
+
+forecast <-
+  tft %>%
+  predict(x_test)
 ```
 
 

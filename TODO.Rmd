@@ -1,6 +1,6 @@
-* fix layers behaviour when dropout_rate=NULL
+* finish neaten + test
+* debug attention and add function to handle its output
 * fix tft vignette & model itself
-* tests for TFD
 * tweak docs for layers and model_tft
 * refactor make_arrays and ts_generator
 * nbeats: https://github.com/LongxingTan/Time-series-prediction/blob/master/tfts/layers/nbeats_layer.py

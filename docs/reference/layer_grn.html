@@ -122,15 +122,12 @@ would have shape <code>(batch_size, unit)</code>.</p>
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://keras.rstudio.com" class="external-link">keras</a></span><span class="op">)</span></span>
-<span class="r-in"></span>
 <span class="r-in"><span class="co"># ================================================================</span></span>
 <span class="r-in"><span class="co">#             SEQUENTIAL MODEL, NO GATE VALUES RETURNED</span></span>
 <span class="r-in"><span class="co"># ================================================================</span></span>
-<span class="r-in"></span>
 <span class="r-in"><span class="va">model</span> <span class="op">&lt;-</span></span>
 <span class="r-in">  <span class="fu"><a href="https://rdrr.io/pkg/keras/man/keras_model_sequential.html" class="external-link">keras_model_sequential</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/pkg/keras/man/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span class="r-in">  <span class="fu">layer_grn</span><span class="op">(</span><span class="fl">10</span>, input_shape <span class="op">=</span> <span class="fl">30</span><span class="op">)</span></span>
-<span class="r-in"></span>
 <span class="r-in"><span class="va">model</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Model: "sequential_1"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ________________________________________________________________________________</span>
@@ -142,19 +139,27 @@ would have shape <code>(batch_size, unit)</code>.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Trainable params: 970</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Non-trainable params: 0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ________________________________________________________________________________</span>
-<span class="r-in"></span>
 <span class="r-in"><span class="va">output</span> <span class="op">&lt;-</span> <span class="fu">model</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">32</span>, <span class="fl">30</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in py_call_impl(callable, dots$args, dots$keywords):</span> RuntimeError: Exception encountered when calling layer "grn" "                 f"(type GRN).</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> Evaluation error: tensorflow.python.framework.errors_impl.InternalError: Exception encountered when calling layer "dense" "                 f"(type Dense).</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> {{function_node __wrapped__MatMul_device_/job:localhost/replica:0/task:0/device:GPU:0}} Attempting to perform BLAS operation using StreamExecutor without BLAS support [Op:MatMul]</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> Call arguments received by layer "dense" "                 f"(type Dense):</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span>   • inputs=tf.Tensor(shape=(32, 30), dtype=float32)</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> .</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> Call arguments received by layer "grn" "                 f"(type GRN):</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span>   • inputs=tf.Tensor(shape=(32, 30), dtype=float32)</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span>   • context=None</span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">output</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 32 10</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'output' not found</span>
 <span class="r-in"><span class="va">output</span><span class="op">[</span><span class="fl">1</span>,<span class="op">]</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> tf.Tensor(</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [-0.10964501 -0.6568189   0.4000288  -1.2055001   1.3044196  -1.7505759</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   0.4213798  -0.64255935  1.3064632   0.9328084 ], shape=(10,), dtype=float32)</span>
-<span class="r-in"></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'output' not found</span>
 <span class="r-in"><span class="co">#'================================================================</span></span>
 <span class="r-in"><span class="co">#            WITH GATE VALUES AND ADDITIONAL CONTEXT</span></span>
 <span class="r-in"><span class="co"># ================================================================</span></span>
-<span class="r-in"></span>
 <span class="r-in"><span class="va">inp</span>  <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/keras/man/layer_input.html" class="external-link">layer_input</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">28</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">ctx</span>  <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/keras/man/layer_input.html" class="external-link">layer_input</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">out</span>  <span class="op">&lt;-</span> <span class="fu">layer_grn</span><span class="op">(</span></span>
@@ -162,9 +167,7 @@ would have shape <code>(batch_size, unit)</code>.</p>
 <span class="r-in">            return_gate <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span class="r-in">            use_context <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span class="r-in">         <span class="op">)</span><span class="op">(</span><span class="va">inp</span>, context <span class="op">=</span> <span class="va">ctx</span><span class="op">)</span></span>
-<span class="r-in"></span>
 <span class="r-in"><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/keras/man/keras_model.html" class="external-link">keras_model</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">inp</span>, <span class="va">ctx</span><span class="op">)</span>, <span class="va">out</span><span class="op">)</span></span>
-<span class="r-in"></span>
 <span class="r-in"><span class="va">model</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Model: "model_1"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ________________________________________________________________________________</span>
@@ -179,20 +182,30 @@ would have shape <code>(batch_size, unit)</code>.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Trainable params: 570</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Non-trainable params: 0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ________________________________________________________________________________</span>
-<span class="r-in"></span>
 <span class="r-in"><span class="va">arr_1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/array.html" class="external-link">array</a></span><span class="op">(</span><span class="fl">1</span>, dim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">28</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">arr_2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/array.html" class="external-link">array</a></span><span class="op">(</span><span class="fl">1</span>, dim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"></span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">values</span>, <span class="va">gate</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/pkg/keras/man/multi-assign.html" class="external-link">%&lt;-%</a></span> <span class="fu">model</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">arr_1</span>, <span class="va">arr_2</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in py_call_impl(callable, dots$args, dots$keywords):</span> RuntimeError: Exception encountered when calling layer "grn_1" "                 f"(type GRN).</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> Evaluation error: tensorflow.python.framework.errors_impl.InternalError: Exception encountered when calling layer "dense" "                 f"(type Dense).</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> {{function_node __wrapped__MatMul_device_/job:localhost/replica:0/task:0/device:GPU:0}} Attempting to perform BLAS operation using StreamExecutor without BLAS support [Op:MatMul]</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> Call arguments received by layer "dense" "                 f"(type Dense):</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span>   • inputs=tf.Tensor(shape=(1, 28, 5), dtype=float32)</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> .</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> Call arguments received by layer "grn_1" "                 f"(type GRN):</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span>   • inputs=tf.Tensor(shape=(1, 28, 5), dtype=float32)</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span>   • context=tf.Tensor(shape=(1, 10), dtype=float32)</span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">values</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1]  1 28 10</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'values' not found</span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">gate</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1]  1 28 10</span>
-<span class="r-in"></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'gate' not found</span>
 <span class="r-in"><span class="va">values</span><span class="op">[</span><span class="fl">1</span>, <span class="fu">all_dims</span><span class="op">(</span><span class="op">)</span><span class="op">]</span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in all_dims():</span> could not find function "all_dims"</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'values' not found</span>
 <span class="r-in"><span class="va">gate</span><span class="op">[</span><span class="fl">1</span>, <span class="fu">all_dims</span><span class="op">(</span><span class="op">)</span><span class="op">]</span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in all_dims():</span> could not find function "all_dims"</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'gate' not found</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

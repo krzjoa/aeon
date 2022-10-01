@@ -10,7 +10,6 @@
 #' @include layer-interpretable-mh-attention.R layer-grn.R
 #'
 #' @examples
-#'
 #' lookback   <- 28
 #' horizon    <- 14
 #' all_steps  <- lookback + horizon

@@ -79,7 +79,9 @@ layer_interpretable_mh_attention <- keras::new_layer_class(
         qs, ks, vs, mask, return_attention_scores=TRUE
       )
 
-      head <- self$dropout_1(head)
+      if (!is.null(self$dropout_rate))
+        head <- self$dropout_1(head)
+
       heads <- append(heads, head)
       attentions <- append(attentions, attention)
     }
@@ -97,7 +99,9 @@ layer_interpretable_mh_attention <- keras::new_layer_class(
       outputs <- head
 
     outputs <- self$w_o(outputs)
-    outputs <- self$dropout_2(outputs)
+
+    if (!is.null(self$dropout_rate))
+      outputs <- self$dropout_2(outputs)
 
     if (return_attention_scores)
       return(list(outputs, attention))

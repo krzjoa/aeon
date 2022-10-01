@@ -44,6 +44,7 @@ Collate:
     'make-arrays.R'
     'metric-q-risk.R'
     'model-tft.R'
+    'neaten.R'
     'ts-generator.R'
 Imports: 
     reticulate,

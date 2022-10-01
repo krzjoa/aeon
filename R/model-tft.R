@@ -74,6 +74,9 @@ model_tft <- keras::new_model_class(
 
     super()$`__init__`(...)
 
+    vocab_static_size  <- remove_names(vocab_static_size)
+    vocab_dynamic_size <- remove_names(vocab_dynamic_size)
+
     self$lookback     <- lookback
     self$horizon      <- horizon
     self$dropout_rate <- dropout_rate

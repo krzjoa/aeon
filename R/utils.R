@@ -39,7 +39,13 @@ remove_nulls <- function(l){
 #' @export
 dict_size <- function(data, categorical){
   # We can't use names, because it causes an error in 'keras'
-  sapply(as.data.frame(data)[categorical], dplyr::n_distinct, USE.NAMES = FALSE)
+  sapply(as.data.frame(data)[categorical], dplyr::n_distinct)
+}
+
+#' @keywords internal
+remove_names <- function(x){
+  names(x) <- NULL
+  x
 }
 
 

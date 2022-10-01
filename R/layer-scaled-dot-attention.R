@@ -58,7 +58,9 @@ layer_scaled_dot_attention <- keras::new_layer_class(
     }
 
     attention <- self$softmax(attention)
-    attention <- self$dropout(attention)
+
+    if (!is.null(self$dropout_rate))
+      attention <- self$dropout(attention)
 
     output <- layer_lambda(
       f = function(x) k_batch_dot(x[[1]], x[[2]], axes = NULL)

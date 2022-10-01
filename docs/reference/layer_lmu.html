@@ -197,11 +197,25 @@ output in the output sequence.</p></dd>
 
 </dl></div>
     <div class="section level2">
+    <h2 id="output-shape">Output shape<a class="anchor" aria-label="anchor" href="#output-shape"></a></h2>
+    
+
+
+<ul><li><p>if <code>return_state</code>: a list of tensors. The first tensor is
+the output. The remaining tensors are the last states,
+each with shape <code>(batch_size, state_size)</code>, where <code>state_size</code>
+could be a high dimension tensor shape.</p></li>
+<li><p>if <code>return_sequences</code>: N-D tensor with shape <code>[batch_size, timesteps, output_size]</code>, where <code>output_size</code> could be a high dimension tensor shape, or
+<code>[timesteps, batch_size, output_size]</code> when <code>time_major</code> is <code>TRUE</code></p></li>
+<li><p>else, N-D tensor with shape <code>[batch_size, output_size]</code>, where
+<code>output_size</code> could be a high dimension tensor shape.</p></li>
+</ul></div>
+    <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
     
-<ol><li><p><a href="http://compneuro.uwaterloo.ca/files/publications/voelker.2019.lmu.pdf" class="external-link">Voelker, Kajic I. and Eliasmith, Legendre Memory Units: Continuous-Time Representation in Recurrent Neural Networks</a></p></li>
-<li><p><a href="http://compneuro.uwaterloo.ca/files/publications/voelker.2018.pdf" class="external-link">Voelker and Eliasmith (2018). Improving spiking dynamical networks: Accurate delays, higher-order synapses, and time cells. Neural Computation, 30(3): 569-609.</a></p></li>
-<li><p><a href="https://patents.google.com/patent/US20180053090A1/en" class="external-link">Voelker and Eliasmith. "Methods and systems for implementing dynamic neural networks." U.S. Patent Application No. 15/243,223.</a></p></li>
+<ol><li><p>A. Voelker, I. Kajić and C. Eliasmith, <a href="http://compneuro.uwaterloo.ca/files/publications/voelker.2019.lmu.pdf" class="external-link">Legendre Memory Units: Continuous-Time Representation in Recurrent Neural Networks</a> (2019)</p></li>
+<li><p>A. Voelker and C. Eliasmith <a href="http://compneuro.uwaterloo.ca/files/publications/voelker.2018.pdf" class="external-link">Improving spiking dynamical networks: Accurate delays, higher-order synapses, and time cells. Neural Computation, 30(3): 569-609.</a> (2018)</p></li>
+<li><p>A. Voelker and C. Eliasmith <a href="https://patents.google.com/patent/US20180053090A1/en" class="external-link">Methods and systems for implementing dynamic neural networks. U.S. Patent Application No. 15/243,223.</a></p></li>
 <li><p><a href="https://stats.stackexchange.com/questions/472822/is-lstm-long-short-term-memory-dead" class="external-link">Is LSTM (Long Short-Term Memory) dead?, CrossValidated</a></p></li>
 </ol></div>
 
