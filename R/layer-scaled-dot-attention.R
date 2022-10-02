@@ -16,6 +16,7 @@
 #' 1. A. Vaswani et al. [Attention Is All You Need](https://arxiv.org/pdf/1706.03762v5.pdf) (2017)
 #' 2. 2. B. Lim, S.O. Arik, N. Loeff, T. Pfiste, [Temporal Fusion Transformers for Interpretable Multi-horizon Time Series Forecasting](https://arxiv.org/abs/1912.09363) (2020)
 #' @examples
+#' library(keras)
 #' lookback   <- 28
 #' horizon    <- 14
 #' all_steps  <- lookback + horizon
@@ -26,6 +27,34 @@
 #' values  <- layer_input(c(all_steps, state_size))
 #'
 #' sdp_attention <- layer_scaled_dot_attention()(queries, keys, values)
+#'
+#' model <-
+#'    keras_model(
+#'      inputs  = list(queries, keys, values),
+#'      outputs = sdp_attention
+#'   )
+#'
+#' past <- rand_array(32, 28, 5)
+#' fut  <- rand_array(32, 14, 5)
+#' both <- abind::abind(past, fut, along=2)
+#'
+#' model(list(fut, both, both))
+#'
+#' # With attention score
+#' c(sdp_attention, attn_score) %<-%
+#'    layer_scaled_dot_attention()(
+#'       queries, keys, values, return_attention_scores=TRUE
+#'    )
+#'
+#' model <-
+#'    keras_model(
+#'      inputs  = list(queries, keys, values),
+#'      outputs = c(sdp_attention, attn_score)
+#'   )
+#'
+#' c(out, attn) %<-% model(list(fut, both, both))
+#'
+#' matricks::plot_matrix(class(as.array(attn[,,1])))
 #' @export
 layer_scaled_dot_attention <- keras::new_layer_class(
 

@@ -1,4 +1,3 @@
-* finish neaten + test
 * debug attention and add function to handle its output
 * fix tft vignette & model itself
 * tweak docs for layers and model_tft

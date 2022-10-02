@@ -11,6 +11,7 @@
 #' 2. [TFT original implementation by Google](https://github.com/google-research/google-research/blob/4808a726f4b126ea38d49cdd152a6bb5d42efdf0/tft/libs/tft_model.py#L278)
 #'
 #' @examples
+#' library(keras)
 #' lookback   <- 28
 #' horizon    <- 14
 #' all_steps  <- lookback + horizon
@@ -24,6 +25,32 @@
 #'    layer_interpretable_mh_attention(
 #'       state_size = state_size, num_heads = 10
 #'    )(queries, keys, values)
+#'
+#' model <-
+#'    keras_model(
+#'      inputs  = list(queries, keys, values),
+#'      outputs = imh_attention
+#'   )
+#'
+#' past <- rand_array(32, 28, 5)
+#' fut  <- rand_array(32, 14, 5)
+#' both <- abind::abind(past, fut, along=2)
+#'
+#' model(list(fut, both, both))
+#'
+#' # With attention score
+#' c(imh_attention, attn_score) %<-%
+#'    layer_interpretable_mh_attention(
+#'       state_size = state_size, num_heads = 10
+#'    )(queries, keys, values, return_attention_scores=TRUE)
+#'
+#' model <-
+#'    keras_model(
+#'      inputs  = list(queries, keys, values),
+#'      outputs = c(imh_attention, attn_score)
+#'   )
+#'
+#' c(out, attn) %<-% model(list(fut, both, both))
 #' @export
 layer_interpretable_mh_attention <- keras::new_layer_class(
 
@@ -71,6 +98,7 @@ layer_interpretable_mh_attention <- keras::new_layer_class(
 
     for (i in 1:self$num_heads) {
 
+      # Na wyjściu są puste tensory!
       qs <- self[[glue::glue("q_{i}")]](q)
       ks <- self[[glue::glue("q_{i}")]](k)
       vs <- self$vs_layer(v)
@@ -86,25 +114,24 @@ layer_interpretable_mh_attention <- keras::new_layer_class(
       attentions <- append(attentions, attention)
     }
 
-    if (self$num_heads > 1)
-      head <- k_stack(heads)
-    else
-      head <- heads[[1]]
+    if (self$num_heads > 1) {
+      attention_output <- k_stack(heads)
+      attention_score  <- k_stack(attentions)
+      # take average along heads
+      attention_output <- k_mean(attention_output, axis = 1)
+      attention_score  <- k_mean(head, axis = 1)
+    } else {
+      attention_output <- heads[[1]]
+      attention_score  <- attentions[[1]]
+    }
 
-    attention <- k_stack(attentions)
-
-    if (self$num_heads > 1)
-      outputs <- k_mean(head, axis = 1)
-    else
-      outputs <- head
-
-    outputs <- self$w_o(outputs)
+    outputs <- self$w_o(attention)
 
     if (!is.null(self$dropout_rate))
       outputs <- self$dropout_2(outputs)
 
     if (return_attention_scores)
-      return(list(outputs, attention))
+      return(list(outputs, q))
     else
       return(outputs)
 
