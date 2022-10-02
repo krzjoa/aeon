@@ -134,3 +134,20 @@ get_ts_starts <- function(data, key, index, lookback,
 }
 
 
+#' @keywords internal
+safe_logical <- function(x){
+  if (length(x) == 0)
+    return(FALSE)
+  else
+    return(x)
+}
+
+#' @keywords internal
+last_dim <- function(x){
+  tail(dim(x), 1)
+}
+
+#' @keywords internal
+ndim <- function(x) {
+  length(dim(x))
+}

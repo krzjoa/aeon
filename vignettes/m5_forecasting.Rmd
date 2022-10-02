@@ -179,19 +179,37 @@ tft %>%
 ## Forecasting
 
 ```{r tft_forecasting}
-output <- tft(x_test)
+forecast <- tft(x_test)
+forecast_2 <- abind::abind(as.array(forecast), 
+                           as.array(forecast))
 
-# out <- 
-#   neaten(
-#     forecast = forecast,
-#     data     = test,
-#     key      = KEY,
-#     index    = INDEX,
-#     lookback = LOOKBACK,
-#     horizon  = HORIZON,
-#     target   = TARGET,
-#     stride   = STRIDE 
-#   )
+out <-
+  neaten(
+    forecast = forecast,
+    data     = test,
+    key      = KEY,
+    index    = INDEX,
+    lookback = LOOKBACK,
+    horizon  = HORIZON,
+    target   = TARGET,
+    stride   = STRIDE
+  )
+
+out_2 <-
+  neaten(
+    forecast = forecast_2,
+    data     = test,
+    key      = KEY,
+    index    = INDEX,
+    lookback = LOOKBACK,
+    horizon  = HORIZON,
+    target   = TARGET,
+    stride   = STRIDE,
+    suffix   = c(0.5, 0.9)
+  )
+
+View(out_2)
+
 
 forecast <-
   tft %>%
