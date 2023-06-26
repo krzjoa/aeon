@@ -1,14 +1,14 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# aion
+# aeon
 
 <img src='man/figures/aion-small.png' align="right" height="250" />
 
 <!-- badges: start -->
 
 [![CRAN
-status](https://www.r-pkg.org/badges/version/aion)](https://CRAN.R-project.org/package=aion)
+status](https://www.r-pkg.org/badges/version/aeon)](https://CRAN.R-project.org/package=aeon)
 [![Buy hex
 stciker](https://img.shields.io/badge/buy%20hex-aion-green?style=flat&logo=redbubble)](https://www.redbubble.com/i/sticker/aion-R-package-hex-by-krzjoa/126321293.EJUG5)
 
@@ -116,3 +116,6 @@ c(test_generator, test_steps)  %<-%
         numeric=NUMERIC
     )
 ```
+
+## Package name
+The package was initially named aion. However, I was waiting so long with publishing it and [somebody](https://github.com/tesselle/aion) has beaten me to it. 
